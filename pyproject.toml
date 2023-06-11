@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "crvusd-arbitrage-analytics"
+version = "0.1.0"
+description = ""
+authors = ["0x-stan <744428333@qq.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "crvusd_arbitrage_analytics"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.24.3"
+gql = "^3.4.1"
+requests = "^2.31.0"
+requests-toolbelt = "^1.0.0"
+pandas = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
