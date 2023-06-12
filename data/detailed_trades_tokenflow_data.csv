@@ -1,0 +1,15 @@
+transfer_step,token_symbol,from,to,amount,action_type,swap_pool
+0,weth,UniswapV3Pool-WETH-USDC,tx_to,15.36421367302231817,UniswapV3Pool:token_out:flash_swap,UniswapV3Pool-WETH-USDC
+1,eth,weth,tx_to,15.36421367302231817,WETH_withdraw:eth_out,
+2,weth,tx_to,weth,15.36421367302231817,WETH_withdraw:weth_in,
+3,frxeth,CurveStableSwap-ETH-FRXETH,tx_to,15.353841920200596254,CurveStableSwap:token_out:flash_swap,CurveStableSwap-ETH-FRXETH
+4,frxeth,tx_to,sFrxETH,15.353841920200596254,frxETH_stake:frxETH_in,
+5,sfrxeth,sFrxETH,tx_to,14.714290423299910204,frxETH_stake:sFrxETH_out,
+6,sfrxeth,tx_to,LLAMMA-sFrxETH-crvUSD,14.714290423299910204,LLAMMA:token_in,LLAMMA-sFrxETH-crvUSD
+7,crvusd,LLAMMA-sFrxETH-crvUSD,tx_to,28374.06572486412041135,LLAMMA:token_out,LLAMMA-sFrxETH-crvUSD
+8,crvusd,tx_to,CurveStableSwap-crvUSD-USDC,28374.06572486412041135,CurveStableSwap:token_in,CurveStableSwap-crvUSD-USDC
+9,usdc,CurveStableSwap-crvUSD-USDC,tx_to,28360.101431,CurveStableSwap:token_out,CurveStableSwap-crvUSD-USDC
+10,usdc,tx_to,UniswapV3Pool-WETH-USDC,28359.990804,UniswapV3Pool:token_in:flash_swap,UniswapV3Pool-WETH-USDC
+11,eth,tx_to,CurveStableSwap-ETH-FRXETH,15.345644284413620372,CurveStableSwap:token_in:flash_swap,CurveStableSwap-ETH-FRXETH
+12,eth,tx_to,tx_miner,0.005546477969754086,miner_take_profit,
+13,eth,tx_to,tx_from,0.013022910638943712,beneficiary_take_profit,

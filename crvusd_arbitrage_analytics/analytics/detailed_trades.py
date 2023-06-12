@@ -1,5 +1,10 @@
 import csv
-from analytics.match_action import match_frxeth_action, match_swap_pool_action, match_weth_action
+from analytics.match_action import (
+    match_frxeth_action,
+    match_swap_pool_action,
+    match_take_profit,
+    match_weth_action,
+)
 from utils import format_decimals, get_address_alias
 from collector.graphql.query import query_detailed_trades_all
 from collector.tenderly.query import query_tenderly_txtrace
@@ -52,25 +57,102 @@ def process_trades_data(save=False, save_dir=DEFAUT_TRADES_DATA_DIR):
     return all_trades
 
 
-def generate_token_path(transfers, address_tags):
+TOKEN_FLOW_HEADER = [
+    "transfer_step",
+    "token_symbol",
+    "from",
+    "to",
+    "amount",
+    "action_type",
+    "swap_pool",
+]
 
+
+def generate_token_flow(
+    transfers, address_tags, save=False, save_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR
+):
+    token_flow_list = []
     for i in range(len(transfers)):
         item = transfers[i]
-        
-        print("")
-        print("transfer", i)
-        print(
-            "token_symbol %s, from %s, to %s amount %s"
-            % (item["token_symbol"], item["from_alias"], item["to_alias"], str(item["amount"]))
-        )
 
-        (weth_match_index, weth_math_type) = match_weth_action(i, transfers)
-        (frxeth_match_index, frxeth_math_type) = match_frxeth_action(i, transfers)
-        (pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol) = match_swap_pool_action(i, transfers)
-    
-        if (weth_match_index > -1):
-            print("WETH match==> ", weth_match_index, weth_math_type)
-        if (frxeth_match_index > -1):
-            print("frxeth match==> ", frxeth_match_index, frxeth_math_type)
-        if (pool_type_index > -1):
-            print("curve_stableswap match==> ", pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol)
+        token_flow = [
+            i,
+            item["token_symbol"],
+            item["from_alias"],
+            item["to_alias"],
+            str(item["amount"]),
+        ]
+
+        (take_profit_type_index, take_profit_type) = match_take_profit(
+            i, transfers, address_tags
+        )
+        (weth_match_index, weth_math_type, weth_match_tokensymbol) = match_weth_action(
+            i, transfers
+        )
+        (
+            frxeth_match_index,
+            frxeth_math_type,
+            frxeth_math_tokensymbol,
+        ) = match_frxeth_action(i, transfers)
+        (
+            pool_type_index,
+            pool_type,
+            swap_pool,
+            swap_type_index,
+            swap_type,
+            token_symbol,
+            swap_flow_list,
+        ) = match_swap_pool_action(i, transfers)
+
+        action_row = ["", ""]
+
+        if take_profit_type_index > -1:
+            action_row = [take_profit_type, ""]
+        if weth_match_index > -1:
+            action_row = [weth_math_type, ""]
+        if frxeth_match_index > -1:
+            action_row = [frxeth_math_type, ""]
+        if pool_type_index > -1:
+            # check flash swap
+            use_flash = True
+            if i > 0:
+                (
+                    _,
+                    _,
+                    prev_swap_pool,
+                    prev_swap_type_index,
+                    _,
+                    _,
+                    _,
+                ) = match_swap_pool_action(i - 1, transfers)
+                if prev_swap_pool == swap_pool:
+                    use_flash = prev_swap_type_index == swap_type_index
+            if len(transfers) > i + 2:
+                (
+                    _,
+                    _,
+                    next_swap_pool,
+                    next_swap_type_index,
+                    _,
+                    _,
+                    _,
+                ) = match_swap_pool_action(i + 1, transfers)
+                if next_swap_pool == swap_pool:
+                    use_flash = next_swap_type_index == swap_type_index
+
+            if use_flash:
+                swap_type_index += 2
+
+            action_row = [swap_flow_list[swap_type_index], swap_pool]
+
+        token_flow += action_row
+
+        token_flow_list.append(token_flow)
+
+    if save:
+        with open(save_dir, "w") as f:
+            writer = csv.writer(f)
+            writer.writerow(TOKEN_FLOW_HEADER)
+            writer.writerows(token_flow_list)
+
+    return token_flow_list

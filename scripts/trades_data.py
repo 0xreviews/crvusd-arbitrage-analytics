@@ -1,4 +1,4 @@
-from analytics.detailed_trades import generate_token_path
+from analytics.detailed_trades import generate_token_flow
 from collector.eigenphi.query import query_eigenphi_analytics_tx
 from collector.eigenphi.utils import get_eigenphi_tokenflow
 from utils import get_address_alias
@@ -24,4 +24,4 @@ token_balance_diff, address_tags, transfers = get_eigenphi_tokenflow(resp)
 #     for symbol in token_balance_diff.get_account_symbols(addr=acc):
 #         print(symbol, token_balance_diff.get_diff(acc, symbol=symbol))
 
-generate_token_path(transfers, address_tags)
+generate_token_flow(transfers, address_tags, save=True, save_dir="data/detailed_trades_tokenflow_data.csv")

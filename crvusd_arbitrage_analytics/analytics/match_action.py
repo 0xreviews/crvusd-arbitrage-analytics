@@ -10,6 +10,7 @@ from config.tokenflow_category import (
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
     SWAPPOOL_TYPE,
+    TAKE_PROFIT_FLOW,
     UNISWAP_V3_SWAP_FLOW,
     WETH_FLOW,
 )
@@ -17,26 +18,26 @@ from config.tokenflow_category import (
 
 def match_weth_action(row_step, transfers):
     row = transfers[row_step]
+    token_symbol = row["token_symbol"]
     type_index = -1
 
-    if row["token_symbol"].lower() == "weth":
-        # deposit
-        if (
-            get_address_alias(row["from"]).lower() == "weth"
-            and float(row["amount"]) > 0
-        ):
-            if len(transfers) > row_step + 2:
-                next_row = transfers[row_step + 1]
+    # WETH_contract in
+    if get_address_alias(row["to"]).lower() == "weth":
+        # WETH_deposit:eth_in
+        if token_symbol.lower() == "eth" and float(row["amount"]) > 0:
+            # prev transfer is WETH_deposit:weth_out
+            if row_step > 0:
+                prev_row = transfers[row_step - 1]
                 if (
-                    get_address_alias(next_row["to"]).lower() == "weth"
-                    and float(next_row["amount"]) > 0
+                    prev_row["token_symbol"].lower() == "weth"
+                    and get_address_alias(prev_row["from"]).lower() == "weth"
+                    and float(prev_row["amount"]) > 0
                 ):
                     type_index = 0
-        # withdraw
-        elif (
-            get_address_alias(row["to"]).lower() == "weth" and float(row["amount"]) > 0
-        ):
-            # next transfer user should tansfer ETH to weth contract address
+
+        # WETH_withdraw:weth_in
+        elif token_symbol.lower() == "weth" and float(row["amount"]) > 0:
+            # prev transfer is WETH_withdraw:eth_out
             if row_step > 0:
                 prev_row = transfers[row_step - 1]
                 if (
@@ -44,32 +45,54 @@ def match_weth_action(row_step, transfers):
                     and get_address_alias(prev_row["from"]).lower() == "weth"
                     and float(prev_row["amount"]) > 0
                 ):
+                    type_index = 2
+
+    # WETH_contract out
+    elif get_address_alias(row["from"]).lower() == "weth":
+        # WETH_deposit:weth_out
+        if token_symbol.lower() == "weth" and float(row["amount"]) > 0:
+            # next transfer is WETH_deposit:eth_in
+            if len(transfers) > row_step + 2:
+                next_row = transfers[row_step + 1]
+                if (
+                    next_row["token_symbol"].lower() == "eth"
+                    and get_address_alias(next_row["to"]).lower() == "weth"
+                    and float(next_row["amount"]) > 0
+                ):
                     type_index = 1
 
-        # transfer
-        elif (
-            row["category"].lower() == "transfer"
-            and get_address_alias(row["from"]).lower() != "weth"
-            and get_address_alias(row["to"]).lower() != "weth"
-            and float(row["amount"]) > 0
-        ):
-            type_index = 2
+        # WETH_withdraw:eth_out
+        elif token_symbol.lower() == "eth" and float(row["amount"]) > 0:
+            # next transfer is WETH_withdraw:weth_in
+            if len(transfers) > row_step + 2:
+                next_row = transfers[row_step + 1]
+                if (
+                    next_row["token_symbol"].lower() == "weth"
+                    and get_address_alias(next_row["to"]).lower() == "weth"
+                    and float(next_row["amount"]) > 0
+                ):
+                    type_index = 3
+
+    elif row["category"].lower() == "transfer":
+        if token_symbol == "weth":
+            type_index = 4
 
     if type_index > -1:
-        return (type_index, WETH_FLOW[type_index])
+        return (type_index, WETH_FLOW[type_index], token_symbol)
     else:
-        return (-1, "")
+        return (-1, "", "")
 
 
 def match_frxeth_action(row_step, transfers):
     row = transfers[row_step]
-    type_index = -1
+    token_symbol = row["token_symbol"]
+    action_type_index = -1
 
     # sFrxETH_contract token in
     if get_address_alias(row["to"]).lower() == "sfrxeth":
         # frxETH_stake:frxETH_in
         # 0. frxETH in sFrxETH_contract
-        if row["token_symbol"].lower() == "frxeth":
+        if token_symbol.lower() == "frxeth":
             # next transfer is frxETH_stake:sFrxETH_out
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
@@ -78,11 +101,11 @@ def match_frxeth_action(row_step, transfers):
                     and get_address_alias(next_row["from"]).lower() == "sfrxeth"
                     and float(next_row["amount"]) > 0
                 ):
-                    type_index = 0
+                    action_type_index = 0
 
         # frxETH_unstake:sFrxETH_in
         # 3. transfer sFrxETH_in to sFrxETH_contract
-        elif row["token_symbol"].lower() == "sfrxeth":
+        elif token_symbol.lower() == "sfrxeth":
             # next transfer is frxETH_unstake:frxETH_out
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
@@ -91,7 +114,7 @@ def match_frxeth_action(row_step, transfers):
                     and get_address_alias(next_row["from"]).lower() == "sfrxeth"
                     and float(next_row["amount"]) > 0
                 ):
-                    type_index = 2
+                    action_type_index = 2
 
     # sFrxETH_contract token out
     elif get_address_alias(row["from"]).lower() == "sfrxeth":
@@ -105,7 +128,7 @@ def match_frxeth_action(row_step, transfers):
                     prev_row["token_symbol"].lower() == "frxeth"
                     and get_address_alias(prev_row["to"]).lower() == "sfrxeth"
                 ):
-                    type_index = 1
+                    action_type_index = 1
 
         # frxETH_unstake:frxETH_out
         #   3. transfer srxETH from sFrxETH_contract
@@ -118,12 +141,18 @@ def match_frxeth_action(row_step, transfers):
                     and get_address_alias(prev_row["to"]).lower() == "sfrxeth"
                     and float(prev_row["amount"]) > 0
                 ):
-                    type_index = 3
+                    action_type_index = 3
+    # transfer
+    elif row["category"].lower() == "transfer":
+        if token_symbol == "frxETH":
+            action_type_index = 4
+        elif token_symbol == "frxETH":
+            action_type_index = 5
 
-    if type_index > -1:
-        return (type_index, FRXETH_FLOW[type_index])
+    if action_type_index > -1:
+        return (action_type_index, FRXETH_FLOW[action_type_index], token_symbol)
     else:
-        return (-1, "")
+        return (-1, "", "")
 
 
 # return pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol
@@ -172,6 +201,7 @@ def match_swap_pool_action(row_step, transfers):
             swap_flow_list = LLAMMA_SWAP_FLOW
         elif pool_type == 3:
             swap_flow_list = UNISWAP_V3_SWAP_FLOW
+
         return (
             pool_type,
             SWAPPOOL_TYPE[pool_type],
@@ -179,7 +209,23 @@ def match_swap_pool_action(row_step, transfers):
             swap_type_index,
             swap_flow_list[swap_type_index],
             row["token_symbol"],
+            swap_flow_list,
         )
 
-    return (-1, "", -1, "", "", "")
+    return (-1, "", -1, "", "", "", [])
 
+
+def match_take_profit(row_step, transfers, address_tags):
+    row = transfers[row_step]
+    action_type_index = -1
+
+    if row["to"] == address_tags["tx_miner"]:
+        action_type_index = 0
+    # arbitrage_contract transfer profit to tx_from
+    elif row["from"] == address_tags["tx_to"] and row["to"] == address_tags["tx_from"]:
+        action_type_index = 1
+
+    if action_type_index > -1:
+        return (action_type_index, TAKE_PROFIT_FLOW[action_type_index])
+    else:
+        return (-1, "")
