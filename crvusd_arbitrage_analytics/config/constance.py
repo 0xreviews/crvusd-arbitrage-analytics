@@ -8,6 +8,7 @@ SUBGRAPH_QUERY_SIZE = 1000
 # eigenPhi
 EIGEN_TX_URL = "https://eigenphi.io/mev/eigentx/"
 EIGEN_ANALYTICS_TX = "https://eigenphi.io/api/v1/analyseTransaction?chain=ALL&tx="
+EIGEN_SUMMARY_TX = "https://storage.googleapis.com/eigenphi-ethereum-tx/"
 
 # Tenderly
 TENDERLY_TX_TRACE = Template(
@@ -27,7 +28,7 @@ ADDRESS_ALIAS = {
     "0x5e8422345238f34275888049021821e8e08caa1f": "frxETH",
     "0xac3e018457b222d93114458476f3e3416abbe38f": "sFrxETH",
     "0x8472a9a7632b173c8cf3a86d3afec50c35548e76": "Controller-sFrxETH",
-    "0x136e783846ef68c8bd00a3369f787df8d683a696": "LLAMMA-sFrxETH",
+    "0x136e783846ef68c8bd00a3369f787df8d683a696": "LLAMMA-sFrxETH-crvUSD",
     "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640": "UniswapV3Pool-WETH-USDC",
     "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577": "CurveStableSwap-ETH-FRXETH",
     "0x4dece678ceceb27446b35c672dc7d61f30bad69e": "CurveStableSwap-crvUSD-USDC",
@@ -45,7 +46,7 @@ ALIAS_TO_ADDRESS = {
     "frxETH": "0x5e8422345238f34275888049021821e8e08caa1f",
     "sFrxETH": "0xac3e018457b222d93114458476f3e3416abbe38f",
     "Controller-sFrxETH": "0x8472a9a7632b173c8cf3a86d3afec50c35548e76",
-    "LLAMMA-sFrxETH": "0x136e783846ef68c8bd00a3369f787df8d683a696",
+    "LLAMMA-sFrxETH-crvUSD": "0x136e783846ef68c8bd00a3369f787df8d683a696",
     "UniswapV3Pool-WETH-USDC": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
     "CurveStableSwap-ETH-FRXETH": "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577",
     "CurveStableSwap-crvUSD-USDC": "0x4dece678ceceb27446b35c672dc7d61f30bad69e",
@@ -67,3 +68,6 @@ TOKEN_DECIMALS = {
 }
 
 ETH_SWAP_POOLS_ALIAS = ["CurveStableSwap-ETH-FRXETH", "UniswapV3Pool-WETH-USDC"]
+
+
+

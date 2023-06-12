@@ -9,6 +9,7 @@ def get_eigenphi_tokenflow(resp):
         "tx_from": "",
         "tx_to": "",
         "tx_beneficiary": "",
+        "tx_miner": "",
     }
     for i in range(len(resp["addressTags"])):
         addr = resp["addressTags"][i]["address"]
@@ -19,8 +20,10 @@ def get_eigenphi_tokenflow(resp):
                     address_tags["tx_from"] = addr
                 elif tags[j]["value"] == "to":
                     address_tags["tx_to"] = addr
+                elif tags[j]["value"] == "miner":
+                    address_tags["tx_miner"] = addr
             elif tags[j]["categoryName"] == "AddressType":
-                if tags[j]["value"] == "EOA":
+                if tags[j]["value"] == "EOA" and address_tags["tx_from"] == addr:
                     address_tags["tx_beneficiary"] = addr
 
     transfers = []
@@ -28,10 +31,11 @@ def get_eigenphi_tokenflow(resp):
         item = resp["transfers"][i]
         item["token_address"] = item["token"]["address"]
         item["token_symbol"] = item["token"]["symbol"].lower()
+        item["from_alias"] = eigenphi_address_alias(item["from"], address_tags)
+        item["to_alias"] = eigenphi_address_alias(item["to"], address_tags)
         transfers.append(item)
 
-    token_path = []
-
+    transfers.sort(key=lambda x: x["transferStep"])
 
     token_balance_diff = TokenBalanceDiff()
 
@@ -44,4 +48,15 @@ def get_eigenphi_tokenflow(resp):
             diff=float(cell["amount"]),
         )
 
-    return token_path, token_balance_diff, address_tags, transfers
+    return token_balance_diff, address_tags, transfers
+
+
+def eigenphi_address_alias(addr, address_tags):
+    _alias = get_address_alias(addr)
+    if _alias == "":
+        for key, value in address_tags.items():
+            if value.lower() == addr.lower():
+                _alias = key
+                break
+    return _alias
+

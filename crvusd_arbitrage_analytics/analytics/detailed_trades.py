@@ -1,6 +1,5 @@
 import csv
-import json
-from collector.tenderly.utils import tenderly_tokenflow
+from analytics.match_action import match_frxeth_action, match_swap_pool_action, match_weth_action
 from utils import format_decimals, get_address_alias
 from collector.graphql.query import query_detailed_trades_all
 from collector.tenderly.query import query_tenderly_txtrace
@@ -53,42 +52,25 @@ def process_trades_data(save=False, save_dir=DEFAUT_TRADES_DATA_DIR):
     return all_trades
 
 
-# def process_tx_tokenflow(tx):
-#     resp = query_tenderly_txtrace(tx)
-#     asset_changes, token_balance_diff = tenderly_tokenflow(resp)
+def generate_token_path(transfers, address_tags):
+
+    for i in range(len(transfers)):
+        item = transfers[i]
+        
+        print("")
+        print("transfer", i)
+        print(
+            "token_symbol %s, from %s, to %s amount %s"
+            % (item["token_symbol"], item["from_alias"], item["to_alias"], str(item["amount"]))
+        )
+
+        (weth_match_index, weth_math_type) = match_weth_action(i, transfers)
+        (frxeth_match_index, frxeth_math_type) = match_frxeth_action(i, transfers)
+        (pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol) = match_swap_pool_action(i, transfers)
     
-#     return asset_changes, token_balance_diff
-
-# def process_trades_tokenflow_data(
-#     trades_data_dir=DEFAUT_TRADES_DATA_DIR,
-#     save=False,
-#     save_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR,
-# ):
-#     with open(trades_data_dir, newline="") as csvfile:
-#         tx_header_index = 0
-#         data = {}
-#         spamreader = csv.reader(csvfile, delimiter=",")
-#         for row in spamreader:
-#             # header
-#             if row[0] == "id":
-#                 for i in range(len(row)):
-#                     if row[i] == "tx":
-#                         tx_header_index = i
-#                         break
-#                 # skip header
-#                 continue
-
-#             _id = row[0]
-#             tx = row[tx_header_index]
-#             asset_changes, balance_diff = query_tx_tokenflow(tx)
-#             data[_id] = {
-#                 "asset_changes": asset_changes,
-#                 "balance_diff": balance_diff,
-#             }
-
-#         if save:
-#             with open(save_dir, "w") as f:
-#                 f.write(json.dumps(data))
-
-#     return data
-
+        if (weth_match_index > -1):
+            print("WETH match==> ", weth_match_index, weth_math_type)
+        if (frxeth_match_index > -1):
+            print("frxeth match==> ", frxeth_match_index, frxeth_math_type)
+        if (pool_type_index > -1):
+            print("curve_stableswap match==> ", pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol)
