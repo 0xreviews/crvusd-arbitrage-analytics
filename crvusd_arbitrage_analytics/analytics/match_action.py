@@ -242,3 +242,25 @@ def match_take_profit(row_step, transfers, address_tags):
         return (action_type_index, TAKE_PROFIT_FLOW[action_type_index])
     else:
         return (-1, "")
+
+
+# @todo Curve3Pool
+
+# @todo CurveTriCrypto
+
+# @todo CurveStablePoolOwner
+
+# @todo CurveRegistryExchange
+
+# @todo rETH
+
+# @todo frxETHMinter
+
+# @todo frxETHMinter
+
+# @todo BalancerVault
+
+# @todo PancakeV3Pool
+
+# @todo SolidlySwap
+

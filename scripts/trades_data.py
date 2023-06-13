@@ -23,18 +23,30 @@ from utils import get_address_alias
 # ]
 
 
-def process_batch(txs, begin_index):
-    tasks = []
-    for i in range(len(txs)):
-        target_tx = txs[i]
-        tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
-        tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
+def process_batch(txs, begin_index, original_data_dir=""):
+    if original_data_dir == "":
+        tasks = []
+        for i in range(len(txs)):
+            target_tx = txs[i]
+            tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
+            tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
 
-    results = loop.run_until_complete(asyncio.gather(*tasks))
-    print("results len:", len(results))
+        results = loop.run_until_complete(asyncio.gather(*tasks))
+        print("results len:", len(results))
+    else:
+        with open(original_data_dir, encoding="utf-8") as f:
+            original_data = json.load(f)
+            results = []
+            for i in range(len(txs)):
+                index = begin_index + i
+                index = min(len(original_data)-1, index)
+                item = original_data[index]
+                results.append(item["summary_original"])
+                results.append(item["analytics_tx_original"])
 
-    rows = []
-    json_rows = []
+    raws = []
+    lines = []
+    json_lines = []
     for i in range(len(txs)):
         if results[i * 2] is None:
             summary = None
@@ -42,6 +54,16 @@ def process_batch(txs, begin_index):
             tx_meta = None
         else:
             summary, token_prices, tx_meta = generate_tx_summary(results[i * 2])
+
+        # save original data
+        if original_data_dir == "":
+            raws.append(
+                {
+                    "tx": txs[i],
+                    "summary_original": results[i * 2],
+                    "analytics_tx_original": results[i * 2 + 1],
+                }
+            )
 
         token_balance_diff, address_tags, transfers = get_eigenphi_tokenflow(
             results[i * 2 + 1]
@@ -59,8 +81,8 @@ def process_batch(txs, begin_index):
             token_flow_list,
         )
 
-        rows += [[str(i + begin_index)]] + tokenflow_lines + [[], []]
-        json_rows.append(
+        lines += [[str(i + begin_index)]] + tokenflow_lines + [[], []]
+        json_lines.append(
             {
                 "summary": summary,
                 "token_prices": token_prices,
@@ -69,29 +91,39 @@ def process_batch(txs, begin_index):
             }
         )
 
-    return rows, json_rows
+    return lines, json_lines, raws
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
+    use_original_data = True
+    original_data_dir = "data/original/eigenphi_raw_data.json"
+
+    if not use_original_data:
+        loop = asyncio.get_event_loop()
 
     all_trades = process_trades_data(
         save=True, save_dir="data/detailed_trades_data.csv"
     )
     all_txs = [row["tx"] for row in all_trades]
 
-    batch_size = 20
+    batch_size = 100
     data_lines = []
     json_data = []
+    raws_data = []
 
     for i in range(len(all_txs) // batch_size + 1):
         begin_index = i * batch_size
         end_index = min(len(all_txs), (i + 1) * batch_size)
-        print("fetch txs %d to %d" % (begin_index, end_index))
+        print("process txs %d to %d" % (begin_index, end_index))
         txs = all_txs[begin_index:end_index]
-        rows, json_rows = process_batch(txs, begin_index)
-        data_lines += rows
-        json_data += json_rows
+        lines, json_lines, raws = process_batch(
+            txs,
+            begin_index,
+            original_data_dir=original_data_dir if use_original_data else "",
+        )
+        data_lines += lines
+        json_data += json_lines
+        raws_data += raws
 
     with open(
         "data/detailed_trades_tokenflow_data.csv", "w", newline="", encoding="utf-8"
@@ -101,3 +133,7 @@ if __name__ == "__main__":
 
     with open("data/detailed_trades_tokenflow_data.json", "w") as f:
         f.write(json.dumps(json_data, indent=4))
+
+    if not use_original_data:
+        with open(original_data_dir, "w") as f:
+            f.write(json.dumps(raws_data, indent=4))

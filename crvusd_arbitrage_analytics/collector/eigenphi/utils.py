@@ -67,4 +67,4 @@ def eigenphi_address_alias(addr, address_tags):
             value = address_tags[key]
             if value.lower() == addr.lower():
                 _alias = key
-    return _alias
+    return _alias if _alias else addr

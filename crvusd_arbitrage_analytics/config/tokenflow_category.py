@@ -12,6 +12,13 @@ WETH_FLOW = [
     "WETH_withdraw:eth_out",
     "WETH_transfer",
 ]
+RETH_FLOW = [
+    "rETH_deposit:eth_in",
+    "rETH_deposit:reth_out",
+    "rETH_withdraw:reth_in",
+    "rETH_withdraw:eth_out",
+    "rETH_transfer",
+]
 FRXETH_FLOW = [
     "frxETH_stake:frxETH_in",
     "frxETH_stake:sFrxETH_out",
@@ -19,6 +26,8 @@ FRXETH_FLOW = [
     "frxETH_unstake:frxETH_out",
     "frxETH_transfer",
     "sfrxETH_transfer",
+    "frxETH_mint:eth_in",
+    "frxETH_mint:frxETH_out",
 ]
 SWAPPOOL_TYPE = [
     "CurveStableSwapPool",
