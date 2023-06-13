@@ -1,5 +1,6 @@
 import asyncio
 import csv
+import json
 from analytics.detailed_trades import (
     generate_token_flow,
     generate_tx_summary,
@@ -14,7 +15,6 @@ from collector.eigenphi.utils import get_eigenphi_tokenflow
 from utils import get_address_alias
 
 
-
 # txs = [
 #     "0x6c1424586ea485da35ca689a10bc811633773b847c7fd3a5adb2c9ca32e7abeb",
 #     # "0xb8b798e09a6060852fa23f8fd5034de1f54c15716c18300a17bf50c1bb114979",
@@ -23,9 +23,7 @@ from utils import get_address_alias
 # ]
 
 
-
-
-def process_batch(txs):
+def process_batch(txs, begin_index):
     tasks = []
     for i in range(len(txs)):
         target_tx = txs[i]
@@ -35,7 +33,8 @@ def process_batch(txs):
     results = loop.run_until_complete(asyncio.gather(*tasks))
     print("results len:", len(results))
 
-
+    rows = []
+    json_rows = []
     for i in range(len(txs)):
         if results[i * 2] is None:
             summary = None
@@ -60,25 +59,45 @@ def process_batch(txs):
             token_flow_list,
         )
 
-        return tokenflow_lines + [[], []]
+        rows += [[str(i + begin_index)]] + tokenflow_lines + [[], []]
+        json_rows.append(
+            {
+                "summary": summary,
+                "token_prices": token_prices,
+                "tx_meta": tx_meta,
+                "token_flow_list": token_flow_list,
+            }
+        )
+
+    return rows, json_rows
 
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
 
-    all_trades = process_trades_data(save=True, save_dir="data/detailed_trades_data.csv")
+    all_trades = process_trades_data(
+        save=True, save_dir="data/detailed_trades_data.csv"
+    )
     all_txs = [row["tx"] for row in all_trades]
 
-    batch_size = 10
+    batch_size = 20
     data_lines = []
+    json_data = []
 
     for i in range(len(all_txs) // batch_size + 1):
         begin_index = i * batch_size
-        end_index = min(len(all_txs), (i+1) * batch_size)
+        end_index = min(len(all_txs), (i + 1) * batch_size)
         print("fetch txs %d to %d" % (begin_index, end_index))
         txs = all_txs[begin_index:end_index]
-        data_lines += process_batch(txs)
-    
-    with open("data/detailed_trades_tokenflow_data.csv", "w", newline='', encoding='utf-8') as f:
+        rows, json_rows = process_batch(txs, begin_index)
+        data_lines += rows
+        json_data += json_rows
+
+    with open(
+        "data/detailed_trades_tokenflow_data.csv", "w", newline="", encoding="utf-8"
+    ) as f:
         writer = csv.writer(f)
         writer.writerows(data_lines)
+
+    with open("data/detailed_trades_tokenflow_data.json", "w") as f:
+        f.write(json.dumps(json_data, indent=4))
