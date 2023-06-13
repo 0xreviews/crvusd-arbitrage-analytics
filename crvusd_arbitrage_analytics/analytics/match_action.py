@@ -1,11 +1,13 @@
 from utils import (
     get_address_alias,
     get_token_by_swap_name,
+    is_balancer_vault,
     is_curve_stable_swap,
     is_llamma_swap,
     is_uniswapv3_swap,
 )
 from config.tokenflow_category import (
+    BALANCER_VAULT_FLOW,
     CURVE_STABLE_SWAP_FLOW,
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
@@ -193,14 +195,25 @@ def match_swap_pool_action(row_step, transfers):
         pool_type = 3
         swap_pool = t_alias
         swap_in = True
+    # BalancerVault (flash)
+    elif is_balancer_vault(f_alias):
+        pool_type = 5
+        swap_pool =f_alias
+        swap_in = True
+    elif is_balancer_vault(t_alias):
+        pool_type = 5
+        swap_pool = t_alias
+        swap_in = False
 
-    if pool_type in [0, 2, 3]:
+    if pool_type in [0, 2, 3, 5]:
         swap_type_index = 0 if swap_in else 1
         swap_flow_list = CURVE_STABLE_SWAP_FLOW
         if pool_type == 2:
             swap_flow_list = LLAMMA_SWAP_FLOW
         elif pool_type == 3:
             swap_flow_list = UNISWAP_V3_SWAP_FLOW
+        elif pool_type == 5:
+            swap_flow_list = BALANCER_VAULT_FLOW
 
         return (
             pool_type,

@@ -10,6 +10,7 @@ def get_eigenphi_tokenflow(resp):
         "tx_to": "",
         "tx_beneficiary": "",
         "tx_miner": "",
+        "arbitrage_contract": "",
     }
     for i in range(len(resp["addressTags"])):
         addr = resp["addressTags"][i]["address"]
@@ -25,6 +26,8 @@ def get_eigenphi_tokenflow(resp):
             elif tags[j]["categoryName"] == "AddressType":
                 if tags[j]["value"] == "EOA" and address_tags["tx_from"] == addr:
                     address_tags["tx_beneficiary"] = addr
+                elif tags[j]["value"] == "Contract" and address_tags["tx_to"] == addr:
+                    address_tags["arbitrage_contract"] = addr
 
     transfers = []
     for i in range(len(resp["transfers"])):
@@ -54,9 +57,14 @@ def get_eigenphi_tokenflow(resp):
 def eigenphi_address_alias(addr, address_tags):
     _alias = get_address_alias(addr)
     if _alias == "":
-        for key, value in address_tags.items():
+        for key in [
+            "tx_from",
+            "tx_to",
+            "tx_beneficiary",
+            "tx_miner",
+            "arbitrage_contract",
+        ]:
+            value = address_tags[key]
             if value.lower() == addr.lower():
                 _alias = key
-                break
     return _alias
-

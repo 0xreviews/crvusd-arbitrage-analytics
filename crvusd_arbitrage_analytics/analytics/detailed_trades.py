@@ -59,27 +59,25 @@ def process_trades_data(save=False, save_dir=DEFAUT_TRADES_DATA_DIR):
 
 TOKEN_FLOW_HEADER = [
     "transfer_step",
-    "token_symbol",
     "from",
     "to",
+    "token_symbol",
     "amount",
     "action_type",
     "swap_pool",
 ]
 
 
-def generate_token_flow(
-    transfers, address_tags, save=False, save_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR
-):
+def generate_token_flow(transfers, address_tags):
     token_flow_list = []
     for i in range(len(transfers)):
         item = transfers[i]
 
         token_flow = [
             i,
-            item["token_symbol"],
             item["from_alias"],
             item["to_alias"],
+            item["token_symbol"],
             str(item["amount"]),
         ]
 
@@ -140,7 +138,8 @@ def generate_token_flow(
                 if next_swap_pool == swap_pool:
                     use_flash = next_swap_type_index == swap_type_index
 
-            if use_flash:
+            # not BalancerVault
+            if use_flash and pool_type_index != 5:
                 swap_type_index += 2
 
             action_row = [swap_flow_list[swap_type_index], swap_pool]
@@ -149,10 +148,64 @@ def generate_token_flow(
 
         token_flow_list.append(token_flow)
 
-    if save:
-        with open(save_dir, "w") as f:
-            writer = csv.writer(f)
-            writer.writerow(TOKEN_FLOW_HEADER)
-            writer.writerows(token_flow_list)
-
     return token_flow_list
+
+
+def generate_tx_summary(resp):
+    summary = resp["summary"]
+    tx_meta = resp["txMeta"]
+    token_prices = []
+
+    for i in range(len(resp["tokenPrices"])):
+        row = resp["tokenPrices"][i]
+        # @remind usdt, usdc price's decimals in result is 12
+        if get_address_alias(row["tokenAddress"]).lower() in ["usdt", "usdc"]:
+            row["priceInUsd"] = float(row["priceInUsd"]) / 1e12
+        token_prices.append(
+            {
+                "token_address": row["tokenAddress"],
+                "token_symbol": get_address_alias(row["tokenAddress"]).lower(),
+                "price_usd": row["priceInUsd"],
+                "timestamp": tx_meta["blockTimestamp"],
+            }
+        )
+
+    return summary, token_prices, tx_meta
+
+
+def generate_txs_analytics(
+    summary,
+    token_prices,
+    tx_meta,
+    token_flow_list,
+):
+    lines = []
+
+    if tx_meta is not None:
+        lines.append(
+            [
+                "tiemstamp",
+                tx_meta["blockTimestamp"],
+                "tx_hash",
+                tx_meta["transactionHash"],
+            ]
+        )
+
+    if summary is not None:
+        lines += [
+            ["summary:"] + [str(key) for key in summary.keys()],
+            [""] + [str(value) for value in summary.values()],
+        ]
+
+    if token_prices is not None:
+        lines += [
+            ["price:"] + [item["token_symbol"] for item in token_prices],
+            [""] + [str(item["price_usd"]) for item in token_prices],
+        ]
+
+    lines += [
+        [],
+        TOKEN_FLOW_HEADER,
+    ] + token_flow_list
+
+    return lines
