@@ -52,7 +52,7 @@ def process_trades_data(save=False, save_dir=DEFAUT_TRADES_DATA_DIR):
                     row["eigenphi_txlink"] = EIGEN_TX_URL + row["tx"]
                     writer.writerow([row[k] for k in row])
 
-            print("trades data write to %s successfully.")
+            print("trades data write to %s successfully." % (save_dir))
 
     return all_trades
 
@@ -111,36 +111,36 @@ def generate_token_flow(transfers, address_tags):
         if frxeth_match_index > -1:
             action_row = [frxeth_math_type, ""]
         if pool_type_index > -1:
-            # check flash swap
-            use_flash = True
-            if i > 0:
-                (
-                    _,
-                    _,
-                    prev_swap_pool,
-                    prev_swap_type_index,
-                    _,
-                    _,
-                    _,
-                ) = match_swap_pool_action(i - 1, transfers)
-                if prev_swap_pool == swap_pool:
-                    use_flash = prev_swap_type_index == swap_type_index
-            if len(transfers) > i + 2:
-                (
-                    _,
-                    _,
-                    next_swap_pool,
-                    next_swap_type_index,
-                    _,
-                    _,
-                    _,
-                ) = match_swap_pool_action(i + 1, transfers)
-                if next_swap_pool == swap_pool:
-                    use_flash = next_swap_type_index == swap_type_index
+            # # check flash swap
+            # use_flash = True
+            # if i > 0:
+            #     (
+            #         _,
+            #         _,
+            #         prev_swap_pool,
+            #         prev_swap_type_index,
+            #         _,
+            #         _,
+            #         _,
+            #     ) = match_swap_pool_action(i - 1, transfers)
+            #     if prev_swap_pool == swap_pool:
+            #         use_flash = prev_swap_type_index == swap_type_index
+            # if len(transfers) > i + 2:
+            #     (
+            #         _,
+            #         _,
+            #         next_swap_pool,
+            #         next_swap_type_index,
+            #         _,
+            #         _,
+            #         _,
+            #     ) = match_swap_pool_action(i + 1, transfers)
+            #     if next_swap_pool == swap_pool:
+            #         use_flash = next_swap_type_index == swap_type_index
 
-            # not BalancerVault
-            if use_flash and pool_type_index != 5:
-                swap_type_index += 2
+            # # not BalancerVault
+            # if use_flash and pool_type_index != 5:
+            #     swap_type_index += 2
 
             action_row = [swap_flow_list[swap_type_index], swap_pool]
 

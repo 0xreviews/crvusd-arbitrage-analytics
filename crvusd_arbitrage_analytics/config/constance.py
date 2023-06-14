@@ -7,7 +7,7 @@ SUBGRAPH_QUERY_SIZE = 1000
 
 # eigenPhi
 EIGEN_TX_URL = "https://eigenphi.io/mev/eigentx/"
-EIGEN_ANALYTICS_TX = "https://eigenphi.io/api/v1/analyseTransaction?chain=ALL&tx="
+EIGEN_ANALYTICS_TX = "https://eigenphi.io/api/v1/analyseTransaction?chain=ALL&enableCallStack=on&tx="
 EIGEN_SUMMARY_TX = "https://storage.googleapis.com/eigenphi-ethereum-tx/"
 
 # Tenderly
@@ -63,7 +63,7 @@ ADDRESS_ALIAS = {
     "0xd51a44d3fae010294c616388b506acda1bfaae46": "CurveTriCrypto-WBTC-ETH-USDT",
     "0x7f86bf177dd4f3494b841a37e810a34dd56c829b": "CurveTriCryptoNG-WBTC-USDC",
     "0xecb456ea5365865ebab8a2661b0c503410e9b347": "CurveStablePoolOwner",
-    "0x99a58482bd75cbab83b27ec03ca68ff489b5788f": "CurveRegistryExchange",
+    "0x99a58482bd75cbab83b27ec03ca68ff489b5788f": "CurveSwapRouter",
     # CurvePool LP token
     "0x3175df0976dfa876431c2e9ee6bc45b65d3473cc": "CurveStableSwapLP-USDC-FRAX",
     "0x6e52cce4eafdf77091dd1c82183b2d97b776b397": "CurveStableSwapLP-frxETH-CVX",

@@ -96,15 +96,24 @@ def process_batch(txs, begin_index, original_data_dir=""):
 
 if __name__ == "__main__":
     use_original_data = True
-    original_data_dir = "data/original/eigenphi_raw_data.json"
+    gql_alltrades_dir = "data/detailed_trades_data.csv"
+    eigenphi_original_dir = "data/original/eigenphi_raw_data.json"
 
     if not use_original_data:
         loop = asyncio.get_event_loop()
 
-    all_trades = process_trades_data(
-        save=True, save_dir="data/detailed_trades_data.csv"
-    )
-    all_txs = [row["tx"] for row in all_trades]
+        all_trades = process_trades_data(
+            save=True, save_dir=gql_alltrades_dir
+        )
+        all_txs = [row["tx"] for row in all_trades]
+    else:
+        all_txs = []
+        with open(gql_alltrades_dir, encoding="utf-8") as f:
+            spamreader = csv.reader(f)
+            for row in spamreader:
+                all_txs.append(row[13])
+            
+            
 
     batch_size = 100
     data_lines = []
@@ -119,7 +128,7 @@ if __name__ == "__main__":
         lines, json_lines, raws = process_batch(
             txs,
             begin_index,
-            original_data_dir=original_data_dir if use_original_data else "",
+            original_data_dir=eigenphi_original_dir if use_original_data else "",
         )
         data_lines += lines
         json_data += json_lines
@@ -135,5 +144,5 @@ if __name__ == "__main__":
         f.write(json.dumps(json_data, indent=4))
 
     if not use_original_data:
-        with open(original_data_dir, "w") as f:
+        with open(eigenphi_original_dir, "w") as f:
             f.write(json.dumps(raws_data, indent=4))

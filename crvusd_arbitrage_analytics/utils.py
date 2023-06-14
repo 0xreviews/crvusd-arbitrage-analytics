@@ -1,6 +1,6 @@
 import re
 from config.constance import ADDRESS_ALIAS, ADDRESS_PATTERN,  ETH_SWAP_POOLS_ALIAS, TOKEN_DECIMALS
-from config.tokenflow_category import BALANCER_VAULT_PATTERN, CURVE_STABLE_SWAP_PATTERN, LLAMMA_SWAP_PATTERN, UNISWAP_V3_SWAP_PATTERN
+from config.tokenflow_category import BALANCER_VAULT_PATTERN, CURVE_ROUTER_PATTERN, CURVE_SWAP_PATTERN, LLAMMA_SWAP_PATTERN, UNISWAP_V3_SWAP_PATTERN
 
 def get_address_alias(address):
     if address.lower() in ADDRESS_ALIAS:
@@ -37,8 +37,12 @@ def is_eth_swap_pool(address):
         return False
     return get_address_alias(address) in ETH_SWAP_POOLS_ALIAS
 
-def is_curve_stable_swap(string):
-    pattern = re.compile(CURVE_STABLE_SWAP_PATTERN)
+def is_curve_router(string):
+    pattern = re.compile(CURVE_ROUTER_PATTERN)
+    return pattern.match(string) != None
+
+def is_curve_swap(string):
+    pattern = re.compile(CURVE_SWAP_PATTERN)
     return pattern.match(string) != None
 
 def is_uniswapv3_swap(string):
@@ -54,7 +58,7 @@ def is_balancer_vault(string):
     return pattern.match(string) != None
 
 def get_token_by_swap_name(string):
-    if is_curve_stable_swap(string) or is_llamma_swap(string) or is_uniswapv3_swap(string):
+    if is_curve_swap(string) or is_llamma_swap(string) or is_uniswapv3_swap(string):
         string_list = re.split("-", string)
         if len(string_list) == 3:
             return string_list[1], string_list[2], ""

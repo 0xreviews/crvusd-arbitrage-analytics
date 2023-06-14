@@ -2,13 +2,15 @@ from utils import (
     get_address_alias,
     get_token_by_swap_name,
     is_balancer_vault,
-    is_curve_stable_swap,
+    is_curve_router,
+    is_curve_swap,
     is_llamma_swap,
     is_uniswapv3_swap,
 )
 from config.tokenflow_category import (
     BALANCER_VAULT_FLOW,
-    CURVE_STABLE_SWAP_FLOW,
+    CURVE_ROUTER_FLOW,
+    CURVE_SWAP_FLOW,
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
     SWAPPOOL_TYPE,
@@ -168,13 +170,26 @@ def match_swap_pool_action(row_step, transfers):
     swap_pool = ""
     swap_in = False
 
-    # CurveStableSwap
-    if is_curve_stable_swap(f_alias):
+    # CurveRouter
+    if is_curve_router(f_alias):
         pool_type = 0
         swap_pool = f_alias
         swap_in = False
-    elif is_curve_stable_swap(t_alias):
+        if is_curve_swap(t_alias):
+            swap_pool += "," + t_alias  
+    elif is_curve_router(t_alias):
         pool_type = 0
+        swap_pool = t_alias
+        swap_in = True
+        if is_curve_swap(f_alias):
+            swap_pool += "," + f_alias  
+    # CurveSwap
+    elif is_curve_swap(f_alias):
+        pool_type = 1
+        swap_pool = f_alias
+        swap_in = False
+    elif is_curve_swap(t_alias):
+        pool_type = 1
         swap_pool = t_alias
         swap_in = True
     # LLAMMA
@@ -205,10 +220,15 @@ def match_swap_pool_action(row_step, transfers):
         swap_pool = t_alias
         swap_in = False
 
-    if pool_type in [0, 2, 3, 5]:
+    if pool_type in [0, 1, 2, 3, 5]:
         swap_type_index = 0 if swap_in else 1
-        swap_flow_list = CURVE_STABLE_SWAP_FLOW
-        if pool_type == 2:
+        swap_flow_list = CURVE_SWAP_FLOW
+
+        if pool_type == 0:
+            swap_flow_list = CURVE_ROUTER_FLOW
+            if len(swap_pool.split(",")) > 1:
+                swap_type_index += 2
+        elif pool_type == 2:
             swap_flow_list = LLAMMA_SWAP_FLOW
         elif pool_type == 3:
             swap_flow_list = UNISWAP_V3_SWAP_FLOW
@@ -250,7 +270,7 @@ def match_take_profit(row_step, transfers, address_tags):
 
 # @todo CurveStablePoolOwner
 
-# @todo CurveRegistryExchange
+# @todo CurveSwapRouter
 
 # @todo rETH
 
