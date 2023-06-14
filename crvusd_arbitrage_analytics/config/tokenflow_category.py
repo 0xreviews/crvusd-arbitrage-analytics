@@ -1,9 +1,11 @@
 # swap pool pattern
 CURVE_ROUTER_PATTERN = "CurveSwapRouter"
-CURVE_SWAP_PATTERN = "^(CurveStableSwap|Curve3Pool|CurveCryptoSwap|CurveTriCrypto|CurveTriCryptoNG)(-[a-zA-Z]+)+$"
-UNISWAP_V3_SWAP_PATTERN = "^UniswapV3Pool-[a-zA-Z]+-[a-zA-Z]+$"
-LLAMMA_SWAP_PATTERN = "^LLAMMA-[a-zA-Z]+-[a-zA-Z]+$"
+CURVE_SWAP_PATTERN = "^(CurveStableSwap|Curve3Pool|CurveCryptoSwap|CurveTriCrypto|CurveTriCryptoNG)(-[0-9a-zA-Z]+)+$"
+UNISWAP_V3_SWAP_PATTERN = "^UniswapV3Pool(-[0-9a-zA-Z]+)+(:fee_[0-9]+)?$"
+LLAMMA_SWAP_PATTERN = "^LLAMMA(-[0-9a-zA-Z]+)+$"
+PANCAKE_SWAP_PATTERN = "^PancakeV3Pool(-[0-9a-zA-Z]+)+"
 BALANCER_VAULT_PATTERN = "^BalancerVault"
+SOLIDLY_SWAP_PATTERN = "^SolidlySwap(-[0-9a-zA-Z]+)+"
 
 # Token flow
 WETH_FLOW = [
@@ -21,21 +23,22 @@ RETH_FLOW = [
     "rETH_transfer",
 ]
 FRXETH_FLOW = [
+    "frxETH_mint:eth_in",
+    "frxETH_mint:frxETH_out",
     "frxETH_stake:frxETH_in",
     "frxETH_stake:sFrxETH_out",
     "frxETH_unstake:sFrxETH_in",
     "frxETH_unstake:frxETH_out",
     "frxETH_transfer",
     "sfrxETH_transfer",
-    "frxETH_mint:eth_in",
-    "frxETH_mint:frxETH_out",
 ]
 SWAPPOOL_TYPE = [
     "CurveRouter",
     "CurveSwapPool",
     "LLAMMAPool",
-    "UniswapV3Pool",
-    "UniswapV2Pool",
+    "UniswapPool",
+    "PancakePool",
+    "SolidlySwapPool",
     "BalancerVault",
 ]
 CURVE_ROUTER_FLOW = [
@@ -54,20 +57,45 @@ CURVE_SWAP_WETH_FLOW = [
     "CurveSwap:WETH_withdraw_weth_out",
     "CurveSwap:WETH_withdraw_eth_in",
 ]
+CURVE_META_SWAP_FLOW = [
+    "CurveSwap:MetaPool_3Pool_token_in",
+    "CurveSwap:MetaPool_3Pool_token_out",
+    "CurveSwap:MetaPool_3Pool_LP_in",
+    "CurveSwap:MetaPool_3Pool_LP_out",
+    "CurveSwap:MetaPool_3Pool_LP_mint",
+    "CurveSwap:MetaPool_3Pool_LP_burn",
+]
 LLAMMA_SWAP_FLOW = [
     "LLAMMA:token_in",
     "LLAMMA:token_out",
 ]
-UNISWAP_V3_SWAP_FLOW = [
-    "UniswapV3Pool:token_in",
-    "UniswapV3Pool:token_out",
+UNISWAP_SWAP_FLOW = [
+    "UniswapSwap:token_in",
+    "UniswapSwap:token_out",
+]
+PANCAKE_SWAP_FLOW = [
+    "PancakeSwap:token_in",
+    "PancakeSwap:token_out",
+]
+SOLIDLY_SWAP_FLOW = [
+    "SolidlySwap:token_in",
+    "SolidlySwap:token_out",
 ]
 
 FLASH_POOL_TYPE = ["BalancerVault"]
 BALANCER_VAULT_FLOW = ["BalancerVault:FLASH_borrow", "BalancerVault:FLASH_repay"]
 
 ACTION_GROUP_TYPE = [
-    "CurveRouterSwap"
+    "CurveRouter",
+    "CurveSwap",
+    "UniswapSwap",
+    "PancakeSwap",
+    "SolidlySwap",
+    "BalancerFlash",
+    "LLAMMA",
+    "WETH",
+    "stETH",
+    "frxETH",
 ]
 
 ACTION_GROUP_TAG = ["begin", "doing", "end"]

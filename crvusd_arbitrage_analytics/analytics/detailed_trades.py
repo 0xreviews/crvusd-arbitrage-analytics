@@ -6,7 +6,12 @@ from analytics.match_action import (
     match_take_profit,
     match_weth_action,
 )
-from config.tokenflow_category import ACTION_GROUP_TAG, ACTION_GROUP_TYPE, CURVE_SWAP_WETH_FLOW
+from config.tokenflow_category import (
+    ACTION_GROUP_TAG,
+    ACTION_GROUP_TYPE,
+    CURVE_META_SWAP_FLOW,
+    CURVE_SWAP_WETH_FLOW,
+)
 from utils import format_decimals, get_address_alias, is_curve_router
 from collector.graphql.query import query_detailed_trades_all
 from collector.tenderly.query import query_tenderly_txtrace
@@ -123,42 +128,6 @@ def generate_token_flow(transfers, address_tags):
     return token_flow_list
 
 
-def generate_swap_action_row(
-    transfers_step, swap_type_index, swap_flow_list, swap_pool, transfers
-):
-    return
-    # # check flash swap
-    # use_flash = True
-    # if i > 0:
-    #     (
-    #         _,
-    #         _,
-    #         prev_swap_pool,
-    #         prev_swap_type_index,
-    #         _,
-    #         _,
-    #         _,
-    #     ) = match_swap_pool_action(i - 1, transfers)
-    #     if prev_swap_pool == swap_pool:
-    #         use_flash = prev_swap_type_index == swap_type_index
-    # if len(transfers) > i + 2:
-    #     (
-    #         _,
-    #         _,
-    #         next_swap_pool,
-    #         next_swap_type_index,
-    #         _,
-    #         _,
-    #         _,
-    #     ) = match_swap_pool_action(i + 1, transfers)
-    #     if next_swap_pool == swap_pool:
-    #         use_flash = next_swap_type_index == swap_type_index
-
-    # # not BalancerVault
-    # if use_flash and pool_type_index != 5:
-    #     swap_type_index += 2
-
-
 def generate_tx_summary(resp):
     summary = resp["summary"]
     tx_meta = resp["txMeta"]
@@ -220,6 +189,9 @@ def generate_txs_analytics(
     return lines
 
 
+# @todo match flash action group
+
+
 def generate_action_group(token_flow_list):
     tmp_begin = -1
     tmp_end = -1
@@ -253,8 +225,11 @@ def generate_action_group(token_flow_list):
                 # @remind some exceptions， not the end of group
 
                 # CurveRouter pool deposit/withdraw WETH
-                if tmp_group_index == 0 and next_row[-2] in CURVE_SWAP_WETH_FLOW:
-                    tmp_end = -1
+                if tmp_group_index == 0:
+                    if next_row[-2] in CURVE_SWAP_WETH_FLOW:
+                        tmp_end = -1
+                    elif next_row[-2] in CURVE_META_SWAP_FLOW:
+                        tmp_end = -1
 
         if tmp_group_index > -1:
             tmp_action_group = ACTION_GROUP_TYPE[tmp_group_index]
@@ -281,8 +256,9 @@ def check_action_group(row):
     swap_pool = row[-1]
     group_index = -1
 
-    # check CurveRouterSwap action group
-    if is_curve_router(swap_pool):
-        group_index = 0
+    for i in range(len(ACTION_GROUP_TYPE)):
+        if re.compile("^" + ACTION_GROUP_TYPE[i]).match(action_type):
+            group_index = i
+            break
 
     return group_index

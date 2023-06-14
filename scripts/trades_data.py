@@ -115,7 +115,7 @@ if __name__ == "__main__":
             
             
 
-    batch_size = 100
+    batch_size = 100 if not use_original_data else len(all_txs) + 1
     data_lines = []
     json_data = []
     raws_data = []

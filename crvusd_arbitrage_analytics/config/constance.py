@@ -65,9 +65,9 @@ ADDRESS_ALIAS = {
     "0xecb456ea5365865ebab8a2661b0c503410e9b347": "CurveStablePoolOwner",
     "0x99a58482bd75cbab83b27ec03ca68ff489b5788f": "CurveSwapRouter",
     # CurvePool LP token
+    "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490": "Curve3PoolLP-DAI-USDC-USDT",
     "0x3175df0976dfa876431c2e9ee6bc45b65d3473cc": "CurveStableSwapLP-USDC-FRAX",
     "0x6e52cce4eafdf77091dd1c82183b2d97b776b397": "CurveStableSwapLP-frxETH-CVX",
-    "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490": "CurveStableSwapLP-DAI-USDC-USDT",
     # PancakeSwapPool
     "0x6ca298d2983ab03aa1da7679389d955a4efee15c": "PancakeV3Pool-WETH-USDT",
     "0x5c9c6f39ce25cc6d0f39410f890933a1476fb1b0": "PancakeV3Pool-WETH-frxETH",
