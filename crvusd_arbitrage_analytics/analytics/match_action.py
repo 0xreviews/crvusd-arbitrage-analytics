@@ -11,6 +11,7 @@ from config.tokenflow_category import (
     BALANCER_VAULT_FLOW,
     CURVE_ROUTER_FLOW,
     CURVE_SWAP_FLOW,
+    CURVE_SWAP_WETH_FLOW,
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
     SWAPPOOL_TYPE,
@@ -228,6 +229,24 @@ def match_swap_pool_action(row_step, transfers):
             swap_flow_list = CURVE_ROUTER_FLOW
             if len(swap_pool.split(",")) > 1:
                 swap_type_index += 2
+        if pool_type == 1:
+            swap_flow_list = CURVE_SWAP_FLOW
+            token_symbol = row["token_symbol"].lower()
+            if f_alias == "weth":
+                if token_symbol == "weth":
+                    swap_flow_list = CURVE_SWAP_WETH_FLOW
+                    swap_type_index = 1
+                elif token_symbol == "eth":
+                    swap_flow_list = CURVE_SWAP_WETH_FLOW
+                    swap_type_index = 3
+            elif t_alias == "weth":
+                if token_symbol == "weth":
+                    swap_flow_list = CURVE_SWAP_WETH_FLOW
+                    swap_type_index = 2
+                elif token_symbol == "eth":
+                    swap_flow_list = CURVE_SWAP_WETH_FLOW
+                    swap_type_index = 0
+
         elif pool_type == 2:
             swap_flow_list = LLAMMA_SWAP_FLOW
         elif pool_type == 3:

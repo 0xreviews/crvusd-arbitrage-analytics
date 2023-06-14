@@ -1,11 +1,13 @@
 import csv
+import re
 from analytics.match_action import (
     match_frxeth_action,
     match_swap_pool_action,
     match_take_profit,
     match_weth_action,
 )
-from utils import format_decimals, get_address_alias
+from config.tokenflow_category import ACTION_GROUP_TAG, ACTION_GROUP_TYPE, CURVE_SWAP_WETH_FLOW
+from utils import format_decimals, get_address_alias, is_curve_router
 from collector.graphql.query import query_detailed_trades_all
 from collector.tenderly.query import query_tenderly_txtrace
 from config.constance import ADDRESS_ZERO, ALIAS_TO_ADDRESS, EIGEN_TX_URL
@@ -65,6 +67,7 @@ TOKEN_FLOW_HEADER = [
     "amount",
     "action_type",
     "swap_pool",
+    "action_group",
 ]
 
 
@@ -111,37 +114,6 @@ def generate_token_flow(transfers, address_tags):
         if frxeth_match_index > -1:
             action_row = [frxeth_math_type, ""]
         if pool_type_index > -1:
-            # # check flash swap
-            # use_flash = True
-            # if i > 0:
-            #     (
-            #         _,
-            #         _,
-            #         prev_swap_pool,
-            #         prev_swap_type_index,
-            #         _,
-            #         _,
-            #         _,
-            #     ) = match_swap_pool_action(i - 1, transfers)
-            #     if prev_swap_pool == swap_pool:
-            #         use_flash = prev_swap_type_index == swap_type_index
-            # if len(transfers) > i + 2:
-            #     (
-            #         _,
-            #         _,
-            #         next_swap_pool,
-            #         next_swap_type_index,
-            #         _,
-            #         _,
-            #         _,
-            #     ) = match_swap_pool_action(i + 1, transfers)
-            #     if next_swap_pool == swap_pool:
-            #         use_flash = next_swap_type_index == swap_type_index
-
-            # # not BalancerVault
-            # if use_flash and pool_type_index != 5:
-            #     swap_type_index += 2
-
             action_row = [swap_flow_list[swap_type_index], swap_pool]
 
         token_flow += action_row
@@ -151,6 +123,42 @@ def generate_token_flow(transfers, address_tags):
     return token_flow_list
 
 
+def generate_swap_action_row(
+    transfers_step, swap_type_index, swap_flow_list, swap_pool, transfers
+):
+    return
+    # # check flash swap
+    # use_flash = True
+    # if i > 0:
+    #     (
+    #         _,
+    #         _,
+    #         prev_swap_pool,
+    #         prev_swap_type_index,
+    #         _,
+    #         _,
+    #         _,
+    #     ) = match_swap_pool_action(i - 1, transfers)
+    #     if prev_swap_pool == swap_pool:
+    #         use_flash = prev_swap_type_index == swap_type_index
+    # if len(transfers) > i + 2:
+    #     (
+    #         _,
+    #         _,
+    #         next_swap_pool,
+    #         next_swap_type_index,
+    #         _,
+    #         _,
+    #         _,
+    #     ) = match_swap_pool_action(i + 1, transfers)
+    #     if next_swap_pool == swap_pool:
+    #         use_flash = next_swap_type_index == swap_type_index
+
+    # # not BalancerVault
+    # if use_flash and pool_type_index != 5:
+    #     swap_type_index += 2
+
+
 def generate_tx_summary(resp):
     summary = resp["summary"]
     tx_meta = resp["txMeta"]
@@ -158,9 +166,9 @@ def generate_tx_summary(resp):
 
     for i in range(len(resp["tokenPrices"])):
         row = resp["tokenPrices"][i]
-        # @remind usdt, usdc price's decimals in result is 12
-        if get_address_alias(row["tokenAddress"]).lower() in ["usdt", "usdc"]:
-            row["priceInUsd"] = float(row["priceInUsd"]) / 1e12
+        # # @remind usdt, usdc price's decimals in result is 12
+        # if get_address_alias(row["tokenAddress"]).lower() in ["usdt", "usdc"]:
+        #     row["priceInUsd"] = float(row["priceInUsd"]) / 1e12
         token_prices.append(
             {
                 "token_address": row["tokenAddress"],
@@ -184,9 +192,8 @@ def generate_txs_analytics(
     if tx_meta is not None:
         lines.append(
             [
-                "tiemstamp",
+                "tiemstamp & tx_hash:",
                 tx_meta["blockTimestamp"],
-                "tx_hash",
                 tx_meta["transactionHash"],
             ]
         )
@@ -203,9 +210,79 @@ def generate_txs_analytics(
             [""] + [str(item["price_usd"]) for item in token_prices],
         ]
 
+    token_flow_list = generate_action_group(token_flow_list)
+
     lines += [
         [],
         TOKEN_FLOW_HEADER,
     ] + token_flow_list
 
     return lines
+
+
+def generate_action_group(token_flow_list):
+    tmp_begin = -1
+    tmp_end = -1
+    tmp_group_index = -1
+
+    for i in range(len(token_flow_list)):
+        # clear prev group if it end
+        if tmp_end > -1:
+            tmp_begin = -1
+            tmp_end = -1
+            tmp_group_index = -1
+
+        row = token_flow_list[i]
+        action_group_item = ""
+
+        # group begin
+        if tmp_begin < 0:
+            tmp_begin = i
+            tmp_group_index = check_action_group(row)
+
+        # group end
+        if tmp_end < 0:
+            if i == len(token_flow_list) - 1:
+                tmp_end = i
+            elif i < len(token_flow_list) - 1:
+                next_row = token_flow_list[i + 1]
+                next_group_index = check_action_group(next_row)
+                if next_group_index != tmp_group_index:
+                    tmp_end = i
+
+                # @remind some exceptions， not the end of group
+
+                # CurveRouter pool deposit/withdraw WETH
+                if tmp_group_index == 0 and next_row[-2] in CURVE_SWAP_WETH_FLOW:
+                    tmp_end = -1
+
+        if tmp_group_index > -1:
+            tmp_action_group = ACTION_GROUP_TYPE[tmp_group_index]
+            action_group_item = "%s:%d" % (tmp_action_group, i - tmp_begin)
+
+        # add action_group tag
+
+        # CurveRouterSwap group tag
+        if tmp_group_index == 0:
+            if i == tmp_begin:
+                action_group_item += ":%s" % (ACTION_GROUP_TAG[0])
+            elif i == tmp_end:
+                action_group_item += ":%s" % (ACTION_GROUP_TAG[2])
+            else:
+                action_group_item += ":%s" % (ACTION_GROUP_TAG[1])
+
+        token_flow_list[i].append(action_group_item)
+
+    return token_flow_list
+
+
+def check_action_group(row):
+    action_type = row[-2]
+    swap_pool = row[-1]
+    group_index = -1
+
+    # check CurveRouterSwap action group
+    if is_curve_router(swap_pool):
+        group_index = 0
+
+    return group_index

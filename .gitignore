@@ -38,3 +38,4 @@ pip-log.txt
 /paver-minilib.zip
 
 .DS_Store
+data/original/*

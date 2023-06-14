@@ -48,6 +48,12 @@ CURVE_SWAP_FLOW = [
     "CurveSwap:token_in",
     "CurveSwap:token_out",
 ]
+CURVE_SWAP_WETH_FLOW = [
+    "CurveSwap:WETH_deposit_eth_out",
+    "CurveSwap:WETH_deposit_weth_in",
+    "CurveSwap:WETH_withdraw_weth_out",
+    "CurveSwap:WETH_withdraw_eth_in",
+]
 LLAMMA_SWAP_FLOW = [
     "LLAMMA:token_in",
     "LLAMMA:token_out",
@@ -59,6 +65,12 @@ UNISWAP_V3_SWAP_FLOW = [
 
 FLASH_POOL_TYPE = ["BalancerVault"]
 BALANCER_VAULT_FLOW = ["BalancerVault:FLASH_borrow", "BalancerVault:FLASH_repay"]
+
+ACTION_GROUP_TYPE = [
+    "CurveRouterSwap"
+]
+
+ACTION_GROUP_TAG = ["begin", "doing", "end"]
 
 # Take profit flow
 TAKE_PROFIT_FLOW = ["miner_take_profit", "beneficiary_take_profit"]
