@@ -82,8 +82,13 @@ SOLIDLY_SWAP_FLOW = [
     "SolidlySwap:token_out",
 ]
 
-FLASH_POOL_TYPE = ["BalancerVault"]
-BALANCER_VAULT_FLOW = ["BalancerVault:FLASH_borrow", "BalancerVault:FLASH_repay"]
+FLASH_POOL_TYPE = [
+    "UniswapSwap",
+    "PancakeSwap",
+    "SolidlySwap",
+    "BalancerVault",
+]
+BALANCER_VAULT_FLOW = ["BalancerVault:token_out", "BalancerVault:token_in"]
 
 ACTION_GROUP_TYPE = [
     "CurveRouter",
@@ -91,7 +96,7 @@ ACTION_GROUP_TYPE = [
     "UniswapSwap",
     "PancakeSwap",
     "SolidlySwap",
-    "BalancerFlash",
+    "BalancerVault",
     "LLAMMA",
     "WETH",
     "stETH",

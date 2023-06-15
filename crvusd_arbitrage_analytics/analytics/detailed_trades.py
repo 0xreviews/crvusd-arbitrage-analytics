@@ -1,24 +1,17 @@
 import csv
-import re
 from analytics.match_action import (
     match_frxeth_action,
     match_swap_pool_action,
     match_take_profit,
     match_weth_action,
 )
-from config.tokenflow_category import (
-    ACTION_GROUP_TAG,
-    ACTION_GROUP_TYPE,
-    CURVE_META_SWAP_FLOW,
-    CURVE_SWAP_WETH_FLOW,
-)
-from utils import format_decimals, get_address_alias, is_curve_router
+from analytics.match_action_group import match_action_group
+
+from utils import get_address_alias
 from collector.graphql.query import query_detailed_trades_all
-from collector.tenderly.query import query_tenderly_txtrace
-from config.constance import ADDRESS_ZERO, ALIAS_TO_ADDRESS, EIGEN_TX_URL
+from config.constance import EIGEN_TX_URL
 from config.filename_config import (
     DEFAUT_TRADES_DATA_DIR,
-    DEFAUT_TRADES_TOKENFLOW_DATA_DIR,
 )
 
 
@@ -73,6 +66,7 @@ TOKEN_FLOW_HEADER = [
     "action_type",
     "swap_pool",
     "action_group",
+    "flash_pair",
 ]
 
 
@@ -179,7 +173,7 @@ def generate_txs_analytics(
             [""] + [str(item["price_usd"]) for item in token_prices],
         ]
 
-    token_flow_list = generate_action_group(token_flow_list)
+    token_flow_list = match_action_group(token_flow_list)
 
     lines += [
         [],
@@ -187,78 +181,3 @@ def generate_txs_analytics(
     ] + token_flow_list
 
     return lines
-
-
-# @todo match flash action group
-
-
-def generate_action_group(token_flow_list):
-    tmp_begin = -1
-    tmp_end = -1
-    tmp_group_index = -1
-
-    for i in range(len(token_flow_list)):
-        # clear prev group if it end
-        if tmp_end > -1:
-            tmp_begin = -1
-            tmp_end = -1
-            tmp_group_index = -1
-
-        row = token_flow_list[i]
-        action_group_item = ""
-
-        # group begin
-        if tmp_begin < 0:
-            tmp_begin = i
-            tmp_group_index = check_action_group(row)
-
-        # group end
-        if tmp_end < 0:
-            if i == len(token_flow_list) - 1:
-                tmp_end = i
-            elif i < len(token_flow_list) - 1:
-                next_row = token_flow_list[i + 1]
-                next_group_index = check_action_group(next_row)
-                if next_group_index != tmp_group_index:
-                    tmp_end = i
-
-                # @remind some exceptions， not the end of group
-
-                # CurveRouter pool deposit/withdraw WETH
-                if tmp_group_index == 0:
-                    if next_row[-2] in CURVE_SWAP_WETH_FLOW:
-                        tmp_end = -1
-                    elif next_row[-2] in CURVE_META_SWAP_FLOW:
-                        tmp_end = -1
-
-        if tmp_group_index > -1:
-            tmp_action_group = ACTION_GROUP_TYPE[tmp_group_index]
-            action_group_item = "%s:%d" % (tmp_action_group, i - tmp_begin)
-
-        # add action_group tag
-
-        # CurveRouterSwap group tag
-        if tmp_group_index == 0:
-            if i == tmp_begin:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[0])
-            elif i == tmp_end:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[2])
-            else:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[1])
-
-        token_flow_list[i].append(action_group_item)
-
-    return token_flow_list
-
-
-def check_action_group(row):
-    action_type = row[-2]
-    swap_pool = row[-1]
-    group_index = -1
-
-    for i in range(len(ACTION_GROUP_TYPE)):
-        if re.compile("^" + ACTION_GROUP_TYPE[i]).match(action_type):
-            group_index = i
-            break
-
-    return group_index

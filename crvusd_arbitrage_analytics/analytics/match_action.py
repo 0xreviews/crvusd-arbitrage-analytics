@@ -346,8 +346,3 @@ def match_take_profit(row_step, transfers, address_tags):
 
 # @todo rETH
 
-# @todo BalancerVault
-
-# @todo PancakeV3Pool
-
-# @todo SolidlySwap
