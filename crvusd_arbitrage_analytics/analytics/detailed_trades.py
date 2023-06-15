@@ -5,7 +5,6 @@ from analytics.match_action import (
     match_take_profit,
     match_weth_action,
 )
-from analytics.match_action_group import match_action_group
 
 from utils import get_address_alias
 from collector.graphql.query import query_detailed_trades_all
@@ -75,19 +74,22 @@ def generate_token_flow(transfers, address_tags):
     for i in range(len(transfers)):
         item = transfers[i]
 
-        token_flow = [
-            i,
-            item["from_alias"],
-            item["to_alias"],
-            item["token_symbol"],
-            str(item["amount"]),
-        ]
+        token_flow = {
+            "transferStep": i,
+            "from": item["from_alias"],
+            "to": item["to_alias"],
+            "token_symbol": item["token_symbol"],
+            "amount": float(item["amount"]),
+        }
 
         (take_profit_type_index, take_profit_type) = match_take_profit(
             i, transfers, address_tags
         )
         (weth_match_index, weth_math_type, weth_match_tokensymbol) = match_weth_action(
-            i, transfers
+            i, transfers, target_symbol="weth"
+        )
+        (reth_match_index, reth_math_type, reth_match_tokensymbol) = match_weth_action(
+            i, transfers, target_symbol="reth"
         )
         (
             frxeth_match_index,
@@ -110,14 +112,18 @@ def generate_token_flow(transfers, address_tags):
             action_row = [take_profit_type, ""]
         if weth_match_index > -1:
             action_row = [weth_math_type, ""]
+        if reth_match_index > -1:
+            action_row = [reth_math_type, ""]
         if frxeth_match_index > -1:
             action_row = [frxeth_math_type, ""]
         if pool_type_index > -1:
             action_row = [swap_flow_list[swap_type_index], swap_pool]
 
-        token_flow += action_row
+        token_flow["action_type"] = action_row[0]
+        token_flow["swap_pool"] = action_row[1]
 
         token_flow_list.append(token_flow)
+    
 
     return token_flow_list
 
@@ -142,42 +148,3 @@ def generate_tx_summary(resp):
         )
 
     return summary, token_prices, tx_meta
-
-
-def generate_txs_analytics(
-    summary,
-    token_prices,
-    tx_meta,
-    token_flow_list,
-):
-    lines = []
-
-    if tx_meta is not None:
-        lines.append(
-            [
-                "tiemstamp & tx_hash:",
-                tx_meta["blockTimestamp"],
-                tx_meta["transactionHash"],
-            ]
-        )
-
-    if summary is not None:
-        lines += [
-            ["summary:"] + [str(key) for key in summary.keys()],
-            [""] + [str(value) for value in summary.values()],
-        ]
-
-    if token_prices is not None:
-        lines += [
-            ["price:"] + [item["token_symbol"] for item in token_prices],
-            [""] + [str(item["price_usd"]) for item in token_prices],
-        ]
-
-    token_flow_list = match_action_group(token_flow_list)
-
-    lines += [
-        [],
-        TOKEN_FLOW_HEADER,
-    ] + token_flow_list
-
-    return lines

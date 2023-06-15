@@ -23,72 +23,79 @@ from config.tokenflow_category import (
     TAKE_PROFIT_FLOW,
     UNISWAP_SWAP_FLOW,
     WETH_FLOW,
+    RETH_FLOW,
 )
 
 
-def match_weth_action(row_step, transfers):
+def match_weth_action(row_step, transfers, target_symbol="weth"):
     row = transfers[row_step]
     token_symbol = row["token_symbol"]
+    f_alias = get_address_alias(row["from"]).lower()
+    t_alias = get_address_alias(row["to"]).lower()
     type_index = -1
 
+    target_token_flow = WETH_FLOW
+    if target_symbol == 'reth':
+        target_token_flow = RETH_FLOW
+
     # WETH_contract in
-    if get_address_alias(row["to"]).lower() == "weth":
+    if t_alias == target_symbol:
         # WETH_deposit:eth_in
         if token_symbol.lower() == "eth" and float(row["amount"]) > 0:
             # next transfer is WETH_deposit:weth_out
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
                 if (
-                    next_row["token_symbol"].lower() == "weth"
-                    and get_address_alias(next_row["from"]).lower() == "weth"
+                    next_row["token_symbol"].lower() == target_symbol
+                    and get_address_alias(next_row["from"]).lower() == target_symbol
                     and float(next_row["amount"]) > 0
                 ):
                     type_index = 0
 
         # WETH_withdraw:weth_in
-        elif token_symbol.lower() == "weth" and float(row["amount"]) > 0:
+        elif token_symbol.lower() == target_symbol and float(row["amount"]) > 0:
             # next transfer is WETH_withdraw:eth_out
             if row_step > 0:
                 prev_row = transfers[row_step - 1]
                 if (
                     prev_row["token_symbol"].lower() == "eth"
-                    and get_address_alias(prev_row["from"]).lower() == "weth"
+                    and get_address_alias(prev_row["from"]).lower() == target_symbol
                     and float(prev_row["amount"]) > 0
                 ):
                     type_index = 2
 
     # WETH_contract out
-    elif get_address_alias(row["from"]).lower() == "weth":
+    elif f_alias == target_symbol:
         # WETH_withdraw:eth_out
         if token_symbol.lower() == "eth" and float(row["amount"]) > 0:
             # next transfer is WETH_withdraw:weth_in
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
                 if (
-                    next_row["token_symbol"].lower() == "weth"
-                    and get_address_alias(next_row["to"]).lower() == "weth"
+                    next_row["token_symbol"].lower() == target_symbol
+                    and get_address_alias(next_row["to"]).lower() == target_symbol
                     and float(next_row["amount"]) > 0
                 ):
                     type_index = 3
         # WETH_deposit:weth_out
-        elif token_symbol.lower() == "weth" and float(row["amount"]) > 0:
+        elif token_symbol.lower() == target_symbol and float(row["amount"]) > 0:
             # prev transfer is WETH_deposit:eth_in
             if row_step > 0:
                 prev_row = transfers[row_step - 1]
                 if (
                     prev_row["token_symbol"].lower() == "eth"
-                    and get_address_alias(prev_row["to"]).lower() == "weth"
+                    and get_address_alias(prev_row["to"]).lower() == target_symbol
                     and float(prev_row["amount"]) > 0
                 ):
                     type_index = 1
 
 
     elif row["category"].lower() == "transfer":
-        if token_symbol == "weth":
+        if token_symbol == target_symbol:
             type_index = 4
 
     if type_index > -1:
-        return (type_index, WETH_FLOW[type_index], token_symbol)
+        return (type_index, target_token_flow[type_index], token_symbol)
     else:
         return (-1, "", "")
 

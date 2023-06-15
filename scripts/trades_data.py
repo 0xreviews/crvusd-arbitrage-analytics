@@ -2,11 +2,12 @@ import asyncio
 import csv
 import json
 from analytics.detailed_trades import (
+    TOKEN_FLOW_HEADER,
     generate_token_flow,
     generate_tx_summary,
-    generate_txs_analytics,
     process_trades_data,
 )
+from analytics.match_action_group import match_action_group
 from collector.eigenphi.query import (
     query_eigenphi_analytics_tx,
     query_eigenphi_summary_tx,
@@ -27,7 +28,8 @@ def process_batch(txs, begin_index, original_data_dir=""):
     if original_data_dir == "":
         tasks = []
         for i in range(len(txs)):
-            target_tx = txs[i]
+            ts = txs[i][0]
+            target_tx = txs[i][1]
             tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
             tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
 
@@ -39,14 +41,14 @@ def process_batch(txs, begin_index, original_data_dir=""):
             results = []
             for i in range(len(txs)):
                 index = begin_index + i
-                index = min(len(original_data)-1, index)
+                index = min(len(original_data) - 1, index)
                 item = original_data[index]
                 results.append(item["summary_original"])
                 results.append(item["analytics_tx_original"])
 
     raws = []
-    lines = []
-    json_lines = []
+    csv_lines = []
+    json_data = []
     for i in range(len(txs)):
         if results[i * 2] is None:
             summary = None
@@ -59,7 +61,8 @@ def process_batch(txs, begin_index, original_data_dir=""):
         if original_data_dir == "":
             raws.append(
                 {
-                    "tx": txs[i],
+                    "tx": txs[i][1],
+                    "timestamp": txs[i][0],
                     "summary_original": results[i * 2],
                     "analytics_tx_original": results[i * 2 + 1],
                 }
@@ -74,16 +77,40 @@ def process_batch(txs, begin_index, original_data_dir=""):
             address_tags,
         )
 
-        tokenflow_lines = generate_txs_analytics(
-            summary,
-            token_prices,
-            tx_meta,
-            token_flow_list,
+        token_flow_list = match_action_group(token_flow_list)
+
+        csv_lines += [[str(i + begin_index)]]
+
+        csv_lines.append(
+            [
+                "tiemstamp & tx_hash:",
+                txs[i][0],
+                txs[i][1],
+            ]
         )
 
-        lines += [[str(i + begin_index)]] + tokenflow_lines + [[], []]
-        json_lines.append(
+        if summary is not None:
+            csv_lines += [
+                ["summary:"] + [str(key) for key in summary.keys()],
+                [""] + [str(value) for value in summary.values()],
+            ]
+
+        if token_prices is not None:
+            csv_lines += [
+                ["price:"] + [item["token_symbol"] for item in token_prices],
+                [""] + [str(item["price_usd"]) for item in token_prices],
+            ]
+
+        csv_lines += (
+            [[], TOKEN_FLOW_HEADER]
+            + [item.values() for item in token_flow_list]
+            + [[], []]
+        )
+
+        json_data.append(
             {
+                "tx": txs[i][1],
+                "timestamp": txs[i][0],
                 "summary": summary,
                 "token_prices": token_prices,
                 "tx_meta": tx_meta,
@@ -91,7 +118,7 @@ def process_batch(txs, begin_index, original_data_dir=""):
             }
         )
 
-    return lines, json_lines, raws
+    return csv_lines, json_data, raws
 
 
 if __name__ == "__main__":
@@ -102,18 +129,16 @@ if __name__ == "__main__":
     if not use_original_data:
         loop = asyncio.get_event_loop()
 
-        all_trades = process_trades_data(
-            save=True, save_dir=gql_alltrades_dir
-        )
-        all_txs = [row["tx"] for row in all_trades]
+        all_trades = process_trades_data(save=True, save_dir=gql_alltrades_dir)
+        all_txs = [(row["timestamp"], row["tx"]) for row in all_trades]
     else:
         all_txs = []
         with open(gql_alltrades_dir, encoding="utf-8") as f:
             spamreader = csv.reader(f)
             for row in spamreader:
-                all_txs.append(row[13])
-            
-            
+                if row[0] == "id":
+                    continue
+                all_txs.append((row[14], row[13]))
 
     batch_size = 100 if not use_original_data else len(all_txs) + 1
     data_lines = []
