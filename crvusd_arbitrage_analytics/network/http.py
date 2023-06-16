@@ -19,7 +19,7 @@ class HttpClientError():
     def __repr__(self):
         return f"HttpClientError({self.status}, {self.message}, url={self.url})"
 
-stop_rule = stop_after_attempt(4)
+stop_rule = stop_after_attempt(2)
 wait_rule = wait_random_exponential(multiplier=1, min=2, max=5)
 
 

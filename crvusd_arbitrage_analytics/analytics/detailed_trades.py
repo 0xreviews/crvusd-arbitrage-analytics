@@ -1,55 +1,70 @@
+import asyncio
 import csv
+import json
+import re
 from analytics.match_action import (
     match_frxeth_action,
     match_swap_pool_action,
     match_take_profit,
     match_weth_action,
 )
+from analytics.match_action_group import match_action_group
+from collector.eigenphi.query import (
+    query_eigenphi_analytics_tx,
+    query_eigenphi_summary_tx,
+)
+from collector.eigenphi.utils import get_eigenphi_tokenflow
 
-from utils import get_address_alias
+from utils import format_decimals, get_address_alias
 from collector.graphql.query import query_detailed_trades_all
 from config.constance import EIGEN_TX_URL
 from config.filename_config import (
     DEFAUT_TRADES_DATA_DIR,
+    DEFAUT_TRADES_TOKENFLOW_DATA_DIR,
 )
 
 
-def process_trades_data(save=False, save_dir=DEFAUT_TRADES_DATA_DIR):
+def get_trades_data(save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR):
     all_trades = query_detailed_trades_all()
 
     if save:
-        with open(save_dir, "w") as f:
-            writer = csv.writer(f)
-            header = []
-            process_decimals_keys = [
-                "tokens_sold",
-                "tokens_bought",
-                "avg_price",
-                "oracle_price",
-                "market_price",
-                "profit_rate",
-            ]
-            if len(all_trades) > 0:
-                header = [h for h in all_trades[0]] + ["eigenphi_txlink"]
-                writer.writerow(header)
+        with open(save_dir, "w") as json_file:
+            json_file.write(json.dumps(all_trades, indent=4))
 
-                for i in range(len(all_trades)):
-                    row = all_trades[i]
-                    # process decimals
-                    for _k in process_decimals_keys:
-                        row[_k] = int(row[_k]) / 1e18
-                    ticks_in = []
-                    ticks_out = []
-                    for i in range(len(row["ticks_in"])):
-                        ticks_in.append(int(row["ticks_in"][i]) / 1e18)
-                    for i in range(len(row["ticks_out"])):
-                        ticks_out.append(int(row["ticks_out"][i]) / 1e18)
-                    row["ticks_in"] = ticks_in
-                    row["ticks_out"] = ticks_out
+        if save_csv:
+            csv_dir = save_dir.replace(".json", ".csv")
+            with open(csv_dir, "w") as csv_file:
+                writer = csv.writer(csv_file)
+                header = []
+                process_decimals_keys = [
+                    "tokens_sold",
+                    "tokens_bought",
+                    "avg_price",
+                    "oracle_price",
+                    "market_price",
+                    "profit_rate",
+                ]
+                if len(all_trades) > 0:
+                    header = [h for h in all_trades[0]] + ["eigenphi_txlink"]
+                    writer.writerow(header)
 
-                    # add eigenphi link
-                    row["eigenphi_txlink"] = EIGEN_TX_URL + row["tx"]
-                    writer.writerow([row[k] for k in row])
+                    for i in range(len(all_trades)):
+                        row = all_trades[i]
+                        # process decimals
+                        for _k in process_decimals_keys:
+                            row[_k] = int(row[_k]) / 1e18
+                        ticks_in = []
+                        ticks_out = []
+                        for i in range(len(row["ticks_in"])):
+                            ticks_in.append(int(row["ticks_in"][i]) / 1e18)
+                        for i in range(len(row["ticks_out"])):
+                            ticks_out.append(int(row["ticks_out"][i]) / 1e18)
+                        row["ticks_in"] = ticks_in
+                        row["ticks_out"] = ticks_out
+
+                        # add eigenphi link
+                        row["eigenphi_txlink"] = EIGEN_TX_URL + row["tx"]
+                        writer.writerow([row[k] for k in row])
 
             print("trades data write to %s successfully." % (save_dir))
 
@@ -123,7 +138,6 @@ def generate_token_flow(transfers, address_tags):
         token_flow["swap_pool"] = action_row[1]
 
         token_flow_list.append(token_flow)
-    
 
     return token_flow_list
 
@@ -148,3 +162,107 @@ def generate_tx_summary(resp):
         )
 
     return summary, token_prices, tx_meta
+
+
+loop = asyncio.get_event_loop()
+
+
+def fetch_analytics_data_batch(txs, begin_index, original_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
+    if original_data_dir == "":
+        tasks = []
+        for i in range(len(txs)):
+            target_tx = txs[i]["tx"]
+            tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
+            tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
+
+        results = loop.run_until_complete(asyncio.gather(*tasks))
+        print("query results:", len(results) // 2)
+    else:
+        with open(original_data_dir, encoding="utf-8") as f:
+            original_data = json.load(f)
+            results = []
+            for i in range(len(txs)):
+                index = begin_index + i
+                index = min(len(original_data) - 1, index)
+                item = original_data[index]
+                results.append(item["summary_original"])
+                results.append(item["analytics_tx_original"])
+
+    raws = []
+    csv_lines = []
+    json_data = []
+    for i in range(len(txs)):
+        row = txs[i]
+
+        if results[i * 2] is None:
+            summary = None
+            token_prices = None
+            tx_meta = None
+        else:
+            summary, token_prices, tx_meta = generate_tx_summary(results[i * 2])
+
+        # save original data
+        if original_data_dir == "":
+            raws.append(
+                {
+                    "tx": row["tx"],
+                    "timestamp": row["timestamp"],
+                    "LLAMMA_avg_price": format_decimals(row["avg_price"], symbol="sfrxeth"),
+                    "sfrxETH_oracle_price": format_decimals(row["oracle_price"], symbol="sfrxeth"),
+                    "sfrxETH_market_price": format_decimals(row["market_price"], symbol="sfrxeth"),
+                    "summary_original": results[i * 2],
+                    "analytics_tx_original": results[i * 2 + 1],
+                }
+            )
+
+        token_balance_diff, address_tags, transfers = get_eigenphi_tokenflow(
+            results[i * 2 + 1]
+        )
+
+        token_flow_list = generate_token_flow(
+            transfers,
+            address_tags,
+        )
+
+        token_flow_list = match_action_group(token_flow_list)
+
+        csv_lines += [[str(i + begin_index)]]
+
+        csv_lines.append(
+            [
+                "tiemstamp & tx_hash:",
+                row["timestamp"],
+                row["tx"],
+            ]
+        )
+
+        if summary is not None:
+            csv_lines += [
+                ["summary:"] + [str(key) for key in summary.keys()],
+                [""] + [str(value) for value in summary.values()],
+            ]
+
+        if token_prices is not None:
+            csv_lines += [
+                ["price:"] + [item["token_symbol"] for item in token_prices],
+                [""] + [str(item["price_usd"]) for item in token_prices],
+            ]
+
+        csv_lines += (
+            [[], TOKEN_FLOW_HEADER]
+            + [item.values() for item in token_flow_list]
+            + [[], []]
+        )
+
+        json_data.append(
+            {
+                "tx": row["tx"],
+                "timestamp": row["timestamp"],
+                "summary": summary,
+                "token_prices": token_prices,
+                "tx_meta": tx_meta,
+                "token_flow_list": token_flow_list,
+            }
+        )
+
+    return csv_lines, json_data, raws
