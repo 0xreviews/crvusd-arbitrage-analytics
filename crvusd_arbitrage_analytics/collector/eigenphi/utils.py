@@ -26,7 +26,12 @@ def get_eigenphi_tokenflow(resp):
             elif tags[j]["categoryName"] == "AddressType":
                 if tags[j]["value"] == "EOA" and address_tags["tx_from"] == addr:
                     address_tags["tx_beneficiary"] = addr
-                elif tags[j]["value"] == "Contract" and address_tags["tx_to"] == addr:
+                elif (
+                    tags[j]["value"] == "Contract"
+                    and address_tags["tx_to"] == addr
+                    and address_tags["tx_beneficiary"] != addr
+                    and get_address_alias(addr) == ""
+                ):
                     address_tags["arbitrage_contract"] = addr
 
     transfers = []

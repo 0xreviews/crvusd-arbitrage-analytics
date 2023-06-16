@@ -107,3 +107,5 @@ ACTION_GROUP_TAG = ["begin", "doing", "end"]
 
 # Take profit flow
 TAKE_PROFIT_FLOW = ["miner_take_profit", "beneficiary_take_profit"]
+
+CALL_ARBI_CONTRACT_FLOW = ["call_arbi_contract", "call_arbi_contract_with_token"]

@@ -28,7 +28,7 @@ def sort_data():
             for j in range(len(row["token_flow_list"])):
                 item = row["token_flow_list"][j]
 
-                if re.compile("(miner|beneficiary)").match(item["action_type"]):
+                if re.compile("(call_arbi_contract|miner|beneficiary)").match(item["action_type"]):
                     continue
 
                 token_path.append(item["token_symbol"])

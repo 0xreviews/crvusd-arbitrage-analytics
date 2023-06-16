@@ -3,6 +3,7 @@ import csv
 import json
 import re
 from analytics.match_action import (
+    match_call_arbitrage_contract,
     match_frxeth_action,
     match_swap_pool_action,
     match_take_profit,
@@ -97,6 +98,10 @@ def generate_token_flow(transfers, address_tags):
             "amount": float(item["amount"]),
         }
 
+        (
+            call_arbitrage_contract_type_index,
+            call_arbitrage_contract_type,
+        ) = match_call_arbitrage_contract(i, transfers, address_tags)
         (take_profit_type_index, take_profit_type) = match_take_profit(
             i, transfers, address_tags
         )
@@ -133,6 +138,8 @@ def generate_token_flow(transfers, address_tags):
             action_row = [frxeth_math_type, ""]
         if pool_type_index > -1:
             action_row = [swap_flow_list[swap_type_index], swap_pool]
+        if call_arbitrage_contract_type_index > -1:
+            action_row = [call_arbitrage_contract_type, ""]
 
         token_flow["action_type"] = action_row[0]
         token_flow["swap_pool"] = action_row[1]

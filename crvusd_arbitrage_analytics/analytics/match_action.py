@@ -11,6 +11,7 @@ from utils import (
 )
 from config.tokenflow_category import (
     BALANCER_VAULT_FLOW,
+    CALL_ARBI_CONTRACT_FLOW,
     CURVE_META_SWAP_FLOW,
     CURVE_ROUTER_FLOW,
     CURVE_SWAP_FLOW,
@@ -35,7 +36,7 @@ def match_weth_action(row_step, transfers, target_symbol="weth"):
     type_index = -1
 
     target_token_flow = WETH_FLOW
-    if target_symbol == 'reth':
+    if target_symbol == "reth":
         target_token_flow = RETH_FLOW
 
     # WETH_contract in
@@ -88,7 +89,6 @@ def match_weth_action(row_step, transfers, target_symbol="weth"):
                     and float(prev_row["amount"]) > 0
                 ):
                     type_index = 1
-
 
     elif row["category"].lower() == "transfer":
         if token_symbol == target_symbol:
@@ -258,7 +258,6 @@ def match_swap_pool_action(row_step, transfers):
         pool_type = 6
         swap_pool.append(t_alias)
         swap_in = False
-    
 
     if pool_type in range(len(SWAPPOOL_TYPE)):
         swap_type_index = 0 if swap_in else 1
@@ -333,6 +332,25 @@ def match_swap_pool_action(row_step, transfers):
     return (-1, "", -1, "", "", "", [])
 
 
+def match_call_arbitrage_contract(row_step, transfers, address_tags):
+    if row_step == 0:
+        row = transfers[row_step]
+        action_type_index = -1
+
+        if (
+            row["from"] == address_tags["tx_beneficiary"]
+            and row["to"] == address_tags["arbitrage_contract"]
+        ):
+            action_type_index = 1
+
+        if action_type_index > -1:
+            return (action_type_index, CALL_ARBI_CONTRACT_FLOW[action_type_index])
+        else:
+            return (-1, "")
+
+    return (-1, "")
+
+
 def match_take_profit(row_step, transfers, address_tags):
     row = transfers[row_step]
     action_type_index = -1
@@ -350,6 +368,3 @@ def match_take_profit(row_step, transfers, address_tags):
 
 
 # @todo CurveStablePoolOwner
-
-# @todo rETH
-

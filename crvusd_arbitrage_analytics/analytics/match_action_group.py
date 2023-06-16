@@ -126,6 +126,7 @@ def match_flash_action_group(token_flow_list):
             ):
                 continue
 
+            # Normal flash swap
             if (
                 repay_swap_pool == borrow_swap_pool
                 and repay_ptr - borrow_ptr > 1
@@ -144,6 +145,7 @@ def match_flash_action_group(token_flow_list):
                     borrow_index_stake.append(borrow_ptr)
                     repay_index_stake.append(repay_ptr)
                     break
+            
 
     flash_action_pair_cout = 0
     while len(borrow_index_stake) > 0:
