@@ -103,3 +103,17 @@ def get_token_by_swap_name(string) -> List[str]:
         if len(string_list) >0:
             return [re.sub(r"^-", '', token) for token in string_list]
     return []
+
+
+def process_token_path(token_list):
+
+    token_path = []
+    tmp_token = ""
+
+    for i in range(len(token_list)):
+        _token = token_list[i]
+        if tmp_token != _token:
+            token_path.append(_token)
+            tmp_token = _token
+
+    return token_path

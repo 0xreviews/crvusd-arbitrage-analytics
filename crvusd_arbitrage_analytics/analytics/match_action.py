@@ -188,75 +188,75 @@ def match_swap_pool_action(row_step, transfers):
     token_symbol = row["token_symbol"].lower()
 
     pool_type = -1
-    swap_pool = ""
+    swap_pool = []
     swap_in = False
 
     # CurveRouter
     if is_curve_router(f_alias):
         pool_type = 0
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
         if is_curve_swap(t_alias):
-            swap_pool += "," + t_alias
+            swap_pool.append(t_alias)
     elif is_curve_router(t_alias):
         pool_type = 0
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
         if is_curve_swap(f_alias):
-            swap_pool += "," + f_alias
+            swap_pool.append(f_alias)
     # CurveSwap
-    elif is_curve_swap(f_alias):
+    if is_curve_swap(f_alias):
         pool_type = 1
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
-    elif is_curve_swap(t_alias):
+    if is_curve_swap(t_alias):
         pool_type = 1
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
     # LLAMMA
-    elif is_llamma_swap(f_alias):
+    if is_llamma_swap(f_alias):
         pool_type = 2
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
-    elif is_llamma_swap(t_alias):
+    if is_llamma_swap(t_alias):
         pool_type = 2
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
     # UniswapPool
-    elif is_uniswap_swap(f_alias):
+    if is_uniswap_swap(f_alias):
         pool_type = 3
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
-    elif is_uniswap_swap(t_alias):
+    if is_uniswap_swap(t_alias):
         pool_type = 3
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
     # PancakePool = 4
-    elif is_pancake_swap(f_alias):
+    if is_pancake_swap(f_alias):
         pool_type = 4
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
-    elif is_pancake_swap(t_alias):
+    if is_pancake_swap(t_alias):
         pool_type = 4
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
     # SolidlySwapPool = 5
-    elif is_solidly_swap(f_alias):
+    if is_solidly_swap(f_alias):
         pool_type = 5
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = False
-    elif is_solidly_swap(t_alias):
+    if is_solidly_swap(t_alias):
         pool_type = 5
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = True
     # BalancerVault (flash)
-    elif is_balancer_vault(f_alias):
+    if is_balancer_vault(f_alias):
         pool_type = 6
-        swap_pool = f_alias
+        swap_pool.append(f_alias)
         swap_in = True
-    elif is_balancer_vault(t_alias):
+    if is_balancer_vault(t_alias):
         pool_type = 6
-        swap_pool = t_alias
+        swap_pool.append(t_alias)
         swap_in = False
     
 
@@ -266,7 +266,7 @@ def match_swap_pool_action(row_step, transfers):
 
         if pool_type == 0:
             swap_flow_list = CURVE_ROUTER_FLOW
-            if len(swap_pool.split(",")) > 1:
+            if len(swap_pool) > 1:
                 swap_type_index += 2
         if pool_type == 1:
             swap_flow_list = CURVE_SWAP_FLOW
@@ -323,7 +323,7 @@ def match_swap_pool_action(row_step, transfers):
         return (
             pool_type,
             SWAPPOOL_TYPE[pool_type],
-            swap_pool,
+            ",".join(swap_pool),
             swap_type_index,
             swap_flow_list[swap_type_index],
             token_symbol,

@@ -143,6 +143,9 @@ def generate_token_flow(transfers, address_tags):
 
 
 def generate_tx_summary(resp):
+    if resp is None:
+        return None, None, None
+
     summary = resp["summary"]
     tx_meta = resp["txMeta"]
     token_prices = []
@@ -167,56 +170,49 @@ def generate_tx_summary(resp):
 loop = asyncio.get_event_loop()
 
 
-def fetch_analytics_data_batch(txs, begin_index, original_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
-    if original_data_dir == "":
-        tasks = []
-        for i in range(len(txs)):
-            target_tx = txs[i]["tx"]
-            tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
-            tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
+def fetch_analytics_data_batch(txs, begin_index):
+    tasks = []
+    for i in range(len(txs)):
+        target_tx = txs[i]["tx"]
+        tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
+        tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
 
-        results = loop.run_until_complete(asyncio.gather(*tasks))
-        print("query results:", len(results) // 2)
-    else:
-        with open(original_data_dir, encoding="utf-8") as f:
-            original_data = json.load(f)
-            results = []
-            for i in range(len(txs)):
-                index = begin_index + i
-                index = min(len(original_data) - 1, index)
-                item = original_data[index]
-                results.append(item["summary_original"])
-                results.append(item["analytics_tx_original"])
+    results = loop.run_until_complete(asyncio.gather(*tasks))
+    print("query results:", len(results) // 2)
+
+    raws = []
+    for i in range(len(txs)):
+        row = txs[i]
+
+        # save original data
+        raws.append(
+            {
+                "tx": row["tx"],
+                "timestamp": row["timestamp"],
+                "LLAMMA_avg_price": row["avg_price"],
+                "sfrxETH_oracle_price": row["oracle_price"],
+                "sfrxETH_market_price": row["market_price"],
+                "summary_original": results[i * 2],
+                "analytics_tx_original": results[i * 2 + 1],
+            }
+        )
+
+    return raws
+
+
+def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
+    with open(original_raw_data_dir, encoding="utf-8") as f:
+        original_data = json.load(f)
 
     raws = []
     csv_lines = []
     json_data = []
-    for i in range(len(txs)):
-        row = txs[i]
-
-        if results[i * 2] is None:
-            summary = None
-            token_prices = None
-            tx_meta = None
-        else:
-            summary, token_prices, tx_meta = generate_tx_summary(results[i * 2])
-
-        # save original data
-        if original_data_dir == "":
-            raws.append(
-                {
-                    "tx": row["tx"],
-                    "timestamp": row["timestamp"],
-                    "LLAMMA_avg_price": format_decimals(row["avg_price"], symbol="sfrxeth"),
-                    "sfrxETH_oracle_price": format_decimals(row["oracle_price"], symbol="sfrxeth"),
-                    "sfrxETH_market_price": format_decimals(row["market_price"], symbol="sfrxeth"),
-                    "summary_original": results[i * 2],
-                    "analytics_tx_original": results[i * 2 + 1],
-                }
-            )
+    for i in range(len(original_data)):
+        row = original_data[i]
+        summary, token_prices, tx_meta = generate_tx_summary(row["summary_original"])
 
         token_balance_diff, address_tags, transfers = get_eigenphi_tokenflow(
-            results[i * 2 + 1]
+            row["analytics_tx_original"]
         )
 
         token_flow_list = generate_token_flow(
@@ -226,7 +222,7 @@ def fetch_analytics_data_batch(txs, begin_index, original_data_dir=DEFAUT_TRADES
 
         token_flow_list = match_action_group(token_flow_list)
 
-        csv_lines += [[str(i + begin_index)]]
+        csv_lines += [[str(i)]]
 
         csv_lines.append(
             [
@@ -258,6 +254,9 @@ def fetch_analytics_data_batch(txs, begin_index, original_data_dir=DEFAUT_TRADES
             {
                 "tx": row["tx"],
                 "timestamp": row["timestamp"],
+                "LLAMMA_avg_price": row["LLAMMA_avg_price"],
+                "sfrxETH_oracle_price": row["sfrxETH_oracle_price"],
+                "sfrxETH_market_price": row["sfrxETH_market_price"],
                 "summary": summary,
                 "token_prices": token_prices,
                 "tx_meta": tx_meta,
@@ -265,4 +264,4 @@ def fetch_analytics_data_batch(txs, begin_index, original_data_dir=DEFAUT_TRADES
             }
         )
 
-    return csv_lines, json_data, raws
+    return json_data, csv_lines

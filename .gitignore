@@ -37,5 +37,8 @@ pip-log.txt
 ## paver generated files
 /paver-minilib.zip
 
+## data
 .DS_Store
 data/original/*
+data/*.json
+data/*.csv
