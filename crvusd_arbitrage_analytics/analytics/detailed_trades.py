@@ -211,7 +211,6 @@ def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
     with open(original_raw_data_dir, encoding="utf-8") as f:
         original_data = json.load(f)
 
-    raws = []
     csv_lines = []
     json_data = []
     for i in range(len(original_data)):

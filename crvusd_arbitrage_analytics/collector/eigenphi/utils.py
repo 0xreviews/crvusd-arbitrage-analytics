@@ -65,7 +65,7 @@ def eigenphi_address_alias(addr, address_tags):
         for key in [
             "tx_from",
             "tx_to",
-            "tx_beneficiary",
+            # "tx_beneficiary",
             "tx_miner",
             "arbitrage_contract",
         ]:

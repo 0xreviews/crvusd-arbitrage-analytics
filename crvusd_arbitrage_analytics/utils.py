@@ -91,22 +91,25 @@ def is_solidly_swap(string) -> Boolean:
     return pattern.match(string) != None
 
 
-def get_token_by_swap_name(string) -> List[str]:
-    if (
+def is_swap_pool(string) -> Boolean:
+    return (
         is_curve_swap(string)
         or is_llamma_swap(string)
         or is_uniswap_swap(string)
         or is_pancake_swap(string)
         or is_solidly_swap(string)
-    ):
+    )
+
+
+def get_token_by_swap_name(string) -> List[str]:
+    if is_swap_pool(string):
         string_list = re.compile("-[0-9a-zA-Z]+").findall(string)
-        if len(string_list) >0:
-            return [re.sub(r"^-", '', token) for token in string_list]
+        if len(string_list) > 0:
+            return [re.sub(r"^-", "", token) for token in string_list]
     return []
 
 
 def process_token_path(token_list):
-
     token_path = []
     tmp_token = ""
 

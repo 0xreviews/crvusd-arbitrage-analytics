@@ -205,14 +205,15 @@ def match_swap_pool_action(row_step, transfers):
         if is_curve_swap(f_alias):
             swap_pool.append(f_alias)
     # CurveSwap
-    if is_curve_swap(f_alias):
-        pool_type = 1
-        swap_pool.append(f_alias)
-        swap_in = False
-    if is_curve_swap(t_alias):
-        pool_type = 1
-        swap_pool.append(t_alias)
-        swap_in = True
+    if pool_type == -1:
+        if is_curve_swap(f_alias):
+            pool_type = 1
+            swap_pool.append(f_alias)
+            swap_in = False
+        if is_curve_swap(t_alias):
+            pool_type = 1
+            swap_pool.append(t_alias)
+            swap_in = True
     # LLAMMA
     if is_llamma_swap(f_alias):
         pool_type = 2
