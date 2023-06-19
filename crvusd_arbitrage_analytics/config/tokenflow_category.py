@@ -32,15 +32,6 @@ FRXETH_FLOW = [
     "frxETH_transfer",
     "sfrxETH_transfer",
 ]
-SWAPPOOL_TYPE = [
-    "CurveRouter",
-    "CurveSwapPool",
-    "LLAMMAPool",
-    "UniswapPool",
-    "PancakePool",
-    "SolidlySwapPool",
-    "BalancerVault",
-]
 CURVE_ROUTER_FLOW = [
     "CurveRouter:token_in",
     "CurveRouter:token_out",
@@ -52,18 +43,18 @@ CURVE_SWAP_FLOW = [
     "CurveSwap:token_out",
 ]
 CURVE_SWAP_WETH_FLOW = [
-    "CurveSwap:WETH_deposit_eth_out",
-    "CurveSwap:WETH_deposit_weth_in",
-    "CurveSwap:WETH_withdraw_weth_out",
-    "CurveSwap:WETH_withdraw_eth_in",
+    "CurveSwapWETH:deposit_eth_out",
+    "CurveSwapWETH:deposit_weth_in",
+    "CurveSwapWETH:withdraw_weth_out",
+    "CurveSwapWETH:withdraw_eth_in",
 ]
 CURVE_META_SWAP_FLOW = [
-    "CurveSwap:MetaPool_3Pool_token_in",
-    "CurveSwap:MetaPool_3Pool_token_out",
-    "CurveSwap:MetaPool_3Pool_LP_in",
-    "CurveSwap:MetaPool_3Pool_LP_out",
-    "CurveSwap:MetaPool_3Pool_LP_mint",
-    "CurveSwap:MetaPool_3Pool_LP_burn",
+    "CurveSwapMetaPool:token_in",
+    "CurveSwapMetaPool:token_out",
+    "CurveSwapMetaPool:LP_in",
+    "CurveSwapMetaPool:LP_out",
+    "CurveSwapMetaPool:LP_mint",
+    "CurveSwapMetaPool:LP_burn",
 ]
 LLAMMA_SWAP_FLOW = [
     "LLAMMA:token_in",
@@ -82,6 +73,32 @@ SOLIDLY_SWAP_FLOW = [
     "SolidlySwap:token_out",
 ]
 
+ACTION_GROUP_TYPE = [
+    CURVE_ROUTER_FLOW,
+    CURVE_SWAP_FLOW,
+    CURVE_SWAP_WETH_FLOW,
+    CURVE_META_SWAP_FLOW,
+    LLAMMA_SWAP_FLOW,
+    UNISWAP_SWAP_FLOW,
+    PANCAKE_SWAP_FLOW,
+    SOLIDLY_SWAP_FLOW,
+    WETH_FLOW,
+    RETH_FLOW,
+    FRXETH_FLOW,
+]
+
+ACTION_GROUP_TAG = ["begin", "doing", "end"]
+
+
+SWAPPOOL_TYPE = [
+    "CurveRouter",
+    "CurveSwapPool",
+    "LLAMMAPool",
+    "UniswapPool",
+    "PancakePool",
+    "SolidlySwapPool",
+    "BalancerVault",
+]
 FLASH_POOL_TYPE = [
     "UniswapSwap",
     "PancakeSwap",
@@ -90,20 +107,6 @@ FLASH_POOL_TYPE = [
 ]
 BALANCER_VAULT_FLOW = ["BalancerVault:token_out", "BalancerVault:token_in"]
 
-ACTION_GROUP_TYPE = [
-    "CurveRouter",
-    "CurveSwap",
-    "UniswapSwap",
-    "PancakeSwap",
-    "SolidlySwap",
-    "BalancerVault",
-    "LLAMMA",
-    "WETH",
-    "stETH",
-    "frxETH",
-]
-
-ACTION_GROUP_TAG = ["begin", "doing", "end"]
 
 # Take profit flow
 TAKE_PROFIT_FLOW = ["miner_take_profit", "beneficiary_take_profit"]

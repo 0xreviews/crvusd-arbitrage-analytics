@@ -1,68 +1,51 @@
 import token
 import pygraphviz as pgv
 from flowchart.edge import generate_edge_label
-from flowchart.node import generate_flow_cell, is_transfers_can_merge
+from flowchart.node import (
+    generate_flow_cell,
+    process_sub_graphs,
+    remove_duplicate_nodes,
+    remove_useless_subgraph,
+)
 
 
 def generate_flowchart(token_flow_list):
-    G = pgv.AGraph(directed=True, strict=True, layout="dot")
+    G = pgv.AGraph(
+        name="root",
+        label="LLAMMA soft liquidation flow chart",
+        directed=True,
+        layout="dot",
+        cluster=True,
+        rankdir="TB",
+        newrank=True,
+    )
 
-    # merge token_flow_list
-    merged_transfer_list = []
-    for i in range(len(token_flow_list)):
-        row = token_flow_list[i]
+    cells, sub_graphs_data = generate_flow_cell(token_flow_list)
 
-        if i > 0:
-            prev_row = token_flow_list[i - 1]
-            if is_transfers_can_merge(prev_row, row):
-                merged_transfer_list[-1].append(row)
-                continue
-
-        merged_transfer_list.append([row])
-
-    print("\nmerged_transfer_list")
-    for merged in merged_transfer_list:
-        print([item["transferStep"] for item in merged])
-        
-    cells = []
-    for i in range(len(merged_transfer_list)):
-        cells += generate_flow_cell(merged_transfer_list[i])
-
-    nodes = []
-    node_labels = []
-    edges = []
     for i in range(len(cells)):
         cell = cells[i]
-        nodes.append(cell["n"])
-        node_labels.append(cell["n_label"])
+        G.add_node(cell["n"], label=cell["n_label"])
 
         if i > 0:
-            prev_cell = cells[i-1]
+            prev_cell = cells[i - 1]
             l = cell["prev_edge_label"]
             if l == "":
                 l = prev_cell["next_edge_label"]
-            if (prev_cell["n"], cell["n"], l) not in edges:
-                edges.append((prev_cell["n"], cell["n"], l))
+            if not G.has_edge(prev_cell["n"], cell["n"]):
+                G.add_edge(prev_cell["n"], cell["n"], label=l)
 
-    print("cells")
-    for cell in cells:
-        print(cell)
+    process_sub_graphs(G, "", sub_graphs_data)
 
-    nodes_to_del = []
-    for i in range(len(nodes)):
-        if i not in nodes_to_del:
-            G.add_node(nodes[i], label=node_labels[i])
+    remove_duplicate_nodes(G, token_flow_list)
+    # remove_useless_subgraph(G, token_flow_list)
 
-    nodes_to_del = [nodes[i] for i in nodes_to_del]
-    for f, t, label in edges:
-        if f not in nodes_to_del and t not in nodes_to_del:
-            G.add_edge(f, t, label=label)
-
-    print("")
-    print("nodes")
-    print(G.nodes())
-    print("edges")
-    print(G.edges())
+    # print("")
+    # print("nodes")
+    # print(G.nodes())
+    # print("edges")
+    # print(G.edges())
+    # print("subgraphs")
+    # print(G)
 
     G.layout()
     return G
