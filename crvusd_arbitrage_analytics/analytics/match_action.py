@@ -191,20 +191,19 @@ def match_swap_pool_action(row_step, transfers):
     swap_pool = []
     swap_in = False
 
-    # CurveRouter
+    # CurveRouter swap
     if is_curve_router(f_alias):
-        pool_type = 0
         swap_pool.append(f_alias)
-        swap_in = False
-        if is_curve_swap(t_alias):
-            swap_pool.append(t_alias)
+        if not is_curve_swap(t_alias):
+            pool_type = 0
+            swap_in = False
     elif is_curve_router(t_alias):
-        pool_type = 0
         swap_pool.append(t_alias)
-        swap_in = True
-        if is_curve_swap(f_alias):
-            swap_pool.append(f_alias)
-    # CurveSwap
+        if not is_curve_swap(f_alias):
+            pool_type = 0
+            swap_in = True
+
+    # CurveSwap without router
     if pool_type == -1:
         if is_curve_swap(f_alias):
             pool_type = 1

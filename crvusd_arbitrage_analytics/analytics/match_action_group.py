@@ -3,6 +3,8 @@ from config.tokenflow_category import (
     ACTION_GROUP_TAG,
     ACTION_GROUP_TYPE,
     CURVE_META_SWAP_FLOW,
+    CURVE_ROUTER_FLOW,
+    CURVE_SWAP_FLOW,
     CURVE_SWAP_WETH_FLOW,
     FLASH_POOL_TYPE,
 )
@@ -14,6 +16,8 @@ def match_action_group(token_flow_list):
     tmp_end = -1
     tmp_group_index = -1
 
+    group_count = {}
+
     for i in range(len(token_flow_list)):
         # clear prev group if it end
         if tmp_end > -1:
@@ -22,12 +26,15 @@ def match_action_group(token_flow_list):
             tmp_group_index = -1
 
         row = token_flow_list[i]
-        action_group_item = ""
+        action_group_item = []
 
         # group begin
         if tmp_begin < 0:
             tmp_begin = i
             tmp_group_index = check_action_group_type_index(row)
+            if tmp_group_index not in group_count:
+                group_count[tmp_group_index] = 0
+            group_count[tmp_group_index] += 1
 
         # group end
         if tmp_end < 0:
@@ -38,6 +45,11 @@ def match_action_group(token_flow_list):
                 next_group_index = check_action_group_type_index(next_row)
                 if next_group_index != tmp_group_index:
                     tmp_end = i
+                else:
+                    # if swap action, check swap pool are same
+                    if tmp_group_index in [1, 2, 3, 4, 5, 6, 7]:
+                        if row["swap_pool"] != next_row["swap_pool"]:
+                            tmp_end = i
 
                 # @remind some exceptions， not the end of group
 
@@ -49,38 +61,143 @@ def match_action_group(token_flow_list):
                         tmp_end = -1
 
         if tmp_group_index > -1:
-            tmp_action_group = ACTION_GROUP_TYPE[tmp_group_index]
-            action_group_item = "%s:%d" % (tmp_action_group, i - tmp_begin)
+            group_name = row["action_type"].split(":")[0]
+            action_group_item.append(
+                "%s:%d" % (group_name, group_count[tmp_group_index])
+            )
 
         # add action_group tag
 
-        # CurveRouterSwap group tag
-        if tmp_group_index == 0:
-            if i == tmp_begin:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[0])
-            elif i == tmp_end:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[2])
-            else:
-                action_group_item += ":%s" % (ACTION_GROUP_TAG[1])
+        # # CurveRouterSwap group tag
+        # if tmp_group_index == 0:
+        #     if i == tmp_begin:
+        #         action_group_item = [
+        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[0])
+        #         ] + action_group_item
+        #     elif i == tmp_end:
+        #         action_group_item = [
+        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[2])
+        #         ] + action_group_item
+        #     else:
+        #         action_group_item = [
+        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[1])
+        #         ] + action_group_item
 
-        token_flow_list[i]["action_group"] = action_group_item
+        token_flow_list[i]["action_group"] = ",".join(action_group_item)
+
+    token_flow_list = match_curve_swap_special_group(
+        token_flow_list,
+        special_type="CurveSwapWETH",
+        exclude_pools=["CurveSwapRouter"],
+        special_type_flow_list=[
+            CURVE_SWAP_FLOW,
+            CURVE_SWAP_WETH_FLOW,
+            CURVE_SWAP_WETH_FLOW,
+            CURVE_SWAP_FLOW,
+        ],
+    )
+
+    token_flow_list = match_curve_swap_special_group(
+        token_flow_list,
+        special_type="CurveSwapMetaPool",
+        exclude_pools=["CurveSwapRouter", "Curve3Pool-DAI-USDC-USDT"],
+        special_type_flow_list=[
+            CURVE_SWAP_FLOW,
+            CURVE_META_SWAP_FLOW,
+            CURVE_META_SWAP_FLOW,
+            CURVE_SWAP_FLOW,
+        ],
+    )
 
     token_flow_list = match_flash_action_group(token_flow_list)
+
+    token_flow_list = match_curve_router_group(token_flow_list)
 
     return token_flow_list
 
 
 def check_action_group_type_index(row):
     action_type = row["action_type"]
-    swap_pool = row["swap_pool"]
     group_index = -1
 
     for i in range(len(ACTION_GROUP_TYPE)):
-        if re.compile("^" + ACTION_GROUP_TYPE[i]).match(action_type):
+        if action_type in ACTION_GROUP_TYPE[i]:
             group_index = i
             break
 
     return group_index
+
+
+# CurveSwap[WETH/METAPOOL]
+def match_curve_swap_special_group(
+    token_flow_list, special_type, exclude_pools, special_type_flow_list
+):
+    # CurveSwap:0 CurveSwap:token_in
+    # CurveSwap:1 CurveSwap[WETH/METAPOOL]:...
+    # CurveSwap:2 CurveSwap[WETH/METAPOOL]:...
+    # CurveSwap:3 CurveSwap:token_out
+    length = len(token_flow_list)
+    for i in range(length):
+        tmp_group = ""
+        row = token_flow_list[i]
+        if re.compile(special_type).match(row["action_group"]) is not None:
+            if i > 0 and i < length - 3:
+                row_0 = token_flow_list[i - 1]
+                row_1 = row
+                row_2 = token_flow_list[i + 1]
+                row_3 = token_flow_list[i + 2]
+
+                tmp_swap_pool = ""
+
+                for p in row["swap_pool"].split(","):
+                    if p not in exclude_pools:
+                        tmp_swap_pool = p
+                        break
+
+                # check action_type and swap pool
+                if (
+                    row_0["action_type"] in special_type_flow_list[0]
+                    and row_1["action_type"] in special_type_flow_list[1]
+                    and row_2["action_type"] in special_type_flow_list[2]
+                    and row_3["action_type"] in special_type_flow_list[3]
+                    and tmp_swap_pool in row_0["swap_pool"].split(",")
+                    and tmp_swap_pool in row_2["swap_pool"].split(",")
+                    and tmp_swap_pool in row_3["swap_pool"].split(",")
+                ):
+                    tmp_group = row_0["action_group"]
+                    row_1["action_group"] = tmp_group + "," + row_1["action_group"]
+                    row_2["action_group"] = tmp_group + "," + row_2["action_group"]
+                    row_3["action_group"] = modify_match_group_type(
+                        tmp_group.split(":")[0], tmp_group, row_3["action_group"]
+                    )
+
+    return token_flow_list
+
+
+def match_curve_router_group(token_flow_list):
+    length = len(token_flow_list)
+    tmp_router_group_name = ""
+    tmp_target_group = ""
+    add_router_group_list = []
+    for i in range(length):
+        row = token_flow_list[i]
+        groups = row["action_group"].split(",")
+        if "CurveRouter:" in groups[0] and row["action_type"] == CURVE_ROUTER_FLOW[0]:
+            tmp_router_group_name = groups[0]
+            continue
+        if "CurveRouter:" in groups[0] and row["action_type"] == CURVE_ROUTER_FLOW[1]:
+            row["action_group"] = modify_match_group_type(
+                "CurveRouter:[0-9]+", tmp_router_group_name, row["action_group"]
+            )
+            continue
+        if "CurveSwapRouter" in row["swap_pool"] and tmp_target_group != groups[0]:
+            tmp_target_group = groups[0]
+        if tmp_target_group not in add_router_group_list:
+            add_router_group_list.append(tmp_target_group)
+        if tmp_router_group_name != "" and groups[0] in add_router_group_list:
+            row["action_group"] = tmp_router_group_name + "," + row["action_group"]
+
+    return token_flow_list
 
 
 def match_flash_action_group(token_flow_list):
@@ -145,7 +262,6 @@ def match_flash_action_group(token_flow_list):
                     borrow_index_stake.append(borrow_ptr)
                     repay_index_stake.append(repay_ptr)
                     break
-            
 
     flash_action_pair_cout = 0
     while len(borrow_index_stake) > 0:
@@ -186,3 +302,12 @@ def check_flash_group_type(action_type):
             break
 
     return flash_group_type_index, if_token_out
+
+
+def modify_match_group_type(match_pattern, target_value, group_types):
+    new_group_types = []
+    for g in group_types.split(","):
+        if re.compile(match_pattern).match(g) is not None:
+            g = target_value
+        new_group_types.append(g)
+    return ",".join(new_group_types)

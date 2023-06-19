@@ -56,6 +56,7 @@ ADDRESS_ALIAS = {
     "0xecd5e75afb02efa118af914515d6521aabd189f1": "CurveStableSwap-TUSD-3POOL",
     "0xdcef968d416a41cdac0ed8702fac8128a64241a2": "CurveStableSwap-FRAX-USDC",
     "0x497ce58f34605b9944e6b15ecafe6b001206fd25": "CurveStableSwap-LUSD-crvFRAX",  # crvFRAX is FRAX/USDC LP token
+    "0x7b0eff0c991f0aa880481fdfa5624cb0bc9b10e1": "CurveStableSwap-ETH-stETH-frxETH-rETH",
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7": "Curve3Pool-DAI-USDC-USDT",
     "0x0f3159811670c117c372428d4e69ac32325e4d0f": "CurveCryptoSwap-ETH-rETH",
     "0x47d5e1679fe5f0d9f0a657c6715924e33ce05093": "CurveCryptoSwap-frxETH-CVX",
