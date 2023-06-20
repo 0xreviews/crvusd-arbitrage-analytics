@@ -43,18 +43,18 @@ CURVE_SWAP_FLOW = [
     "CurveSwap:token_out",
 ]
 CURVE_SWAP_WETH_FLOW = [
-    "CurveSwapWETH:deposit_eth_out",
-    "CurveSwapWETH:deposit_weth_in",
-    "CurveSwapWETH:withdraw_weth_out",
-    "CurveSwapWETH:withdraw_eth_in",
+    "CurveSwapWETH_Deposit:eth_out",
+    "CurveSwapWETH_Deposit:weth_in",
+    "CurveSwapWETH_Withdraw:weth_out",
+    "CurveSwapWETH_Withdraw:eth_in",
 ]
 CURVE_META_SWAP_FLOW = [
-    "CurveSwapMetaPool:token_in",
-    "CurveSwapMetaPool:token_out",
-    "CurveSwapMetaPool:LP_in",
-    "CurveSwapMetaPool:LP_out",
-    "CurveSwapMetaPool:LP_mint",
-    "CurveSwapMetaPool:LP_burn",
+    "CurveMetaPool_Swap:token_in",
+    "CurveMetaPool_Swap:token_out",
+    "CurveMetaPool_LP:LP_in",
+    "CurveMetaPool_LP:LP_out",
+    "CurveMetaPool_LP:LP_mint",
+    "CurveMetaPool_LP:LP_burn",
 ]
 LLAMMA_SWAP_FLOW = [
     "LLAMMA:token_in",

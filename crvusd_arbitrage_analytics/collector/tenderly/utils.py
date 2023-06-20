@@ -6,7 +6,7 @@ from utils import (
     is_eth_swap_pool,
     is_weth_or_frxeth,
 )
-from config.constance import ALIAS_TO_ADDRESS, ADDRESS_ALIAS, ADDRESS_ZERO
+from config.address import ALIAS_TO_ADDRESS, ADDRESS_ALIAS, ADDRESS_ZERO
 
 
 def tenderly_tokenflow(resp):

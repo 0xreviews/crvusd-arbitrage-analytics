@@ -1,5 +1,5 @@
 import requests
-from config.constance import TENDERLY_TX_TRACE
+from config.address import TENDERLY_TX_TRACE
 
 
 def query_tenderly_txtrace(tx, network_id="1"):

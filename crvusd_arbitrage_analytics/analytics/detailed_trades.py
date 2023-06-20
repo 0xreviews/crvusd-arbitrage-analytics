@@ -25,7 +25,9 @@ from config.filename_config import (
 )
 
 
-def get_trades_data(llamma_collateral, save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR):
+def get_trades_data(
+    llamma_collateral, save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR
+):
     all_trades = query_detailed_trades_all(llamma_collateral)
 
     if save:

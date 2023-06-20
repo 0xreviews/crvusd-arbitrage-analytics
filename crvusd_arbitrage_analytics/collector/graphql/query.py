@@ -1,7 +1,7 @@
 from gql import Client
 from gql.transport.requests import RequestsHTTPTransport
+from config.address import ALIAS_TO_ADDRESS
 from config.constance import (
-    ALIAS_TO_ADDRESS,
     SUBGRAPH_ENDPOINT_0XREVIEWS,
     SUBGRAPH_ENDPOINT_VOLUME,
     SUBGRAPH_QUERY_SIZE,
@@ -35,7 +35,9 @@ def query_gql(q, variables={}):
     return r
 
 
-def data_iteration(key_name, query_func, llamma_collateral="sFrxETH", size=SUBGRAPH_QUERY_SIZE):
+def data_iteration(
+    key_name, query_func, llamma_collateral="sFrxETH", size=SUBGRAPH_QUERY_SIZE
+):
     count = 0
     data = []
     while True:

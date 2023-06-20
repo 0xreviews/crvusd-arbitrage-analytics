@@ -1,12 +1,11 @@
 import re
 from typing import List
 from xmlrpc.client import Boolean
-from config.constance import (
+from config.address import (
     ADDRESS_ALIAS,
     ADDRESS_PATTERN,
-    ETH_SWAP_POOLS_ALIAS,
-    TOKEN_DECIMALS,
 )
+from config.constance import (TOKEN_DECIMALS, ETH_SWAP_POOLS_ALIAS)
 from config.tokenflow_category import (
     BALANCER_VAULT_PATTERN,
     CURVE_ROUTER_PATTERN,

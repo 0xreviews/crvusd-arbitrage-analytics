@@ -1,6 +1,7 @@
 import pygraphviz as pgv
 from flowchart.node import (
     generate_flow_cell,
+    modify_special_nodes,
     process_sub_graphs,
     remove_duplicate_nodes,
 )
@@ -34,14 +35,10 @@ def generate_flowchart(token_flow_list):
     process_sub_graphs(G, "", sub_graphs_data)
 
     remove_duplicate_nodes(G, token_flow_list)
-    # remove_useless_subgraph(G, token_flow_list)
 
-    # print("")
-    # print("nodes")
-    # print(G.nodes())
-    # print("edges")
-    # print(G.edges())
-    # print("subgraphs")
+    modify_special_nodes(G, token_flow_list)
+
+    
     # print(G)
 
     G.layout()

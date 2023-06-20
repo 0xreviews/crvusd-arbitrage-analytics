@@ -87,7 +87,7 @@ def match_action_group(token_flow_list):
 
     token_flow_list = match_curve_swap_special_group(
         token_flow_list,
-        special_type="CurveSwapWETH",
+        special_type="CurveSwapWETH_(Deposit|Withdraw)",
         exclude_pools=["CurveSwapRouter"],
         special_type_flow_list=[
             CURVE_SWAP_FLOW,
@@ -99,7 +99,7 @@ def match_action_group(token_flow_list):
 
     token_flow_list = match_curve_swap_special_group(
         token_flow_list,
-        special_type="CurveSwapMetaPool",
+        special_type="CurveMetaPool_(Swap|LP)",
         exclude_pools=["CurveSwapRouter", "Curve3Pool-DAI-USDC-USDT"],
         special_type_flow_list=[
             CURVE_SWAP_FLOW,
