@@ -1,11 +1,8 @@
-import token
 import pygraphviz as pgv
-from flowchart.edge import generate_edge_label
 from flowchart.node import (
     generate_flow_cell,
     process_sub_graphs,
     remove_duplicate_nodes,
-    remove_useless_subgraph,
 )
 
 

@@ -2,7 +2,8 @@
 from string import Template
 
 
-SUBGRAPH_ENDPOINT = "https://api.thegraph.com/subgraphs/name/0x-stan/curve-stablecoin"
+SUBGRAPH_ENDPOINT_0XREVIEWS = "https://api.thegraph.com/subgraphs/name/0x-stan/curve-stablecoin"
+SUBGRAPH_ENDPOINT_VOLUME = "https://api.thegraph.com/subgraphs/name/convex-community/crvusd"
 SUBGRAPH_QUERY_SIZE = 1000
 
 # eigenPhi

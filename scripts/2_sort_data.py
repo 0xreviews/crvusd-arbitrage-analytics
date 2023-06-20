@@ -16,7 +16,7 @@ def sort_data():
 
         for i in range(len(trades_data)):
             row = trades_data[i]
-            tx = row["tx"]
+            tx = row["transactionHash"]
             timestamp = row["timestamp"]
 
             token_path = []

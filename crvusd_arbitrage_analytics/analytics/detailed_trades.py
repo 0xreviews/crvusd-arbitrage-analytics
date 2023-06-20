@@ -25,10 +25,11 @@ from config.filename_config import (
 )
 
 
-def get_trades_data(save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR):
-    all_trades = query_detailed_trades_all()
+def get_trades_data(llamma_collateral, save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR):
+    all_trades = query_detailed_trades_all(llamma_collateral)
 
     if save:
+        save_dir = save_dir.replace(".json", "_%s.json" % (llamma_collateral))
         with open(save_dir, "w") as json_file:
             json_file.write(json.dumps(all_trades, indent=4))
 
@@ -40,10 +41,10 @@ def get_trades_data(save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR)
                 process_decimals_keys = [
                     "tokens_sold",
                     "tokens_bought",
-                    "avg_price",
-                    "oracle_price",
-                    "market_price",
-                    "profit_rate",
+                    # "avg_price",
+                    # "oracle_price",
+                    # "market_price",
+                    # "profit_rate",
                 ]
                 if len(all_trades) > 0:
                     header = [h for h in all_trades[0]] + ["eigenphi_txlink"]
@@ -54,17 +55,17 @@ def get_trades_data(save=False, save_csv=False, save_dir=DEFAUT_TRADES_DATA_DIR)
                         # process decimals
                         for _k in process_decimals_keys:
                             row[_k] = int(row[_k]) / 1e18
-                        ticks_in = []
-                        ticks_out = []
-                        for i in range(len(row["ticks_in"])):
-                            ticks_in.append(int(row["ticks_in"][i]) / 1e18)
-                        for i in range(len(row["ticks_out"])):
-                            ticks_out.append(int(row["ticks_out"][i]) / 1e18)
-                        row["ticks_in"] = ticks_in
-                        row["ticks_out"] = ticks_out
+                        # ticks_in = []
+                        # ticks_out = []
+                        # for i in range(len(row["ticks_in"])):
+                        #     ticks_in.append(int(row["ticks_in"][i]) / 1e18)
+                        # for i in range(len(row["ticks_out"])):
+                        #     ticks_out.append(int(row["ticks_out"][i]) / 1e18)
+                        # row["ticks_in"] = ticks_in
+                        # row["ticks_out"] = ticks_out
 
                         # add eigenphi link
-                        row["eigenphi_txlink"] = EIGEN_TX_URL + row["tx"]
+                        row["eigenphi_txlink"] = EIGEN_TX_URL + row["transactionHash"]
                         writer.writerow([row[k] for k in row])
 
             print("trades data write to %s successfully." % (save_dir))
@@ -177,10 +178,10 @@ def generate_tx_summary(resp):
 loop = asyncio.get_event_loop()
 
 
-def fetch_analytics_data_batch(txs, begin_index):
+def fetch_analytics_data_batch(txs):
     tasks = []
     for i in range(len(txs)):
-        target_tx = txs[i]["tx"]
+        target_tx = txs[i]["transactionHash"]
         tasks.append(asyncio.ensure_future(query_eigenphi_summary_tx(target_tx)))
         tasks.append(asyncio.ensure_future(query_eigenphi_analytics_tx(target_tx)))
 
@@ -194,11 +195,11 @@ def fetch_analytics_data_batch(txs, begin_index):
         # save original data
         raws.append(
             {
-                "tx": row["tx"],
-                "timestamp": row["timestamp"],
-                "LLAMMA_avg_price": row["avg_price"],
-                "sfrxETH_oracle_price": row["oracle_price"],
-                "sfrxETH_market_price": row["market_price"],
+                "tx": row["transactionHash"],
+                "timestamp": row["blockTimestamp"],
+                # "LLAMMA_avg_price": row["avg_price"],
+                # "sfrxETH_oracle_price": row["oracle_price"],
+                # "sfrxETH_market_price": row["market_price"],
                 "summary_original": results[i * 2],
                 "analytics_tx_original": results[i * 2 + 1],
             }
@@ -258,11 +259,11 @@ def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
 
         json_data.append(
             {
-                "tx": row["tx"],
-                "timestamp": row["timestamp"],
-                "LLAMMA_avg_price": row["LLAMMA_avg_price"],
-                "sfrxETH_oracle_price": row["sfrxETH_oracle_price"],
-                "sfrxETH_market_price": row["sfrxETH_market_price"],
+                "tx": row["transactionHash"],
+                "timestamp": row["blockTimestamp"],
+                # "LLAMMA_avg_price": row["LLAMMA_avg_price"],
+                # "sfrxETH_oracle_price": row["sfrxETH_oracle_price"],
+                # "sfrxETH_market_price": row["sfrxETH_market_price"],
                 "summary": summary,
                 "token_prices": token_prices,
                 "tx_meta": tx_meta,
