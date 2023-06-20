@@ -259,8 +259,8 @@ def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
 
         json_data.append(
             {
-                "tx": row["transactionHash"],
-                "timestamp": row["blockTimestamp"],
+                "tx": row["tx"],
+                "timestamp": row["timestamp"],
                 # "LLAMMA_avg_price": row["LLAMMA_avg_price"],
                 # "sfrxETH_oracle_price": row["sfrxETH_oracle_price"],
                 # "sfrxETH_market_price": row["sfrxETH_market_price"],

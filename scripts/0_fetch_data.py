@@ -1,4 +1,3 @@
-import csv
 import json
 import time
 from analytics.detailed_trades import fetch_analytics_data_batch, get_trades_data
