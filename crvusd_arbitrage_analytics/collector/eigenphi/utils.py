@@ -1,5 +1,5 @@
 from collector.TokenBalanceDiff import TokenBalanceDiff
-from utils import get_address_alias, is_address_zero
+from utils.match import get_address_alias, is_address_zero
 
 
 def get_eigenphi_tokenflow(resp):

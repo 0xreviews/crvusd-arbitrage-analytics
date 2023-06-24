@@ -16,7 +16,7 @@ from collector.eigenphi.query import (
 )
 from collector.eigenphi.utils import get_eigenphi_tokenflow
 
-from utils import format_decimals, get_address_alias
+from utils.match import format_decimals, get_address_alias
 from collector.graphql.query import query_detailed_trades_all
 from config.constance import EIGEN_TX_URL
 from config.filename_config import (

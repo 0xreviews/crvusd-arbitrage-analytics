@@ -1,5 +1,5 @@
 from ..TokenBalanceDiff import TokenBalanceDiff
-from utils import (
+from utils.match import (
     format_decimals,
     get_address_alias,
     is_address,

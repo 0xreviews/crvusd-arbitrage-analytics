@@ -22,6 +22,9 @@ TENDERLY_TX_TRACE = Template(
     "https://api.tenderly.co/api/v1/public-contract/$networkId/trace/$tx"
 )
 
+# Coingecko api
+COINGECKO_PRICE_HISTORICAL = "https://api.coingecko.com/api/v3/coins/{id}/market_chart/range"
+
 
 TOKEN_DECIMALS = {
     "eth": 18,
@@ -36,3 +39,8 @@ TOKEN_DECIMALS = {
 }
 
 ETH_SWAP_POOLS_ALIAS = ["CurveStableSwap-ETH-FRXETH", "UniswapV3Pool-WETH-USDC"]
+
+SYMBOL_TO_ID = {
+    "sfrxeth": "staked-frax-ether",
+    "wsteth": "wrapped-steth",
+}
