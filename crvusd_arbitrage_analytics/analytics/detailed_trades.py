@@ -16,7 +16,7 @@ from collector.eigenphi.query import (
 )
 from collector.eigenphi.utils import get_eigenphi_tokenflow
 
-from utils.match import format_decimals, get_address_alias
+from utils.match import format_decimals, get_address_alias, is_llamma_swap
 from collector.graphql.query import query_detailed_trades_all
 from config.constance import EIGEN_TX_URL
 from config.filename_config import (
@@ -231,6 +231,13 @@ def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
 
         token_flow_list = match_action_group(token_flow_list)
 
+        liquidate_volume = 0
+        # get LLAMMA trade volume
+        for flow in token_flow_list:
+            if flow["token_symbol"] == "crvusd" and is_llamma_swap(flow["swap_pool"]):
+                liquidate_volume = flow["amount"]
+                break
+
         csv_lines += [[str(i)]]
 
         csv_lines.append(
@@ -266,7 +273,9 @@ def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
                 # "LLAMMA_avg_price": row["LLAMMA_avg_price"],
                 # "sfrxETH_oracle_price": row["sfrxETH_oracle_price"],
                 # "sfrxETH_market_price": row["sfrxETH_market_price"],
+                "liquidate_volume": liquidate_volume,
                 "summary": summary,
+                "address_tags": address_tags,
                 "token_prices": token_prices,
                 "tx_meta": tx_meta,
                 "token_flow_list": token_flow_list,

@@ -38,8 +38,5 @@ def generate_flowchart(token_flow_list):
 
     modify_special_nodes(G, token_flow_list)
 
-    
-    # print(G)
-
     G.layout()
     return G

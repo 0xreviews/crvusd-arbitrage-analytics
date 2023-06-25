@@ -44,3 +44,7 @@ SYMBOL_TO_ID = {
     "sfrxeth": "staked-frax-ether",
     "wsteth": "wrapped-steth",
 }
+BEGIN_DATE = {
+    "sfrxeth": "2023-05-14 12:20",
+    "wsteth": "2023-06-08 01:05",
+}

@@ -8,7 +8,7 @@ from config.tokenflow_category import (
     CURVE_SWAP_WETH_FLOW,
     FLASH_POOL_TYPE,
 )
-from utils import get_token_by_swap_name
+from utils.match import get_token_by_swap_name
 
 
 def match_action_group(token_flow_list):
