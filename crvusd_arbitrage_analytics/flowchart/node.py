@@ -1,10 +1,18 @@
 import re
+from config.diagram_config import (
+    DIAGRAM_COINS,
+    DIAGRAM_LINE_COLOR,
+    DIAGRAM_NODE_CONFIG,
+    DIAGRAM_SUBGRAPH_CONFIG,
+    DIAGRAM_SUBGRAPH_SWAP,
+    DIAGRAM_SUBGRAPH_WRAPPED_ETH,
+)
 from config.tokenflow_category import (
     CALL_ARBI_CONTRACT_FLOW,
     CURVE_META_SWAP_FLOW,
     CURVE_ROUTER_FLOW,
 )
-from utils.match import is_curve_router, is_llamma_swap
+from utils.match import is_curve_router, is_curve_swap, is_llamma_swap, is_uniswap_swap
 
 
 def is_transfers_can_merge(prev_transfer, next_transfer):
@@ -49,7 +57,11 @@ def get_swap_pool_exclude_router(swap_pools):
 
 def generate_flow_cell(token_flow_list):
     cells = []
-    sub_graphs = {}
+    sub_graphs = {
+        "left": {"children": []},
+        "mid": {"children": []},
+        "right": {"children": []},
+    }
     for i in range(len(token_flow_list)):
         row = token_flow_list[i]
         cells += [
@@ -66,21 +78,33 @@ def generate_flow_cell(token_flow_list):
                 "next_edge_label": row["token_symbol"] if i == 0 else "",
             },
         ]
-        tmp_graphs = sub_graphs
-        for gn in row["action_group"].split(","):
-            if gn == "" or "CurveRouter:" in gn or "_transfer:" in gn:
-                continue
+        tmp_graphs = sub_graphs["left"]
+        if row["action_type"] in ["LLAMMA:token_in", "LLAMMA:token_out"]:
+            tmp_graphs = sub_graphs["mid"]
+        elif len(sub_graphs["mid"]["children"]) + len(sub_graphs["mid"].keys()) > 1:
+            tmp_graphs = sub_graphs["right"]
 
-            if gn not in tmp_graphs:
-                tmp_graphs[gn] = {"children": []}
-            tmp_graphs[gn]["children"].append("%s_%s" % (i, row["from"]))
-            tmp_graphs[gn]["children"].append("%s_%s" % (i, row["to"]))
-            tmp_graphs = tmp_graphs[gn]
+        if row["action_group"] == "":
+            tmp_graphs["children"].append("%s_%s" % (i, row["from"]))
+            tmp_graphs["children"].append("%s_%s" % (i, row["to"]))
+        else:
+            for gn in row["action_group"].split(","):
+                if gn == "" or "CurveRouter:" in gn or "_transfer:" in gn:
+                    continue
 
+                if gn not in tmp_graphs:
+                    tmp_graphs[gn] = {"children": []}
+                tmp_graphs[gn]["children"].append("%s_%s" % (i, row["from"]))
+                tmp_graphs[gn]["children"].append("%s_%s" % (i, row["to"]))
+                tmp_graphs = tmp_graphs[gn]
+
+    for c in sub_graphs:
+        print(c)
+        print(sub_graphs[c])
     return cells, sub_graphs
 
 
-def process_sub_graphs(G, sub_name, sub_graphs_data):
+def process_subgraphs(G, sub_name, sub_graphs_data):
     if G is None:
         return
 
@@ -89,14 +113,23 @@ def process_sub_graphs(G, sub_name, sub_graphs_data):
     else:
         _g = G.get_subgraph(sub_name)
         if _g is None:
+            is_cluster = "true"
+            label = sub_name.split(":")[0]
+            if label == "LLAMMA":
+                is_cluster = "false"
             _g = G.add_subgraph(
                 name=sub_name,
                 label=sub_name.split(":")[0],
-                cluster=True,
+                cluster=is_cluster,
                 rankdir="TB",
+                rank="same",
                 newrank=True,
-                fillcolor="darkgray",
-                style="filled",
+                color=DIAGRAM_LINE_COLOR,
+                fontcolor="white",
+                fillcolor="transparent",
+                margin=16,
+                fontsize=28,
+                penwidth=4,
             )
 
         for _c in sub_graphs_data["children"]:
@@ -104,7 +137,7 @@ def process_sub_graphs(G, sub_name, sub_graphs_data):
 
     for gn, value in sub_graphs_data.items():
         if gn != "children":
-            process_sub_graphs(_g, gn, value)
+            process_subgraphs(_g, gn, value)
 
 
 def remove_duplicate_nodes(G, token_flow_list):
@@ -188,10 +221,15 @@ def remove_duplicate_nodes(G, token_flow_list):
     for dn in nodes_to_del:
         G.remove_node(dn)
 
+    # if it has only one node, remove subgraph
+    for s in G.subgraphs():
+        nodes = s.nodes()
+        if len(nodes) == 1 and s.node_attr["label"] in ["CurveSwap", "UniswapSwap"]:
+            G.remove_subgraph(s.get_name())
+
 
 def modify_special_nodes(G, token_flow_list):
     nodes = G.nodes()
-    length = len(nodes)
     subgraghs = G.subgraphs()
 
     edge_to_modify = []
@@ -225,6 +263,32 @@ def modify_special_nodes(G, token_flow_list):
                     "next_edge": "sfrxeth",
                 }
             )
+        elif "WETH_withdraw:" in gn:
+            edge_to_modify.append(
+                {
+                    "n": sg_nodes[0],
+                    "prev_edge": "weth",
+                }
+            )
+            edge_to_modify.append(
+                {
+                    "n": sg_nodes[-1],
+                    "next_edge": "eth",
+                }
+            )
+        elif "WETH_deposit:" in gn:
+            edge_to_modify.append(
+                {
+                    "n": sg_nodes[0],
+                    "prev_edge": "eth",
+                }
+            )
+            edge_to_modify.append(
+                {
+                    "n": sg_nodes[-1],
+                    "next_edge": "weth",
+                }
+            )
 
     for em in edge_to_modify:
         n = em["n"]
@@ -253,7 +317,7 @@ def modify_edge(G, token_flow_list):
                 for j in range(len(cs_nodes)):
                     if cs_nodes[j] != tmp_s_node:
                         tmp_s_nodes.append(tmp_s_node)
-            s_nodes = tmp_s_node
+            s_nodes = tmp_s_nodes
             nodes_subgraphs[cs.get_name()] = cs_nodes
 
         nodes_subgraphs[s.get_name()] = s_nodes
@@ -279,3 +343,50 @@ def modify_edge(G, token_flow_list):
                 e.attr["ltail"] = node0_subgraph
             if node1_subgraph != "":
                 e.attr["lhead"] = node1_subgraph
+
+
+def process_shape(G, token_flow_list):
+    nodes = G.nodes()
+
+    for n in nodes:
+        _process_node_attr(G, n)
+
+    subgraphs = G.subgraphs()
+
+    for s in subgraphs:
+        _process_subgraph_attr(G, s)
+
+        for cs in s.subgraphs():
+            _process_subgraph_attr(G, cs)
+
+
+def _process_node_attr(G, n):
+    label = n.attr["label"]
+
+    if label in DIAGRAM_COINS:
+        label = "coin"
+    elif is_llamma_swap(label):
+        label = "LLAMMA"
+    elif is_curve_swap(label):
+        label = "CurveSwapPool"
+    elif is_uniswap_swap(label):
+        label = "UniswapPool"
+
+    if label in DIAGRAM_NODE_CONFIG:
+        cf = DIAGRAM_NODE_CONFIG[label]
+        for k, v in cf.items():
+            n.attr[k] = v
+
+
+def _process_subgraph_attr(G, s):
+    label = s.graph_attr["label"]
+    if label.split("_")[0] in DIAGRAM_SUBGRAPH_WRAPPED_ETH:
+        label = "wrapped_eth"
+    if label in DIAGRAM_SUBGRAPH_SWAP:
+        label = "swap"
+
+    if label in DIAGRAM_SUBGRAPH_CONFIG:
+        cf = DIAGRAM_SUBGRAPH_CONFIG[label]
+        # cluster style "filled" "striped" "rounded"
+        for k, v in cf.items():
+            s.graph_attr[k] = v
