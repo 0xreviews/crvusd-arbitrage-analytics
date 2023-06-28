@@ -326,21 +326,21 @@ def detialed_trades_stat_dominance(token_symbol):
 
     counts_data = df_count.to_list()[:3] + [sum(df_count.to_list()[3:])]
     counts_label = df_count.index.to_list()[:3] + ["others"]
-    counts_colors = plt.get_cmap("Reds")(np.linspace(0.7, 0.5, len(counts_data)))
+    counts_colors = plt.get_cmap("Reds")(np.linspace(0.7, 0.2, len(counts_data)))
 
     profit_data = df_profit.to_list()[:3] + [
         sum([max(p, 0) for p in df_profit.to_list()[3:]])
     ]
     profit_label = df_profit.index.to_list()[:3] + ["others"]
-    profit_colors = plt.get_cmap("Blues")(np.linspace(0.7, 0.5, len(profit_data)))
+    profit_colors = plt.get_cmap("Blues")(np.linspace(0.7, 0.2, len(profit_data)))
 
     volume_data = df_volume.to_list()[:3] + [sum(df_volume.to_list()[3:])]
     volume_label = df_volume.index.to_list()[:3] + ["others"]
-    volume_colors = plt.get_cmap("Greens")(np.linspace(0.7, 0.5, len(volume_data)))
+    volume_colors = plt.get_cmap("Greens")(np.linspace(0.7, 0.2, len(volume_data)))
 
     gascost_data = df_gascost.to_list()[:3] + [sum(df_gascost.to_list()[3:])]
     gascost_label = df_gascost.index.to_list()[:3] + ["others"]
-    gascost_colors = plt.get_cmap("Purples")(np.linspace(0.7, 0.5, len(gascost_data)))
+    gascost_colors = plt.get_cmap("Purples")(np.linspace(0.7, 0.2, len(gascost_data)))
 
     wedgeprops = {"linewidth": 1, "edgecolor": "white"}
     textprops = {"font": {"size": 16}}

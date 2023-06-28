@@ -4,7 +4,7 @@ from config.tokenflow_category import (
     CURVE_META_SWAP_FLOW,
     CURVE_ROUTER_FLOW,
 )
-from utils import is_curve_router, is_llamma_swap
+from utils.match import is_curve_router, is_llamma_swap
 
 
 def is_transfers_can_merge(prev_transfer, next_transfer):
@@ -93,7 +93,7 @@ def process_sub_graphs(G, sub_name, sub_graphs_data):
                 name=sub_name,
                 label=sub_name.split(":")[0],
                 cluster=True,
-                rankdir="LT",
+                rankdir="TB",
                 newrank=True,
                 fillcolor="darkgray",
                 style="filled",
@@ -236,3 +236,46 @@ def modify_special_nodes(G, token_flow_list):
             G.get_edge(prev_node, node).attr["label"] = em["prev_edge"]
         if "next_edge" in em:
             G.get_edge(node, next_node).attr["label"] = em["next_edge"]
+
+
+def modify_edge(G, token_flow_list):
+    subgraphs = G.subgraphs()
+    edges = G.edges()
+
+    nodes_subgraphs = {}
+    for s in subgraphs:
+        s_nodes = s.nodes()
+        for cs in s.subgraphs():
+            cs_nodes = cs.nodes()
+            tmp_s_nodes = []
+            for i in range(len(s_nodes)):
+                tmp_s_node = s_nodes.pop()
+                for j in range(len(cs_nodes)):
+                    if cs_nodes[j] != tmp_s_node:
+                        tmp_s_nodes.append(tmp_s_node)
+            s_nodes = tmp_s_node
+            nodes_subgraphs[cs.get_name()] = cs_nodes
+
+        nodes_subgraphs[s.get_name()] = s_nodes
+
+    for e in edges:
+        node0_subgraph = ""
+        node1_subgraph = ""
+
+        # margin edge label
+        e.attr["label"] = "  " + e.attr["label"] + "  "
+
+        for s in nodes_subgraphs:
+            if e[0] in nodes_subgraphs[s]:
+                node0_subgraph = s
+                break
+        for s in nodes_subgraphs:
+            if e[1] in nodes_subgraphs[s]:
+                node1_subgraph = s
+                break
+
+        if node0_subgraph != node1_subgraph:
+            if node0_subgraph != "":
+                e.attr["ltail"] = node0_subgraph
+            if node1_subgraph != "":
+                e.attr["lhead"] = node1_subgraph

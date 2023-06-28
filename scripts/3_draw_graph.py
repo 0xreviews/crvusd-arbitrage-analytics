@@ -9,4 +9,5 @@ with open("data/detailed_trades_tokenflow_data_sFrxETH.json", "r") as f:
     token_flow_list = trades_data[1]["token_flow_list"]
 
     G = generate_flowchart(token_flow_list)
-    G.draw("data/original/file.png")
+    G.write("data/original/token_flow.dot")
+    G.draw("data/original/token_flow.png")
