@@ -17,8 +17,8 @@ def generate_flowchart(token_flow_list):
         label="LLAMMA soft liquidation flow chart\n\n",
         directed="true",
         # layout="dot",
-        cluster="false",
-        rankdir="LR",
+        cluster="true",
+        rankdir="TB",
         compound="true",
         fontsize="44",
         labelloc="t",
@@ -29,7 +29,7 @@ def generate_flowchart(token_flow_list):
 
     # default settings
     G.node_attr["fixedsize"] = False
-    G.node_attr["fontsize"] = 32
+    G.node_attr["fontsize"] = 38
     G.node_attr["fontcolor"] = "white"
     G.node_attr["height"] = 1
     G.node_attr["margin"] = 0.4
@@ -43,8 +43,8 @@ def generate_flowchart(token_flow_list):
     G.edge_attr["arrowsize"] = 0.5
     G.edge_attr["style"] = "filled,setlinewidth(4)"
     G.edge_attr["penwidth"] = 8
-    G.edge_attr["minlen"] = 2
-    G.edge_attr["fontsize"] = 32
+    G.edge_attr["minlen"] = 3
+    G.edge_attr["fontsize"] = 38
     G.edge_attr["fontcolor"] = DIAGRAM_LINE_COLOR
 
     cells, sub_graphs_data = generate_flow_cell(token_flow_list)
@@ -55,15 +55,16 @@ def generate_flowchart(token_flow_list):
 
         if i > 0:
             prev_cell = cells[i - 1]
-            l = cell["prev_edge_label"]
+            l = prev_cell["next_edge_label"]
             if l == "":
-                l = prev_cell["next_edge_label"]
+                l = cell["prev_edge_label"]
             if not G.has_edge(prev_cell["n"], cell["n"]):
                 G.add_edge(prev_cell["n"], cell["n"], label=l)
 
+
     process_subgraphs(G, "", sub_graphs_data)
 
-    remove_duplicate_nodes(G, token_flow_list)
+    remove_duplicate_nodes(G, sub_graphs_data, token_flow_list)
 
     modify_special_nodes(G, token_flow_list)
 

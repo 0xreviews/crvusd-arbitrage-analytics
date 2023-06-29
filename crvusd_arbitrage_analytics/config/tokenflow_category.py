@@ -72,6 +72,7 @@ SOLIDLY_SWAP_FLOW = [
     "SolidlySwap:token_in",
     "SolidlySwap:token_out",
 ]
+BALANCER_VAULT_FLOW = ["BalancerVault:token_out", "BalancerVault:token_in"]
 
 ACTION_GROUP_TYPE = [
     CURVE_ROUTER_FLOW,
@@ -82,6 +83,7 @@ ACTION_GROUP_TYPE = [
     UNISWAP_SWAP_FLOW,
     PANCAKE_SWAP_FLOW,
     SOLIDLY_SWAP_FLOW,
+    BALANCER_VAULT_FLOW,
     WETH_FLOW,
     RETH_FLOW,
     FRXETH_FLOW,
@@ -105,7 +107,6 @@ FLASH_POOL_TYPE = [
     "SolidlySwap",
     "BalancerVault",
 ]
-BALANCER_VAULT_FLOW = ["BalancerVault:token_out", "BalancerVault:token_in"]
 
 
 # Take profit flow
