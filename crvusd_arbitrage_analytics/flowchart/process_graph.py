@@ -1,4 +1,3 @@
-import re
 from config.diagram_config import (
     DIAGRAM_COINS,
     DIAGRAM_LAYOUT_NAME,
@@ -9,51 +8,12 @@ from config.diagram_config import (
     DIAGRAM_SUBGRAPH_WRAPPED_ETH,
 )
 from config.tokenflow_category import (
+    ACTION_GROUP_SWAP_TYPE,
     CALL_ARBI_CONTRACT_FLOW,
-    CURVE_META_SWAP_FLOW,
     CURVE_ROUTER_FLOW,
+    SWAPPOOL_TYPE,
 )
-from utils.match import is_curve_router, is_curve_swap, is_llamma_swap, is_uniswap_swap
-
-
-def is_transfers_can_merge(prev_transfer, next_transfer):
-    # from to are same
-    if (
-        prev_transfer["swap_pool"] == next_transfer["swap_pool"]
-        and prev_transfer["from"] == next_transfer["to"]
-        and prev_transfer["to"] == next_transfer["from"]
-    ):
-        return True
-    # Curve Meta LP mint/burn
-    if (
-        # 3crv LP mint
-        prev_transfer["action_type"] + next_transfer["action_type"]
-        == CURVE_META_SWAP_FLOW[0] + CURVE_META_SWAP_FLOW[4]
-        # 3crv LP burn
-        or prev_transfer["action_type"] + next_transfer["action_type"]
-        == CURVE_META_SWAP_FLOW[1] + CURVE_META_SWAP_FLOW[5]
-    ):
-        return True
-    return False
-
-
-def get_or_add_node_in_graph(G, string, label=""):
-    if not G.has_node(string):
-        G.add_node(string, label=label)
-    return G.get_node(string)
-
-
-def is_router_mid_node(action_group):
-    return re.compile("CurveRouter:[0-9]+:doing").match(action_group) != None
-
-
-def get_swap_pool_exclude_router(swap_pools):
-    pool = ""
-    for _p in swap_pools:
-        if not is_curve_router(_p):
-            pool = _p
-            break
-    return pool
+from utils.match import is_curve_swap, is_llamma_swap, is_uniswap_swap
 
 
 def generate_flow_cell(token_flow_list):
@@ -66,6 +26,10 @@ def generate_flow_cell(token_flow_list):
     tmp_action_group = ""
     for i in range(len(token_flow_list)):
         row = token_flow_list[i]
+
+        if row["from"] == "tx_miner" or row["to"] == "tx_miner":
+            continue
+
         _cells = []
         if row["action_group"] == "":
             _cells = [
@@ -87,16 +51,30 @@ def generate_flow_cell(token_flow_list):
                 cells[-1]["next_edge_label"] = row["token_symbol"]
                 continue
 
+            if i == 0 and row["from"] in ["tx_from", "arbitrage_contract"]:
+                _cells += [
+                    {
+                        "n": "%s_%s" % (i, row["from"]),
+                        "n_label": row["from"],
+                        "next_edge_label": row["token_symbol"],
+                    }
+                ]
+
             label = row["action_group"].split(",")
             label = label[-1]
             label = label.split(":")
+
+
             if len(label) > 1:
                 label.pop()
                 label = ":".join(label)
             else:
                 label = label[0]
+            
+            if label in ACTION_GROUP_SWAP_TYPE:
+                label = row["swap_pool"].split(",")[-1]
 
-            _cells = [
+            _cells += [
                 {
                     "n": "%s_%s" % (i, row["action_group"]),
                     "n_label": label,
@@ -104,6 +82,16 @@ def generate_flow_cell(token_flow_list):
                     "next_edge_label": "" if i > 0 else row["token_symbol"],
                 }
             ]
+
+            if i == len(token_flow_list) - 1 and row["to"] in ["tx_from", "arbitrage_contract"]:
+                _cells += [
+                    {
+                        "n": "%s_%s" % (i, row["to"]),
+                        "n_label": row["to"],
+                        "prev_edge_label": row["token_symbol"],
+                    }
+                ]
+
             tmp_action_group = row["action_group"]
 
         cells += _cells
@@ -119,54 +107,33 @@ def generate_flow_cell(token_flow_list):
             tmp_graphs = sub_graphs[DIAGRAM_LAYOUT_NAME[2]]
 
         tmp_graphs["children"] += [c["n"] for c in _cells]
-        # if row["action_group"] == "":
-        #     tmp_graphs["children"] += [c["n"] for c in _cells]
-
-        # else:
-        #     for gn in row["action_group"].split(","):
-        #         if gn == "" or "CurveRouter:" in gn or "_transfer:" in gn:
-        #             continue
-
-        #         if gn not in tmp_graphs:
-        #             tmp_graphs[gn] = {"children": []}
-        #         tmp_graphs[gn]["children"] += [c["n"] for c in _cells]
-        #         # tmp_graphs = tmp_graphs[gn]
 
     return cells, sub_graphs
 
 
-def process_subgraphs(G, sub_name, sub_graphs_data):
+def process_subgraphs(G, sub_graphs_data):
     if G is None:
         return
 
-    if sub_name == "":
-        _g = G
-    else:
-        _g = G.get_subgraph(sub_name)
-        if _g is None:
-            is_cluster = "true"
-            label = sub_name.split(":")[0]
-            if label == DIAGRAM_LAYOUT_NAME[1]:
-                is_cluster = "false"
-            _g = G.add_subgraph(
-                name=sub_name,
-                label=label,
-                cluster=is_cluster,
-                rank="" if is_cluster == "true" else "same",
-                color=DIAGRAM_LINE_COLOR,
-                fontcolor="white",
-                fillcolor="transparent",
-                margin=32,
-                fontsize=32,
-                penwidth=4,
-            )
-
-        for _c in sub_graphs_data["children"]:
-            _g.add_node(_c)
-
-    for gn, value in sub_graphs_data.items():
-        if gn != "children":
-            process_subgraphs(_g, gn, value)
+    # init subgraphs
+    for i in range(len(DIAGRAM_LAYOUT_NAME)):
+        sg_name = DIAGRAM_LAYOUT_NAME[i]
+        is_cluster = "true"
+        if i == 1:
+            is_cluster = "false"
+        G.add_subgraph(
+            name=sg_name,
+            label=sg_name,
+            cluster=is_cluster,
+            rank="" if is_cluster == "true" else "same",
+            nbunch=sub_graphs_data[sg_name]["children"],
+            color=DIAGRAM_LINE_COLOR,
+            fontcolor="white",
+            fillcolor="transparent",
+            margin=24,
+            fontsize=32,
+            penwidth=2,
+        )
 
 
 def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
@@ -212,6 +179,7 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
 
             if remove_flag:
                 nodes_to_del.append(node)
+
                 prev_l = (
                     G.get_edge(prev_node, node).attr["label"]
                     if G.has_edge(prev_node, node)
@@ -237,9 +205,14 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
             l += "," + string if l != "" and string != "" else string
         if node == "":
             continue
-
-        G.remove_edge(prev_node, node)
-        G.add_edge(prev_node, next_node, label=tmp_l)
+            
+        _g = G
+        for sg in G.subgraphs():
+            if sg.has_node(prev_node) and sg.has_node(node) and sg.get_edge(prev_node, node) is not None:
+                _g = sg
+        
+        _g.remove_edge(prev_node, node)
+        _g.add_edge(prev_node, next_node, label=l)
 
         # cache label if next_node will be delete either
         if next_node in nodes_to_del:
@@ -249,20 +222,6 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
 
     for dn in nodes_to_del:
         G.remove_node(dn)
-
-    # # if it has only one node, remove subgraph
-    # for s in G.subgraphs():
-    #     for cs in s.subgraphs():
-    #         nodes = cs.nodes()
-    #         sg_to_del = []
-
-    #         if len(nodes) == 1:
-    #             G.get_node(nodes[0]).attr["label"] = cs.get_name().split(":")[0]
-    #             cs.remove_node(nodes[0])
-    #             sg_to_del.append(cs)
-
-    # for sg in sg_to_del:
-    #     del sub_graphs_data[s][sg]
 
 
 def modify_special_nodes(G, token_flow_list):
@@ -370,12 +329,6 @@ def modify_edge(G, token_flow_list):
                 node1_subgraph = s
                 break
 
-        if node0_subgraph != node1_subgraph:
-            if node0_subgraph != "":
-                e.attr["ltail"] = node0_subgraph
-            if node1_subgraph != "":
-                e.attr["lhead"] = node1_subgraph
-
         if (
             node0_subgraph == DIAGRAM_LAYOUT_NAME[0]
             and node1_subgraph == DIAGRAM_LAYOUT_NAME[1]
@@ -384,8 +337,6 @@ def modify_edge(G, token_flow_list):
                 "llamma_left_arrow",
                 e[1],
                 label=e.attr["label"],
-                ltail=e.attr["ltail"],
-                lhead=e.attr["lhead"],
             )
             G.remove_edge(e)
         elif (
@@ -396,8 +347,6 @@ def modify_edge(G, token_flow_list):
                 e[0],
                 "llamma_right_arrow",
                 label=e.attr["label"],
-                ltail=e.attr["ltail"],
-                lhead=e.attr["lhead"],
             )
             G.remove_edge(e)
 

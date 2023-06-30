@@ -91,6 +91,15 @@ ACTION_GROUP_TYPE = [
 
 ACTION_GROUP_TAG = ["begin", "doing", "end"]
 
+ACTION_GROUP_SWAP_TYPE = [
+    "CurveSwap",
+    "CurveMetaPool_Swap",
+    # "LLAMMA",
+    "UniswapSwap",
+    "PancakeSwap",
+    "SolidlySwap",
+]
+
 
 SWAPPOOL_TYPE = [
     "CurveRouter",
