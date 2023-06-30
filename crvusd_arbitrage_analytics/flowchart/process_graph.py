@@ -377,6 +377,8 @@ def _process_node_attr(G, n):
         label = "CurveSwapPool"
     elif is_uniswap_swap(label):
         label = "UniswapPool"
+    elif label.split("_")[0] in DIAGRAM_SUBGRAPH_WRAPPED_ETH:
+        label = "wrapped_eth"
 
     if label in DIAGRAM_NODE_CONFIG:
         cf = DIAGRAM_NODE_CONFIG[label]

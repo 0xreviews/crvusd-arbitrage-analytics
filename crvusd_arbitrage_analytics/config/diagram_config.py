@@ -38,12 +38,19 @@ DIAGRAM_NODE_CONFIG = {
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
+    "wrapped_eth": {
+        "shape": "hexagon",
+        "fillcolor": DIAGRAM_COLORS[4],
+         "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "black",
+    },
 }
 
 DIAGRAM_SUBGRAPH_WRAPPED_ETH = [
     "frxETH",
     "sFrxETH",
     "wstETH",
+    "WETH",
     "rETH",
     "CurveSwapWETH",
 ]
@@ -54,7 +61,11 @@ DIAGRAM_SUBGRAPH_SWAP = [
 ]
 
 DIAGRAM_SUBGRAPH_CONFIG = {
-    "wrapped_eth": {"style": "filled, rounded", "fillcolor": "transparent", "color": DIAGRAM_LINE_COLOR},
+    "wrapped_eth": {
+        "style": "filled, rounded",
+        "fillcolor": "transparent",
+        "color": DIAGRAM_LINE_COLOR,
+    },
     "swap": {"style": "filled, rounded", "fillcolor": "transparent"},
     "LLAMMA": {"style": "filled, rounded", "fillcolor": DIAGRAM_COLORS[0]},
 }
