@@ -1,11 +1,11 @@
 import json
 import os
 import time
+import asyncio
 from analytics.detailed_trades import fetch_analytics_data_batch, get_trades_data
 from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR, DEFAUT_TRADES_DATA_DIR
 
-
-if __name__ == "__main__":
+async def main():
     for collateral in ["sFrxETH", "wstETH"]:
         raw_save_dir = DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
             ".json", "_%s.json" % (collateral)
@@ -18,7 +18,7 @@ if __name__ == "__main__":
             save_dir=DEFAUT_TRADES_DATA_DIR,
         )
 
-        batch_size = 10
+        batch_size = 50
         data_lines = []
         json_data = []
         raws_data = []
@@ -45,9 +45,12 @@ if __name__ == "__main__":
             end_index = min(len(all_txs), (i + 1) * batch_size)
             print("process txs %d to %d" % (begin_index, end_index))
             txs = all_txs[begin_index:end_index]
-            raws = fetch_analytics_data_batch(txs)
+            raws = await fetch_analytics_data_batch(txs)
             raws_data += raws
-            time.sleep(3)
+            time.sleep(0.1)
 
         with open(raw_save_dir, "w") as f:
             f.write(json.dumps(raws_data, indent=4))
+
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -3,6 +3,7 @@ General utility for http requests.
 https://github.com/curveresearch/curvesim/blob/main/curvesim/network/http.py
 """
 import json
+import os
 import aiohttp
 from aiohttp import ClientResponseError
 from tenacity import retry, stop_after_attempt, wait_random_exponential
@@ -19,8 +20,8 @@ class HttpClientError():
     def __repr__(self):
         return f"HttpClientError({self.status}, {self.message}, url={self.url})"
 
-stop_rule = stop_after_attempt(2)
-wait_rule = wait_random_exponential(multiplier=1, min=2, max=5)
+stop_rule = stop_after_attempt(8)
+wait_rule = wait_random_exponential(multiplier=1.5, min=2, max=60)
 
 
 class HTTP:
@@ -32,6 +33,8 @@ class HTTP:
 
         if params is not None:
             kwargs.update({"params": params})
+        if os.environ["http_proxy"] is not None:
+            kwargs.update({"proxy": os.environ["http_proxy"]})
 
         try:
             async with aiohttp.request("GET", **kwargs) as resp:
@@ -54,6 +57,8 @@ class HTTP:
 
         if json is not None:
             kwargs.update({"json": json})
+        if os.environ["http_proxy"] is not None:
+            kwargs.update({"proxy": os.environ["HTTP_PROXY"]})
 
         try:
             async with aiohttp.request("POST", **kwargs) as resp:
