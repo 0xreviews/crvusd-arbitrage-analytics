@@ -15,10 +15,11 @@ from flowchart.process_graph import (
 )
 
 
-def generate_flowchart(token_flow_list):
+def generate_flowchart(trade_data):
+    token_flow_list = trade_data["token_flow_list"]
     G = pgv.AGraph(
         name="root",
-        label="LLAMMA soft liquidation flow chart\n\n",
+        label="LLAMMA soft liquidation flow chart\ntx: " + trade_data["tx"] + "\n\n",
         directed="true",
         layout="dot",
         cluster="true",

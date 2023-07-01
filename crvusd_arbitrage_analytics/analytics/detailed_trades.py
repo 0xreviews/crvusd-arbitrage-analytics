@@ -210,10 +210,12 @@ def fetch_analytics_data_batch(txs):
     return raws
 
 
-def wash_analytics_data(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
+def wash_analytics_data_from_file(original_raw_data_dir=DEFAUT_TRADES_TOKENFLOW_DATA_DIR):
     with open(original_raw_data_dir, encoding="utf-8") as f:
         original_data = json.load(f)
+        return wash_analytics_data(original_data)
 
+def wash_analytics_data(original_data):
     csv_lines = []
     json_data = []
     for i in range(len(original_data)):
