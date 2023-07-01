@@ -40,5 +40,6 @@ pip-log.txt
 ## data
 .DS_Store
 data/original/*
+data/img/*
 data/*.json
 data/*.csv

@@ -267,13 +267,14 @@ def modify_special_nodes(G, token_flow_list):
     for em in edge_to_modify:
         n = em["n"]
         node = G.get_node(n)
-        prev_node = G.predecessors(node)[-1]
-        next_node = G.out_neighbors(node)[0]
+        if len(G.predecessors(node)) > 2:
+            prev_node = G.predecessors(node)[-1]
+            next_node = G.out_neighbors(node)[0]
 
-        if "prev_edge" in em:
-            G.get_edge(prev_node, node).attr["label"] = em["prev_edge"]
-        if "next_edge" in em:
-            G.get_edge(node, next_node).attr["label"] = em["next_edge"]
+            if "prev_edge" in em:
+                G.get_edge(prev_node, node).attr["label"] = em["prev_edge"]
+            if "next_edge" in em:
+                G.get_edge(node, next_node).attr["label"] = em["next_edge"]
 
 
 def modify_edge(G, token_flow_list):

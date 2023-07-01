@@ -134,7 +134,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation count daily" % (symbol),
             y_axis_label="tx count",
-            save_dir="data/original/stat_count_%s.png" % (symbol),
+            save_dir="data/img/stat_count_%s.png" % (symbol),
         )
 
         # volumes
@@ -146,7 +146,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation volume daily" % (symbol),
             y_axis_label="volume(crvusd)",
-            save_dir="data/original/stat_volume_%s.png" % (symbol),
+            save_dir="data/img/stat_volume_%s.png" % (symbol),
         )
 
         # profits
@@ -158,7 +158,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation profit daily" % (symbol),
             y_axis_label="profit($)",
-            save_dir="data/original/stat_profit_%s.png" % (symbol),
+            save_dir="data/img/stat_profit_%s.png" % (symbol),
         )
 
         # gas cost
@@ -170,7 +170,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost daily" % (symbol),
             y_axis_label="gas cost($)",
-            save_dir="data/original/stat_gascost_%s.png" % (symbol),
+            save_dir="data/img/stat_gascost_%s.png" % (symbol),
         )
 
         bar_datas = {
@@ -189,7 +189,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             y1_axis_label="collateral price($)",
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost and revenue daily" % (symbol),
-            save_dir="data/original/stat_daily_revenue_gascost_%s.png" % (symbol),
+            save_dir="data/img/stat_daily_revenue_gascost_%s.png" % (symbol),
         )
 
 
@@ -440,7 +440,7 @@ def detialed_trades_stat_dominance(token_symbol):
 
     fig.set_size_inches(18, 22)
     fig.tight_layout(pad=2)
-    fig.savefig("data/original/dominance_count_%s.png" % (token_symbol), dpi=100)
+    fig.savefig("data/img/dominance_count_%s.png" % (token_symbol), dpi=100)
 
 
 def detailed_trades_distribution(token_symbol):
@@ -487,7 +487,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=volume_x_labels,
         y_axis_label="volume distribution",
         title="%s volume distribution" % (token_symbol),
-        save_dir="data/original/stat_hist_volume_%s.png" % (token_symbol),
+        save_dir="data/img/stat_hist_volume_%s.png" % (token_symbol),
     )
 
     _draw_distribution(
@@ -497,7 +497,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=revenue_x_labels,
         y_axis_label="revenue distribution",
         title="%s revenue distribution" % (token_symbol),
-        save_dir="data/original/stat_hist_revenue_%s.png" % (token_symbol),
+        save_dir="data/img/stat_hist_revenue_%s.png" % (token_symbol),
     )
 
     _draw_distribution(
@@ -507,7 +507,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=gascost_x_labels,
         y_axis_label="gascost distribution",
         title="%s gascost distribution" % (token_symbol),
-        save_dir="data/original/stat_hist_gascost_%s.png" % (token_symbol),
+        save_dir="data/img/stat_hist_gascost_%s.png" % (token_symbol),
     )
 
 
@@ -549,7 +549,7 @@ def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_d
 def detailed_trades_stat_scatter(token_symbol):
     df = load_detailed_trades_df(token_symbol)
     title = "%s revenue-volume scatter" % (token_symbol)
-    save_dir = "data/original/stat_scatter_revenue_volume_%s.png" % (token_symbol)
+    save_dir = "data/img/stat_scatter_revenue_volume_%s.png" % (token_symbol)
 
     x_list = df["liquidate_volume"].to_list()
     y_list = df["revenue"].to_list()

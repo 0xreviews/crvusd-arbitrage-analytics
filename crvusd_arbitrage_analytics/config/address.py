@@ -78,6 +78,8 @@ ADDRESS_ALIAS = {
     "0xba12222222228d8ba445958a75a0704d566bf2c8": "BalancerVault",
     "0x1e0447b19bb6ecfdae1e4ae1694b0c3659614e4e": "dYdXSoloMargin",
     "0xb63cac384247597756545b500253ff8e607a8020": "OlympusStaking",
+    # 1inch
+    "0x1111111254EEB25477B68fb85Ed929f73A960582": "1inchV5AggregationRouter",
 }
 
 ALIAS_TO_ADDRESS = {}

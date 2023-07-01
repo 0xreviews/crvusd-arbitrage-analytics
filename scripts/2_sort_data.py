@@ -3,14 +3,14 @@ import json
 import re
 import pandas as pd
 
-from utils import process_token_path
-
 SPLIT_SYMBOL = "\n"
 
 
 def sort_data():
     for collateral in ["sFrxETH", "wstETH"]:
-        with open("data/detailed_trades_tokenflow_data_%s.json" % (collateral), "r") as f:
+        with open(
+            "data/detailed_trades_tokenflow_data_%s.json" % (collateral), "r"
+        ) as f:
             trades_data = json.load(f)
 
             arbi_type_data = []
@@ -29,14 +29,18 @@ def sort_data():
                 for j in range(len(row["token_flow_list"])):
                     item = row["token_flow_list"][j]
 
-                    if re.compile("(call_arbi_contract|miner|beneficiary)").match(item["action_type"]):
+                    if re.compile("(call_arbi_contract|miner|beneficiary)").match(
+                        item["action_type"]
+                    ):
                         continue
 
                     token_path.append(item["token_symbol"])
                     action_types.append(item["action_type"])
                     swap_pools.append(item["swap_pool"])
                     action_groups.append(item["action_group"])
-                    flash_pairs.append(str(item["flash_pair"]) if "flash_pair" in item.keys() else "")
+                    flash_pairs.append(
+                        str(item["flash_pair"]) if "flash_pair" in item.keys() else ""
+                    )
 
                 arbi_type_data.append(
                     {
@@ -73,7 +77,9 @@ def sort_data():
 
             action_types_sort.sort(key=lambda x: x["count"], reverse=True)
 
-            with open("data/action_types_%s.csv" % (collateral), "w") as action_types_file:
+            with open(
+                "data/action_types_%s.csv" % (collateral), "w"
+            ) as action_types_file:
                 writer = csv.writer(action_types_file)
                 writer.writerows(
                     [
@@ -90,6 +96,24 @@ def sort_data():
                     ]
                     + [item.values() for item in action_types_sort]
                 )
+
+            with open(
+                "data/action_types_%s.json" % (collateral), "w"
+            ) as action_types_file:
+                json_data = [
+                    {
+                        "index": item["index"],
+                        "count": int(item["count"]),
+                        "tx_0": item["tx_0"],
+                        "action_types": item["action_types"].split(SPLIT_SYMBOL),
+                        "swap_pools": item["swap_pools"].split(SPLIT_SYMBOL),
+                        "token_path": item["token_path"].split(SPLIT_SYMBOL),
+                        "action_groups": item["action_groups"].split(SPLIT_SYMBOL),
+                        "flash_pairs": item["flash_pairs"].split(SPLIT_SYMBOL),
+                    }
+                    for item in action_types_sort
+                ]
+                action_types_file.write(json.dumps(json_data, indent=4))
 
 
 if __name__ == "__main__":
