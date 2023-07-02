@@ -4,6 +4,15 @@ import time
 import asyncio
 from analytics.detailed_trades import fetch_analytics_data_batch, get_trades_data
 from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR, DEFAUT_TRADES_DATA_DIR
+from collector.coingecko.query import query_prices_historical
+
+
+async def get_prices_data():
+    results = []
+    for symbol in ["sfrxeth", "wsteth"]:
+        raws = await query_prices_historical(token_symbol=symbol, save=True)
+        results.append(raws)
+    return results
 
 async def main():
     for collateral in ["sFrxETH", "wstETH"]:
@@ -53,4 +62,5 @@ async def main():
             f.write(json.dumps(raws_data, indent=4))
 
 if __name__ == "__main__":
+    asyncio.run(get_prices_data())
     asyncio.run(main())

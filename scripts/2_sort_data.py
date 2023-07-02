@@ -4,6 +4,7 @@ import re
 import pandas as pd
 
 SPLIT_SYMBOL = "\n"
+GROUP_KEY = "swap_pools"
 
 
 def sort_data():
@@ -56,7 +57,7 @@ def sort_data():
 
             df = pd.DataFrame(arbi_type_data)
 
-            group = df.groupby(by="swap_pools")
+            group = df.groupby(by=GROUP_KEY)
 
             action_types_sort = []
             i = 0

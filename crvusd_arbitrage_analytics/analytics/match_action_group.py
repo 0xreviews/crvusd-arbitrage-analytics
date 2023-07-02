@@ -8,7 +8,7 @@ from config.tokenflow_category import (
     CURVE_SWAP_WETH_FLOW,
     FLASH_POOL_TYPE,
 )
-from utils.match import get_token_by_swap_name
+from utils.match import get_token_by_swap_name, is_swap_pool
 
 
 def match_action_group(token_flow_list):
@@ -211,7 +211,7 @@ def match_flash_action_group(token_flow_list):
         borrow_row = token_flow_list[borrow_ptr]
         borrow_symbol = borrow_row["token_symbol"]
         borrow_action_type = borrow_row["action_type"]
-        borrow_swap_pool = borrow_row["swap_pool"]
+        borrow_swap_pools = borrow_row["swap_pool"].split(",")
         borrower = borrow_row["to"]
 
         borrow_flash_type_index, if_borrow_token_out = check_flash_group_type(
@@ -229,39 +229,49 @@ def match_flash_action_group(token_flow_list):
             repay_row = token_flow_list[repay_ptr]
             repay_symbol = repay_row["token_symbol"]
             repay_action_type = repay_row["action_type"]
-            repay_swap_pool = repay_row["swap_pool"]
+            repay_swap_pools = repay_row["swap_pool"].split(",")
             repayer = repay_row["from"]
 
-            repay_flash_type_index, if_repay_token_out = check_flash_group_type(
-                repay_action_type
-            )
+            if len(repay_swap_pools) == 1:
+                repay_flash_type_index, if_repay_token_out = check_flash_group_type(
+                    repay_action_type
+                )
 
-            if (
-                repay_flash_type_index < 0
-                or if_repay_token_out
-                or repay_ptr in repay_index_stake
-            ):
-                continue
+                if (
+                    repay_flash_type_index < 0
+                    or if_repay_token_out
+                    or repay_ptr in repay_index_stake
+                ):
+                    continue
 
-            # Normal flash swap
-            if (
-                repay_swap_pool == borrow_swap_pool
-                and repay_ptr - borrow_ptr > 1
-                and borrower == repayer
-            ):
-                # BalancerVault
-                if repay_flash_type_index == 3 and repay_symbol == borrow_symbol:
-                    borrow_index_stake.append(borrow_ptr)
-                    repay_index_stake.append(repay_ptr)
-                    break
+            is_pair = False
+            for repay_swap_pool in repay_swap_pools:
+                # borrower == repayer: Normal flash swap
+                # swap_pool_B repay to swap_pool_A: 
+                #   1. borrow from swap_pool_A
+                #   2. swap_pool_B token out, repay to swap_pool_A
+                #   3. swap_pool_B token in (normal swap)
+                if (
+                    repay_swap_pool in borrow_swap_pools
+                    and repay_ptr - borrow_ptr > 1
+                    and (borrower == repayer or is_swap_pool(repayer))
+                ):
+                    # BalancerVault
+                    if repay_flash_type_index == 3 and repay_symbol == borrow_symbol:
+                        borrow_index_stake.append(borrow_ptr)
+                        repay_index_stake.append(repay_ptr)
+                        is_pair = True
 
-                tokens = get_token_by_swap_name(repay_swap_pool)
-                tokens = [token.lower() for token in tokens]
+                    tokens = get_token_by_swap_name(repay_swap_pool)
+                    tokens = [token.lower() for token in tokens]
 
-                if repay_symbol in tokens and borrow_symbol in tokens:
-                    borrow_index_stake.append(borrow_ptr)
-                    repay_index_stake.append(repay_ptr)
-                    break
+                    if repay_symbol in tokens and borrow_symbol in tokens:
+                        borrow_index_stake.append(borrow_ptr)
+                        repay_index_stake.append(repay_ptr)
+                        is_pair = True
+
+            if is_pair:
+                break
 
     flash_action_pair_cout = 0
     while len(borrow_index_stake) > 0:

@@ -19,13 +19,13 @@ def generate_flowchart(trade_data):
     token_flow_list = trade_data["token_flow_list"]
     G = pgv.AGraph(
         name="root",
-        label="LLAMMA soft liquidation flow chart\ntx: " + trade_data["tx"] + "\n\n",
+        label="LLAMMA soft liquidation flow chart\n\n",
         directed="true",
         layout="dot",
         cluster="true",
         rankdir="TB",
         compound="true",
-        fontsize="36",
+        fontsize="32",
         labelloc="t",
         bgcolor="#212946",
         fontcolor="white",
@@ -35,14 +35,14 @@ def generate_flowchart(trade_data):
 
     # default settings
     G.node_attr["fixedsize"] = False
-    G.node_attr["fontsize"] = 24
+    G.node_attr["fontsize"] = 20
     G.node_attr["fontcolor"] = "white"
     G.node_attr["height"] = 1
     G.node_attr["margin"] = 0.15
     G.node_attr["shape"] = "ellipse"
     G.node_attr["style"] = "filled,setlinewidth(3)"
-    G.node_attr["width"] = 2
-    G.node_attr["pad"] = 20
+    G.node_attr["width"] = 1.5
+    G.node_attr["pad"] = 10
     G.node_attr["color"] = DIAGRAM_LINE_COLOR
     G.node_attr["penwidth"] = 2
     G.node_attr["fillcolor"] = "transparent"
@@ -53,7 +53,7 @@ def generate_flowchart(trade_data):
     G.edge_attr["penwidth"] = 6
     G.edge_attr["weight"] = 10
     G.edge_attr["minlen"] = 1.5
-    G.edge_attr["fontsize"] = 24
+    G.edge_attr["fontsize"] = 20
     G.edge_attr["fontcolor"] = DIAGRAM_LINE_COLOR
 
     cells, sub_graphs_data = generate_flow_cell(token_flow_list)

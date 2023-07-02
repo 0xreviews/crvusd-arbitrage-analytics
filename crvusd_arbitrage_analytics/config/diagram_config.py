@@ -1,5 +1,5 @@
-DIAGRAM_COLORS = ["#18c0c4", "#f62196", "#A267F5", "#f3907e", "#ffe46b", "#fefeff"]
-DIAGRAM_LINE_COLOR = "#eeeeee"
+DIAGRAM_COLORS = ["#18c0c4", "#f62196", "#A267F5", "#f3907e", "#ffe46b", "#428449"]
+DIAGRAM_LINE_COLOR = "#fefeff"
 DIAGRAM_LAYOUT_NAME = ["Token in", "Soft-Liquidation", "Token out"]
 DIAGRAM_COINS = ["frxETH", "sFrxETH", "wstETH", "rETH", "weth"]
 DIAGRAM_NODE_CONFIG = {
@@ -15,31 +15,65 @@ DIAGRAM_NODE_CONFIG = {
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
+    "UniswapSwap:flash_borrow": {
+        "shape": "house",
+        "fillcolor": DIAGRAM_COLORS[2],
+        "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "white",
+        "height": 1.2,
+    },
+    "UniswapSwap:flash_repay": {
+        "shape": "invhouse",
+        "fillcolor": DIAGRAM_COLORS[2],
+        "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "white",
+        "height": 1.2,
+    },
+    "BalancerVault:flash_borrow": {
+        "shape": "house",
+        "fillcolor": DIAGRAM_COLORS[3],
+        "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "white",
+        "height": 1.2,
+    },
+    "BalancerVault:flash_repay": {
+        "shape": "invhouse",
+        "fillcolor": DIAGRAM_COLORS[3],
+        "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "white",
+        "height": 1.2,
+    },
     "CurveSwapRouter": {
         "shape": "house",
-        "color": DIAGRAM_COLORS[2],
+        "color": DIAGRAM_COLORS[1],
         "fillcolor": "transparent",
     },
     "LLAMMA": {
         "shape": "cylinder",
-        "fillcolor": DIAGRAM_COLORS[1],
+        "fillcolor": DIAGRAM_COLORS[5],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
     "CurveSwapPool": {
         "shape": "ellipse",
-        "fillcolor": DIAGRAM_COLORS[2],
+        "fillcolor": DIAGRAM_COLORS[1],
+        "color": DIAGRAM_LINE_COLOR,
+        "fontcolor": "white",
+    },
+    "CurveStable_crvUSD": {
+        "shape": "cylinder",
+        "fillcolor": DIAGRAM_COLORS[1],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
     "UniswapPool": {
         "shape": "ellipse",
-        "fillcolor": DIAGRAM_COLORS[3],
+        "fillcolor": DIAGRAM_COLORS[2],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
     "wrapped_eth": {
-        "shape": "hexagon",
+        "shape": "doubleoctagon",
         "fillcolor": DIAGRAM_COLORS[4],
          "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "black",
