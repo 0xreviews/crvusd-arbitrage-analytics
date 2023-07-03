@@ -56,6 +56,7 @@ def generate_flowchart(trade_data):
     G.edge_attr["fontsize"] = 20
     G.edge_attr["fontcolor"] = DIAGRAM_LINE_COLOR
 
+
     cells, sub_graphs_data = generate_flow_cell(token_flow_list)
 
     for i in range(len(cells)):
@@ -92,8 +93,13 @@ def generate_flowchart(trade_data):
         ]
     )
     for sg in subgraphs.keys():
+        n_to_del = G.get_subgraph(sg).nodes()
         G.remove_subgraph(sg)
+        for n in n_to_del:
+            G.remove_node(n)
+            
     container_g_string = G.to_string()
+            
     G_string = container_g_string.replace("}", subgraphs_string + "}")
 
     return G_string

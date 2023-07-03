@@ -9,39 +9,26 @@ DIAGRAM_NODE_CONFIG = {
     "arbitrage_contract": {
         "shape": "diamond",
     },
+    "arbitragur": {
+        "shape": "diamond",
+    },
     "coin": {
         "shape": "hexagon",
         "fillcolor": DIAGRAM_COLORS[0],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
     },
-    "UniswapSwap:flash_borrow": {
+    "flash_borrow": {
         "shape": "house",
         "fillcolor": DIAGRAM_COLORS[2],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
-        "height": 1.2,
     },
-    "UniswapSwap:flash_repay": {
+    "flash_repay": {
         "shape": "invhouse",
         "fillcolor": DIAGRAM_COLORS[2],
         "color": DIAGRAM_LINE_COLOR,
         "fontcolor": "white",
-        "height": 1.2,
-    },
-    "BalancerVault:flash_borrow": {
-        "shape": "house",
-        "fillcolor": DIAGRAM_COLORS[3],
-        "color": DIAGRAM_LINE_COLOR,
-        "fontcolor": "white",
-        "height": 1.2,
-    },
-    "BalancerVault:flash_repay": {
-        "shape": "invhouse",
-        "fillcolor": DIAGRAM_COLORS[3],
-        "color": DIAGRAM_LINE_COLOR,
-        "fontcolor": "white",
-        "height": 1.2,
     },
     "CurveSwapRouter": {
         "shape": "house",

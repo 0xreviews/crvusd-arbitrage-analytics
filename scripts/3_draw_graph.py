@@ -43,6 +43,10 @@ def main():
                     }
 
             for row in trades_data:
+                # # @follow-up
+                # if row["tx"] != "0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f":
+                #     continue
+
                 if row["tx"] in action_types_txs.keys():
                     action_tx_data = action_types_txs[row["tx"]]
                     index = action_tx_data["index"]

@@ -108,12 +108,13 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
         ) = detailed_trades_stat_daily(token_symbol=symbol)
 
         x_ticks = []
-        ticks_len = len(counts_dates)
-        ticks_interval = ticks_len // 5
-        for i in range(ticks_len):
-            if i % ticks_interval == 0 and i < ticks_len - 1.2 * ticks_interval:
-                x_ticks.append(counts_dates[i])
-        x_ticks.append(counts_dates[-1])
+        begin_xtick = counts_dates[0]
+        end_xtick = counts_dates[-1]
+        cur_xtick = begin_xtick
+        while cur_xtick <= end_xtick:
+            x_ticks.append(cur_xtick)
+            cur_xtick += timedelta(days=1)
+        x_ticks = [str(d.date()) for d in x_ticks]
 
         prices_date = []
         prices = []
@@ -244,7 +245,9 @@ def _draw_daily_bars_multi(
         bars.append(_bar)
         multiplier += 1
 
-    plt.xticks(x_ticks, font={"size": 16})
+    # plt.xticks(x_ticks, font={"size": 16}, rotation=70)
+    plt.xticks(x_ticks, font={"size": 13}, rotation=90)
+    ax1.set_xticklabels(x_ticks, rotation=90)
     chart_elements = line1 + bars
     ax1.legend(
         chart_elements,
@@ -278,8 +281,9 @@ def _draw_daily_stat(
     ax1.set_xlabel("date", font={"size": 24})
     ax1.set_ylabel("collateral price", font={"size": 24})
     ax1.grid(False)
+    ax2 = ax1.twinx()
 
-    line1 = ax1.plot(
+    line1 = ax2.plot(
         x0_list,
         y0_list,
         color=default_chart_colors[1],
@@ -287,17 +291,17 @@ def _draw_daily_stat(
         label="collateral price",
     )
 
-    ax2 = ax1.twinx()
-    bar1 = ax2.bar(
+    bar1 = ax1.bar(
         x1_list,
         y1_list,
         width=bar_width,
         alpha=0.7,
         label=y_axis_label,
     )
-    ax2.set_ylabel(y_axis_label, font={"size": 24})
+    ax1.set_ylabel(y_axis_label, font={"size": 24})
 
-    plt.xticks(x_ticks, font={"size": 16})
+    plt.xticks(x_ticks, font={"size": 12}, rotation=90)
+    ax1.set_xticklabels(x_ticks, font={"size": 13}, rotation=90)
     plt.subplots_adjust(left=0.05, right=0.95)
     chart_elements = line1 + [bar1]
     ax1.legend(
@@ -527,6 +531,7 @@ def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_d
 
     ax1.set_title(title, font={"size": 32}, pad=24)
     ax1.set_xlabel("range", font={"size": 24})
+    ax1.set_xticklabels(x_labels, font={"size": 16})
 
     _bar = ax1.bar(
         x_labels,

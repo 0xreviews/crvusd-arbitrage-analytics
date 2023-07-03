@@ -216,6 +216,10 @@ def wash_analytics_data(original_data):
     csv_lines = []
     json_data = []
     for i in range(len(original_data)):
+        # # @follow-up
+        # if original_data[i]["tx"] != "0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f":
+        #     continue
+
         row = original_data[i]
         summary, token_prices, tx_meta = generate_tx_summary(row["summary_original"])
 
