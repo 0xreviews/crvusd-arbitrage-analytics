@@ -76,11 +76,13 @@ def generate_flow_cell(token_flow_list):
                 }
             ]
 
+            action_groups = row["action_group"].split(",")
+            swap_pools = row["swap_pool"].split(",")
+
             # flash_repay: pool_B token_out repay to pool_A, then pool_B token_in (swap)
             if i > 0:
                 prev_row = token_flow_list[i - 1]
                 # multiple swap_pool
-                swap_pools = row["swap_pool"].split(",")
                 if (
                     len(swap_pools) == 2
                     and is_llamma_swap(swap_pools[0])
@@ -88,14 +90,16 @@ def generate_flow_cell(token_flow_list):
                 ):
                     # swap_pool 0 is LLAMMA
                     cells[-1]["next_edge_label"] = row["token_symbol"]
-                if "flash_repay:" in _cells[-1]["n"]:
+                if (
+                    "flash_repay:" in prev_row["action_group"]
+                    and len(prev_row["action_group"].split(",")) == 1
+                ):
                     if len(prev_row["swap_pool"].split(",")) == 2:
                         _cells += [cells.pop()]
 
             tmp_action_group = row["action_group"]
 
             # multiple action_group
-            action_groups = row["action_group"].split(",")
             if len(action_groups) == 2:
                 # 1. flash_borrow A
                 # ...
@@ -132,6 +136,24 @@ def generate_flow_cell(token_flow_list):
                 tmp_action_group = action_groups[0]
 
         cells += _cells
+
+        if len(cells) > 3:
+            if (
+                "flash_repay" in cells[-1]["n_label"]
+                and "flash_repay" in cells[-2]["n_label"]
+                and "flash_borrow" in cells[-3]["n_label"]
+                and cells[-1]["n_label"].replace("flash_repay", "")
+                == cells[-3]["n_label"].replace("flash_borrow", "")
+            ):
+                n_arbitragur = {
+                    "n": "%s_%s" % (i - 3, "arbitragur"),
+                    "n_label": "arbitragur",
+                    "prev_edge_label": "",
+                    "next_edge_label": "",
+                }
+                cells = cells[:-3] + [n_arbitragur] + cells[-3:]
+                _cells.append(n_arbitragur)
+                cells[-3]["prev_edge_label"] = ""
 
         tmp_graphs = sub_graphs[DIAGRAM_LAYOUT_NAME[0]]
         if (
