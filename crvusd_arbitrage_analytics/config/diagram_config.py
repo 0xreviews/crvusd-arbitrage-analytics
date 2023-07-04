@@ -1,7 +1,7 @@
 DIAGRAM_COLORS = ["#18c0c4", "#f62196", "#A267F5", "#f3907e", "#ffe46b", "#428449"]
 DIAGRAM_LINE_COLOR = "#fefeff"
 DIAGRAM_LAYOUT_NAME = ["Token in", "Soft-Liquidation", "Token out"]
-DIAGRAM_COINS = ["frxETH", "sFrxETH", "wstETH", "rETH", "weth"]
+DIAGRAM_COINS = ["crvUSD", "WETH", "frxETH", "sFrxETH", "wstETH", "rETH", "USDT", "USDC", "TUSD", "USDP", "FRAX"]
 DIAGRAM_NODE_CONFIG = {
     "tx_from": {
         "shape": "diamond",
@@ -70,6 +70,7 @@ DIAGRAM_NODE_CONFIG = {
 DIAGRAM_SUBGRAPH_WRAPPED_ETH = [
     "frxETH",
     "sFrxETH",
+    "stETH",
     "wstETH",
     "WETH",
     "rETH",

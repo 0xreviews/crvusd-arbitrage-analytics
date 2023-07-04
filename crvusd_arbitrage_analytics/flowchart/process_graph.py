@@ -194,6 +194,7 @@ def generate_flow_cell(token_flow_list):
 def process_subgraphs(G, sub_graphs_data):
     if G is None:
         return
+
     # init subgraphs
     for i in range(len(DIAGRAM_LAYOUT_NAME)):
         sg_name = DIAGRAM_LAYOUT_NAME[i]
@@ -291,6 +292,8 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
                 sg.has_node(prev_node)
                 and sg.has_node(node)
                 and sg.get_edge(prev_node, node) is not None
+                and "LLAMMA:" not in prev_node
+                and "LLAMMA:" not in next_node
             ):
                 _g = sg
 
@@ -402,6 +405,10 @@ def modify_edge(G, token_flow_list):
         node0_subgraph = ""
         node1_subgraph = ""
 
+        # Modify capitalization
+        for coin_name in DIAGRAM_COINS:
+            if e.attr["label"] == coin_name.lower():
+                e.attr["label"] = coin_name
         # margin edge label
         e.attr["label"] = "  " + e.attr["label"] + "  "
 
@@ -454,9 +461,7 @@ def process_shape(G, token_flow_list):
 def _process_node_attr(G, n):
     label = n.attr["label"]
 
-    if label in DIAGRAM_COINS:
-        label = "coin"
-    elif "flash_borrow:" in label:
+    if "flash_borrow:" in label:
         n.attr["label"] = "flash_borrow\\n" + label.split(":")[1]
         label = "flash_borrow"
     elif "flash_repay:" in label:
@@ -473,6 +478,8 @@ def _process_node_attr(G, n):
         label = "UniswapPool"
     elif label.split("_")[0] in DIAGRAM_SUBGRAPH_WRAPPED_ETH:
         label = "wrapped_eth"
+    elif label in DIAGRAM_COINS:
+        label = "coin"
 
     if label in DIAGRAM_NODE_CONFIG:
         cf = DIAGRAM_NODE_CONFIG[label]

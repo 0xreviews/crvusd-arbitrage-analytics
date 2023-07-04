@@ -93,10 +93,10 @@ def generate_flowchart(trade_data):
         ]
     )
     for sg in subgraphs.keys():
-        # n_to_del = G.get_subgraph(sg).nodes()
+        n_to_del = G.get_subgraph(sg).nodes()
+        for n in n_to_del:
+            G.remove_node(n)
         G.remove_subgraph(sg)
-        # for n in n_to_del:
-        #     G.remove_node(n)
 
     container_g_string = G.to_string()
             
