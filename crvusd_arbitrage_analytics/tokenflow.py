@@ -1,12 +1,7 @@
-from argparse import ArgumentError
-import json
 import sys
 import asyncio
-
 from analytics.detailed_trades import fetch_analytics_data_batch, wash_analytics_data
-from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR
 from flowchart.generate_flowchart import draw_graph_from_string, generate_flowchart
-from network.http import HTTP
 
 
 async def main():
