@@ -444,7 +444,7 @@ def detialed_trades_stat_dominance(token_symbol):
 
     fig.set_size_inches(18, 22)
     fig.tight_layout(pad=2)
-    fig.savefig("data/img/dominance_count_%s.png" % (token_symbol), dpi=100)
+    fig.savefig("data/img/dominance_%s.png" % (token_symbol), dpi=100)
 
 
 def detailed_trades_distribution(token_symbol):

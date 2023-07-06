@@ -1,3 +1,4 @@
+from argparse import ArgumentError
 import json
 import sys
 import asyncio
@@ -9,7 +10,18 @@ from network.http import HTTP
 
 
 async def main():
-    (_, tx, save_dot_dir) = sys.argv
+    argv_len = len(sys.argv)
+
+    if argv_len <= 1:
+        print("Usage:\npython crvusd_arbitrage_analytics/tokenflow.py [transactionHash] [png file save dir]")
+        return
+    if argv_len > 1:
+        tx = sys.argv[1]
+    if argv_len > 2:
+        save_dot_dir = sys.argv[2]
+    else:
+        save_dot_dir = "%s.dot" % (tx)
+    
     json_data = []
 
     txs = [

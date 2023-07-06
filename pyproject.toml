@@ -2,7 +2,7 @@
 name = "crvusd-arbitrage-analytics"
 version = "0.1.0"
 description = ""
-authors = ["0x-stan <744428333@qq.com>"]
+authors = ["0x-stan"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "crvusd_arbitrage_analytics"}]
