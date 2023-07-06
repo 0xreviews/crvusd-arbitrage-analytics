@@ -1,0 +1,211 @@
+strict digraph root {
+	graph [bb="0,0,497.5,82.75",
+		bgcolor="#212946",
+		cluster=true,
+		compound=true,
+		fontcolor=white,
+		fontsize=32,
+		label="LLAMMA soft liquidation flow chart
+
+",
+		labelloc=t,
+		layout=dot,
+		lheight=1.04,
+		lp="248.75,41.375",
+		lwidth=6.69,
+		pad=1,
+		rankdir=TB
+	];
+	node [color="#fefeff",
+		fillcolor=transparent,
+		fixedsize=False,
+		fontcolor=white,
+		fontsize=20,
+		height=1,
+		label="\N",
+		margin=0.15,
+		pad=10,
+		penwidth=2,
+		shape=ellipse,
+		style="filled,setlinewidth(3)",
+		width=1.5
+	];
+	edge [arrowsize=0.5,
+		color="#ffe46b",
+		fontcolor="#fefeff",
+		fontsize=20,
+		minlen=1.5,
+		penwidth=6,
+		style="filled,setlinewidth(3)",
+		weight=10
+	];
+subgraph "Token in" {
+	graph [bb="0,0,497.5,82.75",
+		bgcolor="#212946",
+		cluster=true,
+		color="#fefeff",
+		compound=true,
+		fillcolor=transparent,
+		fontcolor=white,
+		fontsize=32,
+		label="Token in",
+		labelloc=t,
+		layout=dot,
+		lheight=1.04,
+		lp="248.75,41.375",
+		lwidth=6.69,
+		margin=24,
+		pad=1,
+		penwidth=2,
+		rankdir=TB
+	];
+	node [color="#fefeff",
+		fillcolor=transparent,
+		fixedsize=False,
+		fontcolor=white,
+		fontsize=20,
+		height=1,
+		label="\N",
+		margin=0.15,
+		pad=10,
+		penwidth=2,
+		shape=ellipse,
+		style="filled,setlinewidth(3)",
+		width=1.5
+	];
+	edge [arrowsize=0.5,
+		color="#ffe46b",
+		fontcolor="#fefeff",
+		fontsize=20,
+		minlen=1.5,
+		penwidth=6,
+		style="filled,setlinewidth(3)",
+		weight=10
+	];
+	"0_flash_borrow:UniswapV3Pool-WETH-wstETH:fee_100:0"	[fillcolor="#A267F5",
+		label="flash_borrow\nUniswapV3Pool-WETH-wstETH",
+		shape=house];
+}
+
+subgraph "Soft-Liquidation" {
+	graph [bb="0,0,497.5,82.75",
+		bgcolor="#212946",
+		cluster=false,
+		color="#fefeff",
+		compound=true,
+		fillcolor=transparent,
+		fontcolor=white,
+		fontsize=32,
+		label="Soft-Liquidation",
+		labelloc=t,
+		layout=dot,
+		lheight=1.04,
+		lp="248.75,41.375",
+		lwidth=6.69,
+		margin=24,
+		pad=1,
+		penwidth=2,
+		rank=same,
+		rankdir=TB
+	];
+	node [color="#fefeff",
+		fillcolor=transparent,
+		fixedsize=False,
+		fontcolor=white,
+		fontsize=20,
+		height=1,
+		label="\N",
+		margin=0.15,
+		pad=10,
+		penwidth=2,
+		shape=ellipse,
+		style="filled,setlinewidth(3)",
+		width=1.5
+	];
+	edge [arrowsize=0.5,
+		color="#ffe46b",
+		fontcolor="#fefeff",
+		fontsize=20,
+		minlen=1.5,
+		penwidth=6,
+		style="filled,setlinewidth(3)",
+		weight=10
+	];
+	"1_LLAMMA:1"	[fillcolor="#428449",
+		label=LLAMMA,
+		shape=cylinder];
+	llamma_right_arrow	[fixedsize=true,
+		height=0,
+		shape=point,
+		style=invis];
+	"1_LLAMMA:1" -> llamma_right_arrow	[label="  crvUSD  "];
+	llamma_left_arrow	[fixedsize=true,
+		height=0,
+		shape=point,
+		style=invis];
+	llamma_left_arrow -> "1_LLAMMA:1"	[label="  wstETH  "];
+}
+
+subgraph "Token out" {
+	graph [bb="0,0,497.5,82.75",
+		bgcolor="#212946",
+		cluster=true,
+		color="#fefeff",
+		compound=true,
+		fillcolor=transparent,
+		fontcolor=white,
+		fontsize=32,
+		label="Token out",
+		labelloc=t,
+		layout=dot,
+		lheight=1.04,
+		lp="248.75,41.375",
+		lwidth=6.69,
+		margin=24,
+		pad=1,
+		penwidth=2,
+		rankdir=TB
+	];
+	node [color="#fefeff",
+		fillcolor=transparent,
+		fixedsize=False,
+		fontcolor=white,
+		fontsize=20,
+		height=1,
+		label="\N",
+		margin=0.15,
+		pad=10,
+		penwidth=2,
+		shape=ellipse,
+		style="filled,setlinewidth(3)",
+		width=1.5
+	];
+	edge [arrowsize=0.5,
+		color="#ffe46b",
+		fontcolor="#fefeff",
+		fontsize=20,
+		minlen=1.5,
+		penwidth=6,
+		style="filled,setlinewidth(3)",
+		weight=10
+	];
+	"3_CurveSwap:1"	[fillcolor="#f62196",
+		label="CurveStableSwap-crvUSD-USDC",
+		shape=cylinder];
+	"4_arbitragur"	[label=arbitragur,
+		shape=diamond];
+	"3_CurveSwap:1" -> "4_arbitragur"	[label="  USDC  "];
+	"5_flash_borrow:UniswapV3Pool-WETH-USDC:fee_500:1"	[fillcolor="#A267F5",
+		label="flash_borrow\nUniswapV3Pool-WETH-USDC",
+		shape=house];
+	"4_arbitragur" -> "5_flash_borrow:UniswapV3Pool-WETH-USDC:fee_500:1"	[label="    "];
+	"6_flash_repay:UniswapV3Pool-WETH-wstETH:fee_100:0"	[fillcolor="#A267F5",
+		label="flash_repay\nUniswapV3Pool-WETH-wstETH",
+		shape=invhouse];
+	"5_flash_borrow:UniswapV3Pool-WETH-USDC:fee_500:1" -> "6_flash_repay:UniswapV3Pool-WETH-wstETH:fee_100:0"	[label="  WETH  "];
+	"7_flash_repay:UniswapV3Pool-WETH-USDC:fee_500:1"	[fillcolor="#A267F5",
+		label="flash_repay\nUniswapV3Pool-WETH-USDC",
+		shape=invhouse];
+	"6_flash_repay:UniswapV3Pool-WETH-wstETH:fee_100:0" -> "7_flash_repay:UniswapV3Pool-WETH-USDC:fee_500:1"	[label="  USDC  "];
+}
+}
