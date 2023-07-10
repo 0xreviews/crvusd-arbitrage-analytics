@@ -29,6 +29,7 @@ COINGECKO_PRICE_HISTORICAL = "https://api.coingecko.com/api/v3/coins/{id}/market
 TOKEN_DECIMALS = {
     "eth": 18,
     "weth": 18,
+    "wbtc": 18,
     "frxeth": 18,
     "sfrxeth": 18,
     "steth": 18,
@@ -43,8 +44,12 @@ ETH_SWAP_POOLS_ALIAS = ["CurveStableSwap-ETH-FRXETH", "UniswapV3Pool-WETH-USDC"]
 SYMBOL_TO_ID = {
     "sfrxeth": "staked-frax-ether",
     "wsteth": "wrapped-steth",
+    "wbtc": "wrapped-btc",
+    "weth": "wrapped-eth",
 }
 BEGIN_DATE = {
     "sfrxeth": "2023-05-14 12:20",
     "wsteth": "2023-06-08 01:05",
+    "weth": "2023-06-26 08:51",
+    "wbtc": "2023-06-25 03:46",
 }

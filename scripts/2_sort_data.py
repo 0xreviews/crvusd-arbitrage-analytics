@@ -2,12 +2,10 @@ import json
 import pandas as pd
 
 from analytics.sort_trades import (
-    SPLIT_SYMBOL,
     sort_arbi_type,
     sort_arbi_type_stack,
     sort_arbitrage_data,
 )
-from utils.date import str_to_timestamp, timestamp_to_date
 
 
 def sort_data():

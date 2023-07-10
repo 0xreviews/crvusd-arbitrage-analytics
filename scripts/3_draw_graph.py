@@ -43,9 +43,9 @@ def main():
                     }
 
             for row in trades_data:
-                # # @follow-up
-                # if row["tx"] != "0x13165fd916ff13591002a6b3bbbcc58be73b2e57d2c971d0082880f94317e593":
-                #     continue
+                # @follow-up
+                if row["tx"] != "0x4c322d385aa874052db3810ea3961f1ccd7d8a98fc3b84f00aca04dfaa32898a":
+                    continue
 
                 if row["tx"] in action_types_txs.keys():
                     action_tx_data = action_types_txs[row["tx"]]

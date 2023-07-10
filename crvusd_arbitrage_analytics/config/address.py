@@ -8,6 +8,8 @@ ADDRESS_ALIAS = {
     "0x8472a9a7632b173c8cf3a86d3afec50c35548e76": "Controller-sFrxETH",
     "0x136e783846ef68c8bd00a3369f787df8d683a696": "LLAMMA-sFrxETH-crvUSD",
     "0x37417b2238aa52d0dd2d6252d989e728e8f706e4": "LLAMMA-wstETH-crvUSD",
+    "0x1681195c176239ac5e72d9aebacf5b2492e0c4ee": "LLAMMA-WETH-crvUSD",
+    "0xe0438eb3703bf871e31ce639bd351109c88666ea": "LLAMMA-WBTC-crvUSD",
     # token
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "eth",
     "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": "weth",

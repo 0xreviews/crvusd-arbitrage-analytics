@@ -9,13 +9,14 @@ from collector.coingecko.query import query_prices_historical
 
 async def get_prices_data():
     results = []
-    for symbol in ["sfrxeth", "wsteth"]:
+    for symbol in ["sfrxeth", "wsteth", "wbtc", "weth"]:
         raws = await query_prices_historical(token_symbol=symbol, save=True)
         results.append(raws)
     return results
 
+
 async def main():
-    for collateral in ["sFrxETH", "wstETH"]:
+    for collateral in ["sFrxETH", "wstETH", "wbtc", "weth"]:
         raw_save_dir = DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
             ".json", "_%s.json" % (collateral)
         )
@@ -28,8 +29,6 @@ async def main():
         )
 
         batch_size = 50
-        data_lines = []
-        json_data = []
         raws_data = []
 
         exists_data = None
@@ -61,6 +60,7 @@ async def main():
         with open(raw_save_dir, "w") as f:
             f.write(json.dumps(raws_data, indent=4))
 
+
 if __name__ == "__main__":
     asyncio.run(get_prices_data())
-    asyncio.run(main())
+    # asyncio.run(main())
