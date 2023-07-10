@@ -16,7 +16,7 @@ async def get_prices_data():
 
 
 async def main():
-    for collateral in ["sFrxETH", "wstETH", "wbtc", "weth"]:
+    for collateral in ["sFrxETH", "wstETH", "WBTC", "WETH"]:
         raw_save_dir = DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
             ".json", "_%s.json" % (collateral)
         )
@@ -63,4 +63,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(get_prices_data())
-    # asyncio.run(main())
+    asyncio.run(main())

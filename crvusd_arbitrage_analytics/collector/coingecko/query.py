@@ -25,6 +25,7 @@ async def query_prices_historical(
         "from": from_date,
         "to": to_date,
     }
+    # @todo
     # async with aiohttp.ClientSession() as session:
     #     async with session.get(url, params=parameters) as resp:
     resp = requests.get(url, params=parameters).json()

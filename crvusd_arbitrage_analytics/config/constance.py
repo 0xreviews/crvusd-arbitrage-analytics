@@ -44,8 +44,8 @@ ETH_SWAP_POOLS_ALIAS = ["CurveStableSwap-ETH-FRXETH", "UniswapV3Pool-WETH-USDC"]
 SYMBOL_TO_ID = {
     "sfrxeth": "staked-frax-ether",
     "wsteth": "wrapped-steth",
-    "wbtc": "wrapped-btc",
-    "weth": "wrapped-eth",
+    "wbtc": "wrapped-bitcoin",
+    "weth": "weth",
 }
 BEGIN_DATE = {
     "sfrxeth": "2023-05-14 12:20",
