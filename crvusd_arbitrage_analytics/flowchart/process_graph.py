@@ -145,15 +145,8 @@ def generate_flow_cell(token_flow_list):
                 and cells[-1]["n_label"].replace("flash_repay", "")
                 == cells[-3]["n_label"].replace("flash_borrow", "")
             ):
-                n_arbitragur = {
-                    "n": "%s_%s" % (i - 3, "arbitragur"),
-                    "n_label": "arbitragur",
-                    "prev_edge_label": "",
-                    "next_edge_label": "",
-                }
-                cells = cells[:-3] + [n_arbitragur] + cells[-3:]
-                _cells.append(n_arbitragur)
-                cells[-3]["prev_edge_label"] = ""
+                cells[-3]["n_label"] = cells[-3]["n_label"].split(":")[1]
+                cells.pop()
 
         tmp_graphs = sub_graphs[DIAGRAM_LAYOUT_NAME[0]]
         if (
@@ -187,7 +180,7 @@ def generate_flow_cell(token_flow_list):
         ]
         sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"].append(cells[0]["n"])
         sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"].append(cells[2]["n"])
-
+    
     return cells, sub_graphs
 
 
