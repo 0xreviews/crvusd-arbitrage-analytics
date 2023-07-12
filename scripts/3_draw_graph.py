@@ -4,7 +4,7 @@ from flowchart.generate_flowchart import draw_graph_from_string, generate_flowch
 
 
 def main():
-    for symbol in ["sFrxETH", "wstETH"]:
+    for symbol in ["sFrxETH", "wstETH", "WETH", "WBTC"]:
         dot_dir = "data/img/%s/dot/" % (symbol)
         png_dir = "data/img/%s/" % (symbol)
 

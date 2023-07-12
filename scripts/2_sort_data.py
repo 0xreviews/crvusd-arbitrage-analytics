@@ -1,4 +1,5 @@
 import json
+import os
 import pandas as pd
 
 from analytics.sort_trades import (
@@ -9,7 +10,7 @@ from analytics.sort_trades import (
 
 
 def sort_data():
-    for collateral in ["sFrxETH", "wstETH"]:
+    for collateral in ["sFrxETH", "wstETH", "WETH", "WBTC"]:
         with open(
             "data/detailed_trades_tokenflow_data_%s.json" % (collateral), "r"
         ) as f:
@@ -25,10 +26,14 @@ def sort_data():
                 save_json_dir="data/action_types_%s.json" % (collateral),
             )
 
+            folder_dir = "data/img/%s" % (collateral)
+            if not os.path.exists(folder_dir):
+                os.mkdir(folder_dir)
+
             sort_arbi_type_stack(
                 df,
                 arbi_type_data,
-                save_dir="data/img/%s/arbitrage_types_stack.png" % (collateral),
+                save_dir=folder_dir + "/arbitrage_types_stack.png",
             )
 
 

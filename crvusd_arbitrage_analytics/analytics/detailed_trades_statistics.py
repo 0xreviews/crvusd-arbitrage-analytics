@@ -31,6 +31,7 @@ def load_detailed_trades_df(token_symbol):
                 profit = float(summary["profit"])
                 revenue = float(summary["revenue"])
                 cost = float(summary["cost"])
+                is_sandwitch_victim = "PartialSandwich" in summary["types"]
 
                 if begin_date == "":
                     begin_date = get_date_from_timestamp(timestamp)
@@ -39,12 +40,14 @@ def load_detailed_trades_df(token_symbol):
                     {
                         "timestamp": timestamp,
                         "date": get_date_from_timestamp(timestamp),
-                        "tx_from": address_tags["tx_from"],
-                        "arbitrage_contract": address_tags["arbitrage_contract"],
                         "profit": profit,
                         "revenue": revenue,
                         "cost": cost,
                         "liquidate_volume": liquidate_volume,
+                        "is_sandwitch_victim": is_sandwitch_victim,
+                        "tx_from": address_tags["tx_from"],
+                        # "arbitrage_contract": address_tags["arbitrage_contract"],
+                        "tx": row["tx"],
                     }
                 )
 
@@ -71,25 +74,26 @@ def detailed_trades_stat_daily(token_symbol):
     volumes = []
     gas_costs = []
     for d in counts_dates:
-        profits.append(
-            np.sum([float(n) for n in df[df["date"] == str(d.date())]["profit"].values])
-        )
-        revenues.append(
-            np.sum(
-                [float(n) for n in df[df["date"] == str(d.date())]["revenue"].values]
-            )
-        )
-        volumes.append(
-            np.sum(
-                [
-                    float(n)
-                    for n in df[df["date"] == str(d.date())]["liquidate_volume"].values
-                ]
-            )
-        )
-        gas_costs.append(
-            np.sum([float(n) for n in df[df["date"] == str(d.date())]["cost"].values])
-        )
+        _profits = []
+        _revenues = []
+        _volumes = []
+        _gascost = []
+        for index in df[df["date"] == str(d.date())].index:
+            # @follow-up exclude unusual losses
+            row = df.loc[index]
+            if float(row["revenue"]) < 0 and row["is_sandwitch_victim"]:
+                _profits.append(0)
+                _revenues.append(0)
+            else:
+                _profits.append(row["profit"])
+                _revenues.append(row["revenue"])
+            _volumes.append(row["liquidate_volume"])
+            _gascost.append(row["cost"])
+
+        profits.append(np.sum(_profits))
+        revenues.append(np.sum(_revenues))
+        volumes.append(np.sum(_volumes))
+        gas_costs.append(np.sum(_gascost))
 
     return end_ts, counts_dates, counts_values, profits, revenues, volumes, gas_costs
 
@@ -114,7 +118,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
         while cur_xtick <= end_xtick:
             x_ticks.append(cur_xtick)
             cur_xtick += timedelta(days=1)
-        x_ticks = [str(d.date()) for d in x_ticks]
+        x_ticks = [d.date() for d in x_ticks]
 
         prices_date = []
         prices = []
@@ -245,7 +249,6 @@ def _draw_daily_bars_multi(
         bars.append(_bar)
         multiplier += 1
 
-    # plt.xticks(x_ticks, font={"size": 16}, rotation=70)
     plt.xticks(x_ticks, font={"size": 13}, rotation=90)
     ax1.set_xticklabels(x_ticks, rotation=90)
     chart_elements = line1 + bars
@@ -452,7 +455,7 @@ def detailed_trades_distribution(token_symbol):
 
     # volume
     # range unit k
-    volume_ranges = [5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500]
+    volume_ranges = [5, 10, 20, 30, 40, 50, 100, 200]
     volume_x_labels = (
         ["0-%dk" % (volume_ranges[0])]
         + [
@@ -462,15 +465,15 @@ def detailed_trades_distribution(token_symbol):
         + [">%dk" % (volume_ranges[-1])]
     )
 
-    # volume
-    revenue_ranges = [5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500]
+    # revenue
+    revenue_ranges = [5, 10, 20, 30, 40, 50, 100, 200, 300]
     revenue_x_labels = (
         ["0-%d" % (revenue_ranges[0])]
         + [
             "%d-%d" % (revenue_ranges[i], revenue_ranges[i + 1])
             for i in range(len(revenue_ranges) - 1)
         ]
-        + [">%d" % (volume_ranges[-1])]
+        + [">%d" % (revenue_ranges[-1])]
     )
 
     # gascost

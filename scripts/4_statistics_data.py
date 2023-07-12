@@ -7,7 +7,7 @@ from analytics.detailed_trades_statistics import (
 
 
 if __name__ == "__main__":
-    for symbol in ["sfrxeth", "wsteth"]:
+    for symbol in ["sfrxeth", "wsteth", "weth", "wbtc"]:
         draw_daily_stat(symbol)
         detialed_trades_stat_dominance(symbol)
         detailed_trades_distribution(symbol)
