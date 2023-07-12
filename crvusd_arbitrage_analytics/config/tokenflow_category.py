@@ -2,11 +2,13 @@
 CURVE_ROUTER_PATTERN = "CurveSwapRouter"
 CURVE_SWAP_PATTERN = "^(CurveStableSwap|Curve3Pool|CurveCryptoSwap|CurveTriCrypto|CurveTriCryptoNG)(-[0-9a-zA-Z]+)+$"
 UNISWAP_V3_SWAP_PATTERN = "^UniswapV3Pool(-[0-9a-zA-Z]+)+(:fee_[0-9]+)?$"
+UNISWAP_V2_SWAP_PATTERN = "^UniswapV2Pool(-[0-9a-zA-Z]+)+$"
 LLAMMA_SWAP_PATTERN = "^LLAMMA(-[0-9a-zA-Z]+)+$"
 PANCAKE_SWAP_PATTERN = "^PancakeV3Pool(-[0-9a-zA-Z]+)+"
 BALANCER_VAULT_PATTERN = "^BalancerVault"
 SOLIDLY_SWAP_PATTERN = "^SolidlySwap(-[0-9a-zA-Z]+)+"
 MAVERICK_SWAP_PATTERN = "^MaverickPool(-[0-9a-zA-Z]+)+"
+DFX_SWAP_PATTERN = "^DFXPool(-[0-9a-zA-Z]+)+"
 
 # Token flow
 WETH_FLOW = [
@@ -78,6 +80,11 @@ MAVERRICK_SWAP_FLOW = [
     "MaverickSwap:token_in",
     "MaverickSwap:token_out",
 ]
+DFX_SWAP_FLOW = [
+    "DFXSwap:token_in",
+    "DFXSwap:token_out",
+    "DFX_to_beneficiary",
+]
 
 ACTION_GROUP_TYPE = [
     CURVE_ROUTER_FLOW,
@@ -89,10 +96,11 @@ ACTION_GROUP_TYPE = [
     PANCAKE_SWAP_FLOW,
     SOLIDLY_SWAP_FLOW,
     BALANCER_VAULT_FLOW,
-    MAVERRICK_SWAP_FLOW,
     WETH_FLOW,
     RETH_FLOW,
     FRXETH_FLOW,
+    MAVERRICK_SWAP_FLOW,
+    DFX_SWAP_FLOW,
 ]
 
 ACTION_GROUP_TAG = ["begin", "doing", "end"]
@@ -105,6 +113,7 @@ ACTION_GROUP_SWAP_TYPE = [
     "PancakeSwap",
     "SolidlySwap",
     "MaverickSwap",
+    "DFXSwap",
 ]
 
 
@@ -117,6 +126,7 @@ SWAPPOOL_TYPE = [
     "SolidlySwapPool",
     "BalancerVault",
     "MaverickPool",
+    "DFXPool",
 ]
 FLASH_POOL_TYPE = [
     "UniswapSwap",

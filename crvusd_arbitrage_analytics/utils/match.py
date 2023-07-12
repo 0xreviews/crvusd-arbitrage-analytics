@@ -10,10 +10,12 @@ from config.tokenflow_category import (
     BALANCER_VAULT_PATTERN,
     CURVE_ROUTER_PATTERN,
     CURVE_SWAP_PATTERN,
+    DFX_SWAP_PATTERN,
     LLAMMA_SWAP_PATTERN,
     MAVERICK_SWAP_PATTERN,
     PANCAKE_SWAP_PATTERN,
     SOLIDLY_SWAP_PATTERN,
+    UNISWAP_V2_SWAP_PATTERN,
     UNISWAP_V3_SWAP_PATTERN,
 )
 
@@ -67,8 +69,9 @@ def is_curve_swap(string) -> Boolean:
 
 
 def is_uniswap_swap(string) -> Boolean:
-    pattern = re.compile(UNISWAP_V3_SWAP_PATTERN)
-    return pattern.match(string) != None
+    pattern0 = re.compile(UNISWAP_V3_SWAP_PATTERN)
+    pattern1 = re.compile(UNISWAP_V2_SWAP_PATTERN)
+    return pattern0.match(string) != None or pattern1.match(string) != None
 
 
 def is_llamma_swap(string) -> Boolean:
@@ -92,6 +95,10 @@ def is_solidly_swap(string) -> Boolean:
 
 def is_maverick_swap(string) -> Boolean:
     pattern = re.compile(MAVERICK_SWAP_PATTERN)
+    return pattern.match(string) != None
+
+def is_dfx_swap(string) -> Boolean:
+    pattern = re.compile(DFX_SWAP_PATTERN)
     return pattern.match(string) != None
 
 

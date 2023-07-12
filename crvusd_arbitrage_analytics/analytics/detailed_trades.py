@@ -127,7 +127,7 @@ def generate_token_flow(transfers, address_tags):
             swap_type,
             token_symbol,
             swap_flow_list,
-        ) = match_swap_pool_action(i, transfers)
+        ) = match_swap_pool_action(i, transfers, address_tags)
 
         action_row = ["", ""]
 

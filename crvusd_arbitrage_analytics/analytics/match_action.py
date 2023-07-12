@@ -4,6 +4,7 @@ from utils.match import (
     is_balancer_vault,
     is_curve_router,
     is_curve_swap,
+    is_dfx_swap,
     is_llamma_swap,
     is_maverick_swap,
     is_pancake_swap,
@@ -17,6 +18,7 @@ from config.tokenflow_category import (
     CURVE_ROUTER_FLOW,
     CURVE_SWAP_FLOW,
     CURVE_SWAP_WETH_FLOW,
+    DFX_SWAP_FLOW,
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
     MAVERRICK_SWAP_FLOW,
@@ -182,7 +184,7 @@ def match_frxeth_action(row_step, transfers):
 
 
 # return pool_type_index, pool_type, swap_pool, swap_type_index, swap_type, token_symbol
-def match_swap_pool_action(row_step, transfers):
+def match_swap_pool_action(row_step, transfers, address_tags):
     row = transfers[row_step]
 
     f_alias = get_address_alias(row["from"])
@@ -264,11 +266,20 @@ def match_swap_pool_action(row_step, transfers):
     if is_maverick_swap(f_alias):
         pool_type = 7
         swap_pool.append(f_alias)
-        swap_in = True
+        swap_in = False
     if is_maverick_swap(t_alias):
         pool_type = 7
         swap_pool.append(t_alias)
+        swap_in = True
+    # DFXPool
+    if is_dfx_swap(f_alias):
+        pool_type = 8
+        swap_pool.append(f_alias)
         swap_in = False
+    if is_dfx_swap(t_alias):
+        pool_type = 8
+        swap_pool.append(t_alias)
+        swap_in = True
 
     if pool_type in range(len(SWAPPOOL_TYPE)):
         swap_type_index = 0 if swap_in else 1
@@ -331,6 +342,11 @@ def match_swap_pool_action(row_step, transfers):
             swap_flow_list = BALANCER_VAULT_FLOW
         elif pool_type == 7:
             swap_flow_list = MAVERRICK_SWAP_FLOW
+        elif pool_type == 8:
+            swap_flow_list = DFX_SWAP_FLOW
+            if row["to"] == address_tags["tx_beneficiary"]:
+                swap_type_index = 2
+
 
         return (
             pool_type,
