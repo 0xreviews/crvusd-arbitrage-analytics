@@ -8,7 +8,7 @@ from config.filename_config import (
 
 
 if __name__ == "__main__":
-    for collateral in ["sFrxETH", "wstETH"]:
+    for collateral in ["sFrxETH", "wstETH", "WBTC", "WETH"]:
         json_data, csv_lines = wash_analytics_data_from_file(
             original_raw_data_dir=DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
                 ".json", "_%s.json" % (collateral)

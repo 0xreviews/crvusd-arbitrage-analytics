@@ -28,7 +28,7 @@ async def main():
             save_dir=DEFAUT_TRADES_DATA_DIR,
         )
 
-        batch_size = 50
+        batch_size = 30
         raws_data = []
 
         exists_data = None
@@ -55,12 +55,12 @@ async def main():
             txs = all_txs[begin_index:end_index]
             raws = await fetch_analytics_data_batch(txs)
             raws_data += raws
-            time.sleep(0.1)
+            time.sleep(0.3)
 
         with open(raw_save_dir, "w") as f:
             f.write(json.dumps(raws_data, indent=4))
 
 
 if __name__ == "__main__":
-    asyncio.run(get_prices_data())
+    # asyncio.run(get_prices_data())
     asyncio.run(main())

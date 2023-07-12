@@ -15,11 +15,11 @@ from flowchart.process_graph import (
 )
 
 
-def generate_flowchart(trade_data):
+def generate_flowchart(trade_data, title="soft liquidation flow chart"):
     token_flow_list = trade_data["token_flow_list"]
     G = pgv.AGraph(
         name="root",
-        label="LLAMMA soft liquidation flow chart\n\n",
+        label=title,
         directed="true",
         layout="dot",
         cluster="true",
@@ -70,6 +70,7 @@ def generate_flowchart(trade_data):
                 l = cell["prev_edge_label"]
             if not G.has_edge(prev_cell["n"], cell["n"]):
                 G.add_edge(prev_cell["n"], cell["n"], label=l)
+        
 
     process_subgraphs(G, sub_graphs_data)
 

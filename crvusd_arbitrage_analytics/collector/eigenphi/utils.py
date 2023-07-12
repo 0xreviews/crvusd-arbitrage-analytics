@@ -11,6 +11,8 @@ def get_eigenphi_tokenflow(resp):
         "tx_beneficiary": "",
         "tx_miner": "",
         "arbitrage_contract": "",
+        "EOA_0": "",
+        "EOA_1": "",
     }
     for i in range(len(resp["addressTags"])):
         addr = resp["addressTags"][i]["address"]
@@ -24,15 +26,30 @@ def get_eigenphi_tokenflow(resp):
                 elif tags[j]["value"] == "miner":
                     address_tags["tx_miner"] = addr
             elif tags[j]["categoryName"] == "AddressType":
-                if tags[j]["value"] == "EOA" and address_tags["tx_from"] == addr:
-                    address_tags["tx_beneficiary"] = addr
+                if tags[j]["value"] == "EOA":
+                    if address_tags["tx_from"] == addr:
+                        address_tags["tx_beneficiary"] = addr
+                    elif (
+                        address_tags["tx_beneficiary"] == ""
+                        and table_rows[0]["address"] == addr
+                    ):
+                        address_tags["tx_beneficiary"] = addr
+
+                    if address_tags["EOA_0"] == "":
+                        address_tags["EOA_0"] = addr
+                    elif address_tags["EOA_1"] == "":
+                        address_tags["EOA_1"] = addr
+
                 elif (
                     tags[j]["value"] == "Contract"
-                    and address_tags["tx_to"] == addr
+                    # and address_tags["tx_to"] == addr
                     and address_tags["tx_beneficiary"] != addr
+                    and address_tags["arbitrage_contract"] == ""
                     and get_address_alias(addr) == ""
                 ):
                     address_tags["arbitrage_contract"] = addr
+            elif tags[j]["categoryName"] == "Others" and tags[j]["value"] == "leaf":
+                address_tags["tx_beneficiary"] = addr
 
     transfers = []
     for i in range(len(resp["transfers"])):
@@ -63,10 +80,12 @@ def eigenphi_address_alias(addr, address_tags):
     _alias = get_address_alias(addr)
     if _alias == "":
         for key in [
+            "EOA_0",
+            "EOA_1",
+            "tx_beneficiary",
+            "tx_miner",
             "tx_from",
             "tx_to",
-            # "tx_beneficiary",
-            "tx_miner",
             "arbitrage_contract",
         ]:
             value = address_tags[key]

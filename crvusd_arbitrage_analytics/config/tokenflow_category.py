@@ -6,6 +6,7 @@ LLAMMA_SWAP_PATTERN = "^LLAMMA(-[0-9a-zA-Z]+)+$"
 PANCAKE_SWAP_PATTERN = "^PancakeV3Pool(-[0-9a-zA-Z]+)+"
 BALANCER_VAULT_PATTERN = "^BalancerVault"
 SOLIDLY_SWAP_PATTERN = "^SolidlySwap(-[0-9a-zA-Z]+)+"
+MAVERICK_SWAP_PATTERN = "^MaverickPool(-[0-9a-zA-Z]+)+"
 
 # Token flow
 WETH_FLOW = [
@@ -73,6 +74,10 @@ SOLIDLY_SWAP_FLOW = [
     "SolidlySwap:token_out",
 ]
 BALANCER_VAULT_FLOW = ["BalancerVault:token_out", "BalancerVault:token_in"]
+MAVERRICK_SWAP_FLOW = [
+    "MaverickSwap:token_in",
+    "MaverickSwap:token_out",
+]
 
 ACTION_GROUP_TYPE = [
     CURVE_ROUTER_FLOW,
@@ -84,6 +89,7 @@ ACTION_GROUP_TYPE = [
     PANCAKE_SWAP_FLOW,
     SOLIDLY_SWAP_FLOW,
     BALANCER_VAULT_FLOW,
+    MAVERRICK_SWAP_FLOW,
     WETH_FLOW,
     RETH_FLOW,
     FRXETH_FLOW,
@@ -98,6 +104,7 @@ ACTION_GROUP_SWAP_TYPE = [
     "UniswapSwap",
     "PancakeSwap",
     "SolidlySwap",
+    "MaverickSwap",
 ]
 
 
@@ -109,6 +116,7 @@ SWAPPOOL_TYPE = [
     "PancakePool",
     "SolidlySwapPool",
     "BalancerVault",
+    "MaverickPool",
 ]
 FLASH_POOL_TYPE = [
     "UniswapSwap",

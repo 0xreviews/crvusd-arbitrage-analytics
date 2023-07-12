@@ -30,6 +30,7 @@ def main():
             "data/detailed_trades_tokenflow_data_%s.json" % (symbol), "r"
         ) as trades_data_file:
             trades_data = json.load(trades_data_file)
+            trades_data_len = len(trades_data)
 
             with open("data/action_types_%s.json" % (symbol)) as action_types_file:
                 action_types = json.load(action_types_file)[:10]
@@ -44,7 +45,10 @@ def main():
 
             for row in trades_data:
                 # # @follow-up
-                # if row["tx"] != "0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f":
+                # if (
+                #     row["tx"]
+                #     != "0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f"
+                # ):
                 #     continue
 
                 if row["tx"] in action_types_txs.keys():
@@ -53,7 +57,12 @@ def main():
                     count = action_tx_data["count"]
                     tx_0 = action_tx_data["tx_0"]
 
-                    G_string = generate_flowchart(row)
+                    G_string = generate_flowchart(
+                        row,
+                        title="LLAMMA(%s) Soft-Liquidation Tokenflow No.%d Proportion %.2f%% \n\n" % (
+                            symbol, index + 1, count / trades_data_len * 100
+                        ),
+                    )
                     draw_graph_from_string(
                         G_string,
                         save_dot_dir="data/img/%s/dot/%s_%s_%s.dot"

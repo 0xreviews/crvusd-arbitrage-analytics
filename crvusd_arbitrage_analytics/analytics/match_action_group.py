@@ -66,23 +66,6 @@ def match_action_group(token_flow_list):
                 "%s:%d" % (group_name, group_count[tmp_group_index])
             )
 
-        # add action_group tag
-
-        # # CurveRouterSwap group tag
-        # if tmp_group_index == 0:
-        #     if i == tmp_begin:
-        #         action_group_item = [
-        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[0])
-        #         ] + action_group_item
-        #     elif i == tmp_end:
-        #         action_group_item = [
-        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[2])
-        #         ] + action_group_item
-        #     else:
-        #         action_group_item = [
-        #             "CurveRouter:%s" % (ACTION_GROUP_TAG[1])
-        #         ] + action_group_item
-
         token_flow_list[i]["action_group"] = ",".join(action_group_item)
 
     token_flow_list = match_curve_swap_special_group(

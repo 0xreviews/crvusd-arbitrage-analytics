@@ -5,6 +5,7 @@ from utils.match import (
     is_curve_router,
     is_curve_swap,
     is_llamma_swap,
+    is_maverick_swap,
     is_pancake_swap,
     is_solidly_swap,
     is_uniswap_swap,
@@ -18,6 +19,7 @@ from config.tokenflow_category import (
     CURVE_SWAP_WETH_FLOW,
     FRXETH_FLOW,
     LLAMMA_SWAP_FLOW,
+    MAVERRICK_SWAP_FLOW,
     PANCAKE_SWAP_FLOW,
     SOLIDLY_SWAP_FLOW,
     SWAPPOOL_TYPE,
@@ -258,6 +260,15 @@ def match_swap_pool_action(row_step, transfers):
         pool_type = 6
         swap_pool.append(t_alias)
         swap_in = False
+    # MaverickPool
+    if is_maverick_swap(f_alias):
+        pool_type = 7
+        swap_pool.append(f_alias)
+        swap_in = True
+    if is_maverick_swap(t_alias):
+        pool_type = 7
+        swap_pool.append(t_alias)
+        swap_in = False
 
     if pool_type in range(len(SWAPPOOL_TYPE)):
         swap_type_index = 0 if swap_in else 1
@@ -318,6 +329,8 @@ def match_swap_pool_action(row_step, transfers):
             swap_flow_list = SOLIDLY_SWAP_FLOW
         elif pool_type == 6:
             swap_flow_list = BALANCER_VAULT_FLOW
+        elif pool_type == 7:
+            swap_flow_list = MAVERRICK_SWAP_FLOW
 
         return (
             pool_type,

@@ -11,6 +11,7 @@ from config.tokenflow_category import (
     CURVE_ROUTER_PATTERN,
     CURVE_SWAP_PATTERN,
     LLAMMA_SWAP_PATTERN,
+    MAVERICK_SWAP_PATTERN,
     PANCAKE_SWAP_PATTERN,
     SOLIDLY_SWAP_PATTERN,
     UNISWAP_V3_SWAP_PATTERN,
@@ -87,6 +88,10 @@ def is_balancer_vault(string) -> Boolean:
 
 def is_solidly_swap(string) -> Boolean:
     pattern = re.compile(SOLIDLY_SWAP_PATTERN)
+    return pattern.match(string) != None
+
+def is_maverick_swap(string) -> Boolean:
+    pattern = re.compile(MAVERICK_SWAP_PATTERN)
     return pattern.match(string) != None
 
 

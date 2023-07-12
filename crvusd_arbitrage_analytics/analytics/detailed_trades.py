@@ -217,7 +217,7 @@ def wash_analytics_data(original_data):
     json_data = []
     for i in range(len(original_data)):
         # # @follow-up
-        # if original_data[i]["tx"] != "0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f":
+        # if original_data[i]["tx"] != "0xebf1ac9c93f7af806120d15eaee1994fce511ef8ddb71b2c586ede38e6a3dc11":
         #     continue
 
         row = original_data[i]
