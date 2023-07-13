@@ -5,7 +5,7 @@ from config.address import (
     ADDRESS_ALIAS,
     ADDRESS_PATTERN,
 )
-from config.constance import (TOKEN_DECIMALS, ETH_SWAP_POOLS_ALIAS)
+from config.constance import TOKEN_DECIMALS, ETH_SWAP_POOLS_ALIAS
 from config.tokenflow_category import (
     BALANCER_VAULT_PATTERN,
     CURVE_ROUTER_PATTERN,
@@ -17,6 +17,8 @@ from config.tokenflow_category import (
     SOLIDLY_SWAP_PATTERN,
     UNISWAP_V2_SWAP_PATTERN,
     UNISWAP_V3_SWAP_PATTERN,
+    ONEINCH_ROUTER_PATTERN,
+    ONEINCH_EXECUTOR_PATTERN,
 )
 
 
@@ -46,10 +48,10 @@ def is_address_zero(address) -> Boolean:
     return get_address_alias(address) == "ADDRESS_ZERO"
 
 
-def is_weth_or_frxeth(address) -> Boolean:
+def is_wrapped_eth(address) -> Boolean:
     if is_address(address) != True:
         return False
-    return get_address_alias(address) in ["weth", "frxETH"]
+    return get_address_alias(address) in ["weth", "stETH", "frxETH"]
 
 
 def is_eth_swap_pool(address) -> Boolean:
@@ -93,9 +95,11 @@ def is_solidly_swap(string) -> Boolean:
     pattern = re.compile(SOLIDLY_SWAP_PATTERN)
     return pattern.match(string) != None
 
+
 def is_maverick_swap(string) -> Boolean:
     pattern = re.compile(MAVERICK_SWAP_PATTERN)
     return pattern.match(string) != None
+
 
 def is_dfx_swap(string) -> Boolean:
     pattern = re.compile(DFX_SWAP_PATTERN)
@@ -109,7 +113,20 @@ def is_swap_pool(string) -> Boolean:
         or is_uniswap_swap(string)
         or is_pancake_swap(string)
         or is_solidly_swap(string)
+        or is_maverick_swap(string)
+        or is_dfx_swap(string)
     )
+
+
+
+def is_1inch_router(string) -> Boolean:
+    pattern = re.compile(ONEINCH_ROUTER_PATTERN)
+    return pattern.match(string) != None
+
+
+def is_1inch_executor(string) -> Boolean:
+    pattern = re.compile(ONEINCH_EXECUTOR_PATTERN)
+    return pattern.match(string) != None
 
 
 def get_token_by_swap_name(string) -> List[str]:

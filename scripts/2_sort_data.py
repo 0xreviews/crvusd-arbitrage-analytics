@@ -15,7 +15,7 @@ def sort_data():
             "data/detailed_trades_tokenflow_data_%s.json" % (collateral), "r"
         ) as f:
             trades_data = json.load(f)
-            arbi_type_data = sort_arbitrage_data(trades_data)
+            arbi_type_data, sort_type_count = sort_arbitrage_data(trades_data)
 
             df = pd.DataFrame(arbi_type_data)
 
@@ -31,8 +31,9 @@ def sort_data():
                 os.mkdir(folder_dir)
 
             sort_arbi_type_stack(
+                collateral,
                 df,
-                arbi_type_data,
+                sort_type_count,
                 save_dir=folder_dir + "/arbitrage_types_stack.png",
             )
 

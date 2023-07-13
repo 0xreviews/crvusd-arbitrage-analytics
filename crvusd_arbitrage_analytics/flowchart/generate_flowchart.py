@@ -56,7 +56,6 @@ def generate_flowchart(trade_data, title="soft liquidation flow chart"):
     G.edge_attr["fontsize"] = 20
     G.edge_attr["fontcolor"] = DIAGRAM_LINE_COLOR
 
-
     cells, sub_graphs_data = generate_flow_cell(token_flow_list)
 
     for i in range(len(cells)):

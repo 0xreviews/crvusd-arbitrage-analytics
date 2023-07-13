@@ -2,6 +2,7 @@ import csv
 import json
 import os
 import re
+import numpy as np
 import matplotlib.pyplot as plt
 
 from utils.date import timestamp_to_date
@@ -11,12 +12,12 @@ plt.style.use(
 )
 default_chart_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 
-SPLIT_SYMBOL = "\n"
-GROUP_KEY = "swap_pools"
+SPLIT_SYMBOL = ","
 
 
 def sort_arbitrage_data(trades_data):
     arbi_type_data = []
+    sort_type_count = {}
 
     for i in range(len(trades_data)):
         row = trades_data[i]
@@ -32,8 +33,11 @@ def sort_arbitrage_data(trades_data):
         for j in range(len(row["token_flow_list"])):
             item = row["token_flow_list"][j]
 
-            if re.compile("(call_arbi_contract|miner|beneficiary)").match(
-                item["action_type"]
+            if (
+                re.compile("(call_arbi_contract|miner|beneficiary)").match(
+                    item["action_type"]
+                )
+                or item["action_type"] == ""
             ):
                 continue
 
@@ -45,6 +49,8 @@ def sort_arbitrage_data(trades_data):
                 str(item["flash_pair"]) if "flash_pair" in item.keys() else ""
             )
 
+        sort_type_value = SPLIT_SYMBOL.join(action_types + token_path)
+
         arbi_type_data.append(
             {
                 "tx": tx,
@@ -54,14 +60,19 @@ def sort_arbitrage_data(trades_data):
                 "swap_pools": SPLIT_SYMBOL.join(swap_pools),
                 "action_groups": SPLIT_SYMBOL.join(action_groups),
                 "flash_pairs": SPLIT_SYMBOL.join(flash_pairs),
+                "sort_type_value": sort_type_value,
             }
         )
-    
-    return arbi_type_data
+
+        if sort_type_value not in sort_type_count:
+            sort_type_count[sort_type_value] = 0
+        sort_type_count[sort_type_value] += 1
+
+    return arbi_type_data, sort_type_count
 
 
 def sort_arbi_type(df, save_csv_dir, save_json_dir):
-    group = df.groupby(by=GROUP_KEY)
+    group = df.groupby(by=["action_types", "token_path"])
 
     action_types_sort = []
     i = 0
@@ -76,6 +87,7 @@ def sort_arbi_type(df, save_csv_dir, save_json_dir):
                 "token_path": g[1]["token_path"].values[0],
                 "action_groups": g[1]["action_groups"].values[0],
                 "flash_pairs": g[1]["flash_pairs"].values[0],
+                "sort_type_value": g[1]["sort_type_value"].values[0],
             }
         )
         i += 1
@@ -84,6 +96,32 @@ def sort_arbi_type(df, save_csv_dir, save_json_dir):
 
     with open(save_csv_dir, "w") as action_types_file:
         writer = csv.writer(action_types_file)
+        csv_rows = []
+        for row in action_types_sort:
+            v = {}
+            v["index"] = row["index"]
+            v["count"] = row["count"]
+            v["tx_0"] = row["tx_0"]
+            v["action_types"] = replace_split_symbol(
+                row["action_types"], SPLIT_SYMBOL, "\n"
+            )
+            v["swap_pools"] = replace_split_symbol(
+                row["swap_pools"], SPLIT_SYMBOL, "\n"
+            )
+            v["token_path"] = replace_split_symbol(
+                row["token_path"], SPLIT_SYMBOL, "\n"
+            )
+            v["action_groups"] = replace_split_symbol(
+                row["action_groups"], SPLIT_SYMBOL, "\n"
+            )
+            v["flash_pairs"] = replace_split_symbol(
+                row["flash_pairs"], SPLIT_SYMBOL, "\n"
+            )
+            v["sort_type_value"] = replace_split_symbol(
+                row["sort_type_value"], SPLIT_SYMBOL, "\n"
+            )
+            csv_rows.append(v.values())
+
         writer.writerows(
             [
                 [
@@ -97,7 +135,7 @@ def sort_arbi_type(df, save_csv_dir, save_json_dir):
                     "flash_pair",
                 ]
             ]
-            + [item.values() for item in action_types_sort]
+            + csv_rows
         )
 
     with open(save_json_dir, "w") as action_types_file:
@@ -106,33 +144,33 @@ def sort_arbi_type(df, save_csv_dir, save_json_dir):
                 "index": item["index"],
                 "count": int(item["count"]),
                 "tx_0": item["tx_0"],
-                "action_types": item["action_types"].split(SPLIT_SYMBOL),
-                "swap_pools": item["swap_pools"].split(SPLIT_SYMBOL),
-                "token_path": item["token_path"].split(SPLIT_SYMBOL),
-                "action_groups": item["action_groups"].split(SPLIT_SYMBOL),
-                "flash_pairs": item["flash_pairs"].split(SPLIT_SYMBOL),
+                "action_types": item["action_types"],
+                "swap_pools": item["swap_pools"],
+                "token_path": item["token_path"],
+                "action_groups": item["action_groups"],
+                "flash_pairs": item["flash_pairs"],
             }
             for item in action_types_sort
         ]
         action_types_file.write(json.dumps(json_data, indent=4))
-    
+
     return json_data
 
-def sort_arbi_type_stack(df, sort_arbi_type_data, save_dir):
+
+def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
     # sort by date
-    df_dates = [
-        timestamp_to_date(int(item)).date() for item in list(df["timestamp"])
-    ]
+    df_dates = [timestamp_to_date(int(item)).date() for item in list(df["timestamp"])]
     df["date"] = df_dates
 
+    type_rank = list(sort_type_count.items())
+    type_rank.sort(key=lambda x: x[1], reverse=True)
+    type_rank = [x[0] for x in type_rank]
 
-    arbi_types = {}
-    for i in range(len(sort_arbi_type_data)):
-        swap_pools = sort_arbi_type_data[i]["swap_pools"]
-        arbi_t = SPLIT_SYMBOL.join(swap_pools)
-        arbi_types[arbi_t] = i
-
-    df_arbi_type = [int(arbi_types[item]) for item in list(df["swap_pools"])]
+    df_arbi_type = []
+    for i in df.index:
+        row = df.loc[i]
+        _arbi_type = row["sort_type_value"]
+        df_arbi_type.append(type_rank.index(_arbi_type))
     df["arbi_type"] = df_arbi_type
 
     x_labes = []
@@ -140,39 +178,45 @@ def sort_arbi_type_stack(df, sort_arbi_type_data, save_dir):
 
     group = df.groupby(by="date")
 
-    STACK_TYPE_LABELS = ['A', "B", "C", "D", "E", "others"]
+    STACK_TYPE_LABELS = ["A", "B", "C", "D", "E", "others"]
 
     for g in group:
         x_labes.append(g[0])
         _y = {}
+        s = 0
         for index in g[1]["arbi_type"].to_list():
             index = int(index)
-            if index < len(STACK_TYPE_LABELS)-1:
+            if index < len(STACK_TYPE_LABELS) - 1:
                 _type = STACK_TYPE_LABELS[index]
             else:
                 _type = "others"
             if _type not in _y:
                 _y[_type] = 0
             _y[_type] += 1
-        
-        for label in STACK_TYPE_LABELS[:-1]:
+            s += 1
+
+        for label in STACK_TYPE_LABELS[:]:
             if label not in y_data:
                 y_data[label] = []
             if label in _y:
-                y_data[label].append(_y[label])
+                y_data[label].append(_y[label] / s)
             else:
                 y_data[label].append(0)
-    
+
+    # stack_colors = plt.get_cmap("Reds")(np.linspace(0.9, 0.2, len(y_data.keys())))
 
     fig, ax = plt.subplots()
-    ax.stackplot(x_labes, y_data.values(),
-                labels=y_data.keys(), alpha=0.8)
-    ax.legend(loc='upper left')
-    ax.set_title('Arbitrage Type')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('count')
+    ax.stackplot(x_labes, y_data.values(), labels=y_data.keys(), alpha=1)
+    ax.legend(loc="upper left")
+    ax.set_title("Arbitrage Type (%s)" % (collateral))
+    ax.set_xlabel("Date")
+    ax.set_ylabel("count")
 
     plt.subplots_adjust(left=0.1, right=0.9)
     plt.margins(0.2)
     fig.set_size_inches(12, 12)
     fig.savefig(save_dir, dpi=100)
+
+
+def replace_split_symbol(string, old_symbol, new_symbol):
+    return new_symbol.join(string.split(old_symbol))

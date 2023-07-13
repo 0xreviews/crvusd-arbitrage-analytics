@@ -12,7 +12,13 @@ from config.tokenflow_category import (
     CALL_ARBI_CONTRACT_FLOW,
     CURVE_ROUTER_FLOW,
 )
-from utils.match import is_curve_swap, is_llamma_swap, is_uniswap_swap
+from utils.match import (
+    is_1inch_router,
+    is_curve_swap,
+    is_llamma_swap,
+    is_swap_pool,
+    is_uniswap_swap,
+)
 
 
 def generate_flow_cell(token_flow_list):
@@ -26,12 +32,20 @@ def generate_flow_cell(token_flow_list):
     for i in range(len(token_flow_list)):
         row = token_flow_list[i]
 
-        if row["from"] == "tx_miner" or row["to"] == "tx_miner":
+        if (
+            row["from"] == "tx_miner"
+            or row["to"] == "tx_miner"
+            or row["action_type"] == ""
+            or "_transfer" in row["action_group"]
+        ):
             continue
 
         _cells = []
         if row["action_group"] == "":
-            if row["from"] not in ["tx_from", "arbitrage_contract"]:
+            if row["from"] not in [
+                "tx_from",
+                "arbitrage_contract",
+            ] and not is_1inch_router(row["from"]):
                 _cells += [
                     {
                         "n": "%s_%s" % (i, row["from"]),
@@ -40,7 +54,10 @@ def generate_flow_cell(token_flow_list):
                         "next_edge_label": row["token_symbol"],
                     }
                 ]
-            if row["to"] not in ["tx_from", "arbitrage_contract"]:
+            if row["to"] not in [
+                "tx_from",
+                "arbitrage_contract",
+            ] and not is_1inch_router(row["to"]):
                 _cells += [
                     {
                         "n": "%s_%s" % (i, row["to"]),
@@ -51,6 +68,8 @@ def generate_flow_cell(token_flow_list):
                 ]
         else:
             if tmp_action_group == row["action_group"]:
+                if "LLAMMA:" in tmp_action_group and cells[-1]["prev_edge_label"] == "":
+                    cells[-1]["prev_edge_label"] = cells[-1]["next_edge_label"]
                 cells[-1]["next_edge_label"] = row["token_symbol"]
                 continue
 
@@ -105,6 +124,8 @@ def generate_flow_cell(token_flow_list):
                 # ...
                 # 2. flash_borrow B -> flash_repay A
                 # 3. flash_repay B
+
+                # if not (cells[-2]["n_label"] == action_groups[1] and cells[-1]["n_label"] == action_groups[0]):
 
                 _cells = [
                     {
@@ -162,25 +183,42 @@ def generate_flow_cell(token_flow_list):
             else:
                 tmp_graphs["children"] += [c["n"] for c in _cells]
 
-    if len(cells) == 1 and cells[0]["n_label"] == "LLAMMA":
+    left_len = len(sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"])
+    right_len = len(sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"])
+
+    if (
+        left_len == 0
+        or is_swap_pool(cells[0]["n_label"])
+        or "_deposit" in cells[0]["n_label"]
+        or "_withdraw" in cells[0]["n_label"]
+    ):
         cells = [
             {
                 "n": "0_arbitragur",
                 "n_label": "arbitragur",
                 "next_edge_label": "",
                 "prev_edge_label": "",
-            },
-            cells[0],
+            }
+        ] + cells
+        sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"].append("0_arbitragur")
+
+    if (
+        right_len == 0
+        or is_swap_pool(cells[-1]["n_label"])
+        or "_deposit" in cells[-1]["n_label"]
+        or "_withdraw" in cells[-1]["n_label"]
+    ):
+        n = "%d_arbitragur" % (len(cells))
+        cells = cells + [
             {
-                "n": "2_arbitragur",
+                "n": n,
                 "n_label": "arbitragur",
                 "next_edge_label": "",
                 "prev_edge_label": "",
-            },
+            }
         ]
-        sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"].append(cells[0]["n"])
-        sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"].append(cells[2]["n"])
-    
+        sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"].append(n)
+
     return cells, sub_graphs
 
 
@@ -248,6 +286,12 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
                 else:
                     remove_flag = True
             elif prev_node.attr["label"] == label:
+                remove_flag = True
+            
+            if "_transfer" in label:
+                remove_flag = True
+
+            if "1inchAggregationRouter" in label or "1inchAggregationExecutor" in label:
                 remove_flag = True
 
             if remove_flag:

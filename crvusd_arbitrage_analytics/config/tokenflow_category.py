@@ -9,6 +9,8 @@ BALANCER_VAULT_PATTERN = "^BalancerVault"
 SOLIDLY_SWAP_PATTERN = "^SolidlySwap(-[0-9a-zA-Z]+)+"
 MAVERICK_SWAP_PATTERN = "^MaverickPool(-[0-9a-zA-Z]+)+"
 DFX_SWAP_PATTERN = "^DFXPool(-[0-9a-zA-Z]+)+"
+ONEINCH_ROUTER_PATTERN = "^1inchAggregationRouterV[0-9]+"
+ONEINCH_EXECUTOR_PATTERN = "^1inchAggregationExecutor:[0-9]+"
 
 # Token flow
 WETH_FLOW = [

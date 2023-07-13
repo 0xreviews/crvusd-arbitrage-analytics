@@ -4,7 +4,7 @@ from utils.match import (
     get_address_alias,
     is_address,
     is_eth_swap_pool,
-    is_weth_or_frxeth,
+    is_wrapped_eth,
 )
 from config.address import ALIAS_TO_ADDRESS, ADDRESS_ALIAS, ADDRESS_ZERO
 
@@ -89,7 +89,7 @@ def tenderly_tokenflow(resp):
             continue
         if (
             item["address"].lower() == caller
-            or is_weth_or_frxeth(item["address"])
+            or is_wrapped_eth(item["address"])
             or is_eth_swap_pool(item["address"])
         ):
             # tenderly.state_diff.dirty/original maybe number string or dict
