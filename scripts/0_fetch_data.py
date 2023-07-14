@@ -62,5 +62,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    # asyncio.run(get_prices_data())
+    asyncio.run(get_prices_data())
     asyncio.run(main())

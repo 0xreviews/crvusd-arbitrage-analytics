@@ -41,8 +41,8 @@ def get_trades_data(
                 writer = csv.writer(csv_file)
                 header = []
                 process_decimals_keys = [
-                    "tokens_sold",
-                    "tokens_bought",
+                    "tokensSold",
+                    "tokensBought",
                     # "avg_price",
                     # "oracle_price",
                     # "market_price",

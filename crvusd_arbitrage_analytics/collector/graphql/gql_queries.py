@@ -36,10 +36,10 @@ token_exchanges_query = gql(
             transactionHash
             blockTimestamp
             blockNumber
-            sold_id
-            tokens_sold
-            bought_id
-            tokens_bought
+            soldId
+            tokensSold
+            boughtId
+            tokensBought
             buyer {
                 id
             }

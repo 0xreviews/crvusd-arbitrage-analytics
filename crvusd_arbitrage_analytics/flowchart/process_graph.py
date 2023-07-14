@@ -1,3 +1,4 @@
+import re
 from config.diagram_config import (
     DIAGRAM_COINS,
     DIAGRAM_LAYOUT_NAME,
@@ -11,6 +12,7 @@ from config.tokenflow_category import (
     ACTION_GROUP_SWAP_TYPE,
     CALL_ARBI_CONTRACT_FLOW,
     CURVE_ROUTER_FLOW,
+    CURVE_SWAP_WETH_FLOW,
 )
 from utils.match import (
     is_1inch_router,
@@ -31,6 +33,7 @@ def generate_flow_cell(token_flow_list):
     tmp_action_group = ""
     for i in range(len(token_flow_list)):
         row = token_flow_list[i]
+        swap_pools = row["swap_pool"].split(",")
 
         if (
             row["from"] == "tx_miner"
@@ -40,37 +43,16 @@ def generate_flow_cell(token_flow_list):
         ):
             continue
 
-        _cells = []
+        last_cells_len = len(cells)
+
         if row["action_group"] == "":
-            if row["from"] not in [
-                "tx_from",
-                "arbitrage_contract",
-            ] and not is_1inch_router(row["from"]):
-                _cells += [
-                    {
-                        "n": "%s_%s" % (i, row["from"]),
-                        "n_label": row["from"],
-                        "prev_edge_label": "",
-                        "next_edge_label": row["token_symbol"],
-                    }
-                ]
-            if row["to"] not in [
-                "tx_from",
-                "arbitrage_contract",
-            ] and not is_1inch_router(row["to"]):
-                _cells += [
-                    {
-                        "n": "%s_%s" % (i, row["to"]),
-                        "n_label": row["to"],
-                        "prev_edge_label": row["token_symbol"],
-                        "next_edge_label": row["token_symbol"] if i == 0 else "",
-                    },
-                ]
+            cells = _cells_action_group_empty(token_flow_list, i, cells)
         else:
             if tmp_action_group == row["action_group"]:
                 if "LLAMMA:" in tmp_action_group and cells[-1]["prev_edge_label"] == "":
                     cells[-1]["prev_edge_label"] = cells[-1]["next_edge_label"]
-                cells[-1]["next_edge_label"] = row["token_symbol"]
+                cells = _cells_same_group(token_flow_list, i, cells)
+                
                 continue
 
             label = row["action_group"].split(",")
@@ -86,7 +68,7 @@ def generate_flow_cell(token_flow_list):
             if label in ACTION_GROUP_SWAP_TYPE:
                 label = row["swap_pool"].split(",")[-1]
 
-            _cells += [
+            cells += [
                 {
                     "n": "%s_%s" % (i, row["action_group"]),
                     "n_label": label,
@@ -95,68 +77,34 @@ def generate_flow_cell(token_flow_list):
                 }
             ]
 
-            action_groups = row["action_group"].split(",")
-            swap_pools = row["swap_pool"].split(",")
-
             # flash_repay: pool_B token_out repay to pool_A, then pool_B token_in (swap)
             if i > 0:
                 prev_row = token_flow_list[i - 1]
                 # multiple swap_pool
-                if (
-                    len(swap_pools) == 2
-                    and is_llamma_swap(swap_pools[0])
-                    and "LLAMMA:" in prev_row["action_group"]
-                ):
-                    # swap_pool 0 is LLAMMA
-                    cells[-1]["next_edge_label"] = row["token_symbol"]
+                if len(swap_pools) == 2:
+                    if (
+                        is_llamma_swap(swap_pools[0])
+                        and "LLAMMA:" in prev_row["action_group"]
+                    ):
+                        # swap_pool 0 is LLAMMA
+                        cells[-1]["next_edge_label"] = row["token_symbol"]
                 if (
                     "flash_repay:" in prev_row["action_group"]
                     and len(prev_row["action_group"].split(",")) == 1
                 ):
                     if len(prev_row["swap_pool"].split(",")) == 2:
-                        _cells += [cells.pop()]
+                        # @follow-up
+                        tmp_1 = cells.pop()
+                        tmp_2 = cells.pop()
+                        cells += [tmp_1, tmp_2]
 
             tmp_action_group = row["action_group"]
 
-            # multiple action_group
-            if len(action_groups) == 2:
-                # 1. flash_borrow A
-                # ...
-                # 2. flash_borrow B -> flash_repay A
-                # 3. flash_repay B
+            cells = _cells_curveswap_weth(token_flow_list, i, cells)
 
-                # if not (cells[-2]["n_label"] == action_groups[1] and cells[-1]["n_label"] == action_groups[0]):
-
-                _cells = [
-                    {
-                        "n": "%s_%s" % (i, action_groups[1]),
-                        "n_label": action_groups[1],
-                        "prev_edge_label": "",
-                        "next_edge_label": row["token_symbol"],
-                    },
-                    {
-                        "n": "%s_%s" % (i, action_groups[0]),
-                        "n_label": action_groups[0],
-                        "prev_edge_label": row["token_symbol"],
-                        "next_edge_label": "",
-                    },
-                ]
-
-                if i > 0:
-                    prev_row = token_flow_list[i - 1]
-                    if prev_row["to"] == "arbitrage_contract":
-                        _cells = [
-                            {
-                                "n": "%s_%s" % (i, "arbitragur"),
-                                "n_label": "arbitragur",
-                                "prev_edge_label": prev_row["token_symbol"],
-                                "next_edge_label": "",
-                            }
-                        ] + _cells
-
-                tmp_action_group = action_groups[0]
-
-        cells += _cells
+            cells, tmp_action_group = _cells_multi_flash(
+                token_flow_list, i, cells, tmp_action_group
+            )
 
         if len(cells) > 3:
             if (
@@ -177,12 +125,141 @@ def generate_flow_cell(token_flow_list):
         ):
             tmp_graphs = sub_graphs[DIAGRAM_LAYOUT_NAME[2]]
 
-        for c in _cells:
+        delta_cells = cells[last_cells_len - 1 :]
+        for c in delta_cells:
             if "LLAMMA:" in c["n"]:
                 sub_graphs[DIAGRAM_LAYOUT_NAME[1]]["children"] = [c["n"]]
             else:
-                tmp_graphs["children"] += [c["n"] for c in _cells]
+                tmp_graphs["children"].append(c["n"])
 
+    cells = _cells_subgraph_side_empty(cells, sub_graphs)
+
+    return cells, sub_graphs
+
+
+def _cells_same_group(token_flow_list, i, cells):
+    row = token_flow_list[i]
+    prev_row = token_flow_list[i - 1]
+
+    if "Swap:" in prev_row["action_group"] and "Swap:" in row["action_group"]:
+
+        token_out_fist = True
+        if ":token_in" in prev_row["action_type"]:
+            token_out_fist = False
+
+        cells[-1]["prev_edge_label"] = (
+            prev_row["token_symbol"] if not token_out_fist else row["token_symbol"]
+        )
+        cells[-1]["next_edge_label"] = (
+            prev_row["token_symbol"] if token_out_fist else row["token_symbol"]
+        )
+    
+    else:
+        cells[-1]["next_edge_label"] = row["token_symbol"]
+    
+    return cells
+
+
+def _cells_action_group_empty(token_flow_list, i, cells):
+    row = token_flow_list[i]
+    if row["from"] not in [
+        "tx_from",
+        "arbitrage_contract",
+    ] and not is_1inch_router(row["from"]):
+        cells += [
+            {
+                "n": "%s_%s" % (i, row["from"]),
+                "n_label": row["from"],
+                "prev_edge_label": "",
+                "next_edge_label": row["token_symbol"],
+            }
+        ]
+    if row["to"] not in [
+        "tx_from",
+        "arbitrage_contract",
+    ] and not is_1inch_router(row["to"]):
+        cells += [
+            {
+                "n": "%s_%s" % (i, row["to"]),
+                "n_label": row["to"],
+                "prev_edge_label": row["token_symbol"],
+                "next_edge_label": row["token_symbol"] if i == 0 else "",
+            },
+        ]
+
+    return cells
+
+
+def _cells_curveswap_weth(token_flow_list, i, cells):
+    if i > 3 and len(token_flow_list[i]["action_group"].split(",")) == 1:
+        # WETH deposit/withdraw in CurveSwap
+        # 1. CurveSwap
+        # 2. CurveSwap, CurveSwapWETH_deposit/withdraw
+        # 3. CurveSwap, CurveSwapWETH_deposit/withdraw
+        # 4. CurveSwap
+
+        row_1 = token_flow_list[i - 3]
+        row_2 = token_flow_list[i - 2]
+        row_3 = token_flow_list[i - 1]
+        row_4 = token_flow_list[i]
+
+        if (
+            re.match(r"CurveSwap:[0-9]+", row_1["action_group"]) != None
+            and row_2["action_type"] in CURVE_SWAP_WETH_FLOW
+            and row_3["action_type"] in CURVE_SWAP_WETH_FLOW
+            and re.match(r"CurveSwap:[0-9]+", row_4["action_group"]) != None
+        ):
+            cells.pop()
+
+    return cells
+
+
+def _cells_multi_flash(token_flow_list, i, cells, tmp_action_group):
+    # multiple action_group
+    row = token_flow_list[i]
+    action_groups = row["action_group"].split(",")
+
+    if (
+        len(action_groups) == 2
+        and "flash_" in action_groups[0]
+        and "flash_" in action_groups[1]
+    ):
+        # 1. flash_borrow A
+        # ...
+        # 2. flash_borrow B -> flash_repay A
+        # 3. flash_repay B
+        cells += [
+            {
+                "n": "%s_%s" % (i, action_groups[0]),
+                "n_label": action_groups[0],
+                "prev_edge_label": row["token_symbol"],
+                "next_edge_label": "",
+            },
+        ]
+
+        if i > 0:
+            prev_row = token_flow_list[i - 1]
+            if prev_row["to"] == "arbitrage_contract":
+                cells = (
+                    cells[:-2]
+                    + [
+                        {
+                            "n": "%s_%s" % (i, "arbitragur"),
+                            "n_label": "arbitragur",
+                            "prev_edge_label": prev_row["token_symbol"],
+                            "next_edge_label": "",
+                        }
+                    ]
+                    + cells[-2:]
+                )
+                cells[-2]["prev_edge_label"] = ""
+
+        tmp_action_group = action_groups[0]
+
+    return cells, tmp_action_group
+
+
+def _cells_subgraph_side_empty(cells, sub_graphs):
     left_len = len(sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"])
     right_len = len(sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"])
 
@@ -219,7 +296,7 @@ def generate_flow_cell(token_flow_list):
         ]
         sub_graphs[DIAGRAM_LAYOUT_NAME[2]]["children"].append(n)
 
-    return cells, sub_graphs
+    return cells
 
 
 def process_subgraphs(G, sub_graphs_data):
@@ -232,6 +309,7 @@ def process_subgraphs(G, sub_graphs_data):
         is_cluster = "true"
         if i == 1:
             is_cluster = "false"
+
         G.add_subgraph(
             name=sg_name,
             label=sg_name,
@@ -287,7 +365,7 @@ def remove_duplicate_nodes(G, sub_graphs_data, token_flow_list):
                     remove_flag = True
             elif prev_node.attr["label"] == label:
                 remove_flag = True
-            
+
             if "_transfer" in label:
                 remove_flag = True
 
