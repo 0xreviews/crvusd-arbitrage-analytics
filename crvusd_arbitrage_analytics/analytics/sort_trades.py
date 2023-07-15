@@ -4,6 +4,7 @@ import os
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 
 from utils.date import timestamp_to_date
 
@@ -38,9 +39,10 @@ def sort_arbitrage_data(trades_data):
                     item["action_type"]
                 )
                 or item["action_type"] == ""
+                or "_transfer" in item["action_type"]
             ):
                 continue
-
+            
             token_path.append(item["token_symbol"])
             action_types.append(item["action_type"])
             swap_pools.append(item["swap_pool"])
@@ -156,7 +158,7 @@ def sort_arbi_type(df, save_csv_dir, save_json_dir):
 
     return json_data
 
-
+STACK_TYPE_LABELS_LEN = 10
 def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
     # sort by date
     df_dates = [timestamp_to_date(int(item)).date() for item in list(df["timestamp"])]
@@ -178,7 +180,7 @@ def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
 
     group = df.groupby(by="date")
 
-    STACK_TYPE_LABELS = ["A", "B", "C", "D", "E", "others"]
+    STACK_TYPE_LABELS = ["No.%d" % (i + 1) for i in range(STACK_TYPE_LABELS_LEN)] + ["others"]
 
     for g in group:
         x_labes.append(g[0])
@@ -186,7 +188,7 @@ def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
         s = 0
         for index in g[1]["arbi_type"].to_list():
             index = int(index)
-            if index < len(STACK_TYPE_LABELS) - 1:
+            if index < STACK_TYPE_LABELS_LEN:
                 _type = STACK_TYPE_LABELS[index]
             else:
                 _type = "others"
@@ -195,7 +197,7 @@ def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
             _y[_type] += 1
             s += 1
 
-        for label in STACK_TYPE_LABELS[:]:
+        for label in STACK_TYPE_LABELS:
             if label not in y_data:
                 y_data[label] = []
             if label in _y:
@@ -203,18 +205,19 @@ def sort_arbi_type_stack(collateral, df, sort_type_count, save_dir):
             else:
                 y_data[label].append(0)
 
-    # stack_colors = plt.get_cmap("Reds")(np.linspace(0.9, 0.2, len(y_data.keys())))
+    stack_colors = plt.get_cmap("plasma")(np.linspace(0.8, 0.4, len(y_data.keys())))
 
     fig, ax = plt.subplots()
-    ax.stackplot(x_labes, y_data.values(), labels=y_data.keys(), alpha=1)
+    ax.stackplot(x_labes, y_data.values(), labels=y_data.keys(), colors=stack_colors, alpha=1)
     ax.legend(loc="upper left")
-    ax.set_title("Arbitrage Type (%s)" % (collateral))
+    ax.set_title("Arbitrage Type (%s)" % (collateral), font={"size": 28}, pad=16)
     ax.set_xlabel("Date")
     ax.set_ylabel("count")
+    ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
 
-    plt.subplots_adjust(left=0.1, right=0.9)
-    plt.margins(0.2)
-    fig.set_size_inches(12, 12)
+    plt.subplots_adjust(left=0.1, right=1)
+    plt.margins(0.1)
+    fig.set_size_inches(18, 12)
     fig.savefig(save_dir, dpi=100)
 
 

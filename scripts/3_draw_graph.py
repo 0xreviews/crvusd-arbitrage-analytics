@@ -44,12 +44,12 @@ def main():
                     }
 
             for row in trades_data:
-                # @follow-up
-                if (
-                    row["tx"]
-                    != "0x0aca86ee49f770a199881150e27933d2ec34674b6eadca3d1de7bb99036bf6a7"
-                ):
-                    continue
+                # # @follow-up
+                # if (
+                #     row["tx"]
+                #     != "0x0aca86ee49f770a199881150e27933d2ec34674b6eadca3d1de7bb99036bf6a7"
+                # ):
+                #     continue
 
                 if row["tx"] in action_types_txs.keys():
                     action_tx_data = action_types_txs[row["tx"]]

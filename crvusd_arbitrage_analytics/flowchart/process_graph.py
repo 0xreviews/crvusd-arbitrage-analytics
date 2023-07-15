@@ -209,7 +209,16 @@ def _cells_curveswap_weth(token_flow_list, i, cells):
             and row_3["action_type"] in CURVE_SWAP_WETH_FLOW
             and re.match(r"CurveSwap:[0-9]+", row_4["action_group"]) != None
         ):
-            cells.pop()
+            # CurveSwap + WETH deposit
+            if row_2["action_type"] == CURVE_SWAP_WETH_FLOW[0]:
+                cells.pop()
+            # WETH withdraw + CurveSwap
+            elif row_2["action_type"] == CURVE_SWAP_WETH_FLOW[2]:
+                cells.pop()
+                tmp_0 = cells.pop()
+                tmp_1 = cells.pop()
+                cells += [tmp_1, tmp_0]
+
 
     return cells
 
