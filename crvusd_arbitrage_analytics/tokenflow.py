@@ -1,6 +1,6 @@
 import sys
 import asyncio
-from analytics.detailed_trades import fetch_analytics_data_batch, wash_analytics_data
+from analytics.get_trades import fetch_analytics_data_batch, wash_analytics_data
 from flowchart.generate_flowchart import draw_graph_from_string, generate_flowchart
 
 

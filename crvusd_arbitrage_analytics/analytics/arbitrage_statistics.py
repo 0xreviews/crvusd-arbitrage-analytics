@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+from analytics.sort_trades import sort_arbitrage_data
 from config.filename_config import DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
 from utils.date import str_to_timestamp, timestamp_to_date
 
@@ -12,9 +14,12 @@ plt.style.use(
 )
 default_chart_colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 
+STACK_TYPE_LEN = 10
+IMG_DIR = "data/img/stat"
+
 
 def load_detailed_trades_df(token_symbol):
-    with open("data/detailed_trades_tokenflow_data_%s.json" % (token_symbol)) as f:
+    with open("data/json/tokenflow_data_%s.json" % (token_symbol)) as f:
         raws = json.load(f)
         begin_date = ""
         data = []
@@ -25,6 +30,7 @@ def load_detailed_trades_df(token_symbol):
             timestamp = row["timestamp"]
             address_tags = row["address_tags"]
             summary = row["summary"]
+            sort_type_value = row["sort_type_value"]
             liquidate_volume = float(row["liquidate_volume"])
 
             if summary is not None:
@@ -47,6 +53,7 @@ def load_detailed_trades_df(token_symbol):
                         "is_sandwitch_victim": is_sandwitch_victim,
                         "tx_from": address_tags["tx_from"],
                         # "arbitrage_contract": address_tags["arbitrage_contract"],
+                        "sort_type_value": sort_type_value,
                         "tx": row["tx"],
                     }
                 )
@@ -139,7 +146,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation count daily" % (symbol),
             y_axis_label="tx count",
-            save_dir="data/img/stat_count_%s.png" % (symbol),
+            save_dir="%s/%s/stat_count_%s.png" % (IMG_DIR, symbol, symbol),
         )
 
         # volumes
@@ -151,7 +158,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation volume daily" % (symbol),
             y_axis_label="volume(crvusd)",
-            save_dir="data/img/stat_volume_%s.png" % (symbol),
+            save_dir="%s/%s/stat_volume_%s.png" % (IMG_DIR, symbol, symbol),
         )
 
         # profits
@@ -163,7 +170,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation profit daily" % (symbol),
             y_axis_label="profit($)",
-            save_dir="data/img/stat_profit_%s.png" % (symbol),
+            save_dir="%s/%s/stat_profit_%s.png" % (IMG_DIR, symbol, symbol),
         )
 
         # gas cost
@@ -175,7 +182,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost daily" % (symbol),
             y_axis_label="gas cost($)",
-            save_dir="data/img/stat_gascost_%s.png" % (symbol),
+            save_dir="%s/%s/stat_gascost_%s.png" % (IMG_DIR, symbol, symbol),
         )
 
         bar_datas = {
@@ -194,7 +201,7 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             y1_axis_label="collateral price($)",
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost and revenue daily" % (symbol),
-            save_dir="data/img/stat_daily_revenue_gascost_%s.png" % (symbol),
+            save_dir="%s/%s/stat_daily_revenue_gascost_%s.png" % (IMG_DIR, symbol, symbol),
         )
 
 
@@ -447,7 +454,7 @@ def detialed_trades_stat_dominance(token_symbol):
 
     fig.set_size_inches(18, 22)
     fig.tight_layout(pad=2)
-    fig.savefig("data/img/dominance_%s.png" % (token_symbol), dpi=100)
+    fig.savefig("%s/%s/dominance_%s.png" % (IMG_DIR, token_symbol, token_symbol), dpi=100)
 
 
 def detailed_trades_distribution(token_symbol):
@@ -494,7 +501,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=volume_x_labels,
         y_axis_label="volume distribution",
         title="%s volume distribution" % (token_symbol),
-        save_dir="data/img/stat_hist_volume_%s.png" % (token_symbol),
+        save_dir="%s/%s/stat_hist_volume_%s.png" % (IMG_DIR, token_symbol, token_symbol),
     )
 
     _draw_distribution(
@@ -504,7 +511,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=revenue_x_labels,
         y_axis_label="revenue distribution",
         title="%s revenue distribution" % (token_symbol),
-        save_dir="data/img/stat_hist_revenue_%s.png" % (token_symbol),
+        save_dir="%s/%s/stat_hist_revenue_%s.png" % (IMG_DIR, token_symbol, token_symbol),
     )
 
     _draw_distribution(
@@ -514,7 +521,7 @@ def detailed_trades_distribution(token_symbol):
         x_labels=gascost_x_labels,
         y_axis_label="gascost distribution",
         title="%s gascost distribution" % (token_symbol),
-        save_dir="data/img/stat_hist_gascost_%s.png" % (token_symbol),
+        save_dir="%s/%s/stat_hist_gascost_%s.png" % (IMG_DIR, token_symbol, token_symbol),
     )
 
 
@@ -557,7 +564,7 @@ def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_d
 def detailed_trades_stat_scatter(token_symbol):
     df = load_detailed_trades_df(token_symbol)
     title = "%s revenue-volume scatter" % (token_symbol)
-    save_dir = "data/img/stat_scatter_revenue_volume_%s.png" % (token_symbol)
+    save_dir = "%s/%s/stat_scatter_revenue_volume_%s.png" % (IMG_DIR, token_symbol, token_symbol)
 
     x_list = df["liquidate_volume"].to_list()
     y_list = df["revenue"].to_list()
@@ -585,6 +592,76 @@ def detailed_trades_stat_scatter(token_symbol):
     plt.margins(0.2)
     fig.set_size_inches(12, 12)
     fig.savefig(save_dir, dpi=100)
+
+
+def sort_arbi_type_stack(collateral):
+    df = load_detailed_trades_df(collateral)
+
+    # sort by date
+    df_dates = [timestamp_to_date(int(item)).date() for item in list(df["timestamp"])]
+    df["date"] = df_dates
+
+    with open("data/json/tokenflow_data_%s.json" % (collateral), "r") as f:
+        trades_data = json.load(f)
+        arbi_type_data, sort_type_count = sort_arbitrage_data(trades_data)
+
+    type_rank = list(sort_type_count.items())
+    type_rank.sort(key=lambda x: x[1], reverse=True)
+    type_rank = [x[0] for x in type_rank]
+
+    df_arbi_type = []
+    for i in df.index:
+        row = df.loc[i]
+        _arbi_type = row["sort_type_value"]
+        df_arbi_type.append(type_rank.index(_arbi_type))
+    df["arbi_type"] = df_arbi_type
+
+    x_labes = []
+    y_data = {}
+
+    group = df.groupby(by="date")
+
+    stack_labels = ["No.%d" % (i + 1) for i in range(STACK_TYPE_LEN)] + ["others"]
+
+    for g in group:
+        x_labes.append(g[0])
+        _y = {}
+        s = 0
+        for index in g[1]["arbi_type"].to_list():
+            index = int(index)
+            if index < STACK_TYPE_LEN:
+                _type = stack_labels[index]
+            else:
+                _type = "others"
+            if _type not in _y:
+                _y[_type] = 0
+            _y[_type] += 1
+            s += 1
+
+        for label in stack_labels:
+            if label not in y_data:
+                y_data[label] = []
+            if label in _y:
+                y_data[label].append(_y[label] / s)
+            else:
+                y_data[label].append(0)
+
+    stack_colors = plt.get_cmap("plasma")(np.linspace(0.8, 0.4, len(y_data.keys())))
+
+    fig, ax = plt.subplots()
+    ax.stackplot(
+        x_labes, y_data.values(), labels=y_data.keys(), colors=stack_colors, alpha=1
+    )
+    ax.legend(loc="upper left")
+    ax.set_title("Arbitrage Type (%s)" % (collateral), font={"size": 28}, pad=16)
+    ax.set_xlabel("Date")
+    ax.set_ylabel("count")
+    ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
+
+    plt.subplots_adjust(left=0.1, right=1)
+    plt.margins(0.1)
+    fig.set_size_inches(18, 12)
+    fig.savefig("data/img/stat/%s/arbi_types_stack_%s.png" % (collateral, collateral), dpi=100)
 
 
 def get_date_from_timestamp(ts):

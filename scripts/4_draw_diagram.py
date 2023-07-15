@@ -1,6 +1,7 @@
 import os
 import json
 from flowchart.generate_flowchart import draw_graph_from_string, generate_flowchart
+from utils.utils import make_or_clean_dir
 
 
 def main():
@@ -8,36 +9,21 @@ def main():
         dot_dir = "data/img/%s/dot/" % (symbol)
         png_dir = "data/img/%s/" % (symbol)
 
-        if not os.path.exists(dot_dir):
-            os.mkdir(dot_dir)
-        if not os.path.exists(png_dir):
-            os.mkdir(png_dir)
-
-        # clean data
-        old_dot_list = os.listdir(dot_dir)
-        old_png_list = os.listdir(png_dir)
-
-        for old_dot in old_dot_list:
-            remove_dir = dot_dir + old_dot
-            if os.path.exists(remove_dir) and not os.path.isdir(remove_dir):
-                os.remove(remove_dir)
-        for old_png in old_png_list:
-            remove_dir = png_dir + old_png
-            if os.path.exists(remove_dir) and not os.path.isdir(remove_dir):
-                os.remove(remove_dir)
+        make_or_clean_dir(dot_dir)
+        make_or_clean_dir(png_dir)
 
         with open(
-            "data/detailed_trades_tokenflow_data_%s.json" % (symbol), "r"
+            "data/json/tokenflow_data_%s.json" % (symbol), "r"
         ) as trades_data_file:
             trades_data = json.load(trades_data_file)
             trades_data_len = len(trades_data)
 
-            with open("data/action_types_%s.json" % (symbol)) as action_types_file:
-                action_types = json.load(action_types_file)[:10]
-                action_types_txs = {}
-                for i in range(len(action_types)):
-                    item = action_types[i]
-                    action_types_txs[item["tx_0"]] = {
+            with open("data/json/arbi_types_%s.json" % (symbol)) as arbi_types_file:
+                arbi_types = json.load(arbi_types_file)[:10]
+                arbi_types_txs = {}
+                for i in range(len(arbi_types)):
+                    item = arbi_types[i]
+                    arbi_types_txs[item["tx_0"]] = {
                         "index": i,
                         "count": item["count"],
                         "tx_0": item["tx_0"],
@@ -51,11 +37,11 @@ def main():
                 # ):
                 #     continue
 
-                if row["tx"] in action_types_txs.keys():
-                    action_tx_data = action_types_txs[row["tx"]]
-                    index = action_tx_data["index"]
-                    count = action_tx_data["count"]
-                    tx_0 = action_tx_data["tx_0"]
+                if row["tx"] in arbi_types_txs.keys():
+                    arbi_tx_data = arbi_types_txs[row["tx"]]
+                    index = arbi_tx_data["index"]
+                    count = arbi_tx_data["count"]
+                    tx_0 = arbi_tx_data["tx_0"]
 
                     G_string = generate_flowchart(
                         row,

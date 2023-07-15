@@ -2,8 +2,8 @@ import json
 import os
 import time
 import asyncio
-from analytics.detailed_trades import fetch_analytics_data_batch, get_trades_data
-from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR, DEFAUT_TRADES_DATA_DIR
+from analytics.get_trades import fetch_analytics_data_batch, get_trades_data
+from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR, DEFAUT_TRADES_GQL_DIR
 from collector.coingecko.query import query_prices_historical
 
 
@@ -21,12 +21,7 @@ async def main():
             ".json", "_%s.json" % (collateral)
         )
 
-        all_trades = get_trades_data(
-            llamma_collateral=collateral,
-            save=True,
-            save_csv=True,
-            save_dir=DEFAUT_TRADES_DATA_DIR,
-        )
+        all_trades = get_trades_data(llamma_collateral=collateral)
 
         batch_size = 30
         raws_data = []
