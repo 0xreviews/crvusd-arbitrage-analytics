@@ -87,6 +87,8 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 #### sFrxETH LLAMMA Pool
 
+![](./results/tokenflow/How-to-Arbitrage-on-LLAMMA_sFrxETH.png)
+
 The three most frequently used arbitrage methods:
 
 ![](./results/tokenflow/sFrxETH/type_1.png)
@@ -96,6 +98,8 @@ The three most frequently used arbitrage methods:
 ![](./results/tokenflow/sFrxETH/type_3.png)
 
 #### wstETH LLAMMA Pool
+
+![](./results/tokenflow/How-to-Arbitrage-on-LLAMMA_wstETH.png)
 
 The three most frequently used arbitrage methods:
 
