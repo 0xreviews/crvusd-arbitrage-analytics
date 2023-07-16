@@ -106,7 +106,7 @@ def detailed_trades_stat_daily(token_symbol):
 
 
 def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR):
-    with open(data_dir.replace(".json", "_%s.json" % (symbol)), "r") as f:
+    with open(data_dir.replace(".json", "_%s.json" % (symbol.lower())), "r") as f:
         raws = json.load(f)
         (
             end_ts,
