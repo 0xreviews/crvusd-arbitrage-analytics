@@ -23,13 +23,13 @@ python crvusd_arbitrage_analytics/tokenflow.py 0x0806a484daf46bf1948185fac7f1361
 Fetch all arbitrage data and automatically classify, statistics, and generate tokenflow chart.
 
 0. Fetch all arbitrage transacation data, and collateral price data, save raw data in `data/original`
-1. Wash raw data, save csv file and json file in `data/detailed_trades_data_[collateral]`
+1. Wash raw data, save csv file and json file in `data/csv/tokenflow_data_[collateral]`, `data/json/tokenflow_data_[collateral]`
    - Automatically identify the behavior type of each token transfer
    - Log all swap pools
    - Group all tx steps, e.g. flashswap, sFrxETH stake/unstake, WETH deposit/withdraw, token swap in/out
 2. Classify all arbitrage tokenflow
-3. Generate tokenflow chart for each arbitrage category
-4. Generate statistical graphs
+3. Generate statistical graphs
+4. Generate tokenflow chart for each arbitrage category
 
 ```sh
 python scripts/0_fetch_data.py
@@ -41,29 +41,47 @@ python scripts/4_statistics_data.py
 
 ## Results
 
-Some statistical graphs and token flow charts (statistics date: 2023-07-05):
+Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 ### Statistics
 
 #### Daily revenue and gascost
 
-![](./results/stat/stat_daily_revenue_gascost_sfrxeth.png)
+![](./results/stat/sFrxETH/stat_daily_revenue_gascost_sfrxeth.png)
 
-![](./results/stat/stat_daily_revenue_gascost_wsteth.png)
+![](./results/stat/wstETH/stat_daily_revenue_gascost_wsteth.png)
+
+![](./results/stat/WBTC/stat_daily_revenue_gascost_wbtc.png)
+
+![](./results/stat/WETH/stat_daily_revenue_gascost_weth.png)
 
 #### revenue volume scatter
 
-![](./results/stat/stat_scatter_revenue_volume_sfrxeth.png)
+![](./results/stat/sFrxETH/stat_scatter_revenue_volume_sfrxeth.png)
 
-![](./results/stat/stat_scatter_revenue_volume_wsteth.png)
+![](./results/stat/wstETH/stat_scatter_revenue_volume_wsteth.png)
+
+![](./results/stat/WBTC/stat_scatter_revenue_volume_wbtc.png)
+
+![](./results/stat/WETH/stat_scatter_revenue_volume_weth.png)
+
 
 #### sFrxETH Dominance
 
-![](./results/stat/dominance_sfrxeth.png)
+![](./results/stat/sFrxETH/dominance_sfrxeth.png)
 
 #### wstETH Dominance
 
-![](./results/stat/dominance_wsteth.png)
+![](./results/stat/wstETH/dominance_wsteth.png)
+
+#### WBTC Dominance
+
+![](./results/stat/WBTC/dominance_wbtc.png)
+
+#### WETH Dominance
+
+![](./results/stat/wstETH/dominance_weth.png)
+
 
 ### Tokenflow
 
@@ -71,32 +89,41 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-05):
 
 The three most frequently used arbitrage methods:
 
-- Type A, example tx: `0x0806a484daf46bf1948185fac7f13613268da0969d638bc87dc934eefeab6b13`
+![](./results/tokenflow/sFrxETH/type_1.png)
 
-  ![](./results/tokenflow/sFrxETH/0_294_0x0806a484daf46bf1948185fac7f13613268da0969d638bc87dc934eefeab6b13.png)
+![](./results/tokenflow/sFrxETH/type_2.png)
 
-- Type B, example tx: `0xb1e182dfae0a0c81d609385da915ae2e5b94eaebf4061b0291277dce3287d65a`
-
-  ![](./results/tokenflow/sFrxETH/1_238_0xb1e182dfae0a0c81d609385da915ae2e5b94eaebf4061b0291277dce3287d65a.png)
-
-- Type C, example tx: `0x9332769f94c51f9be3dc185e54b9abe10119efcb1fe7dcbfb2177739ff9bc29c`
-
-  ![](./results/tokenflow/sFrxETH/2_54_0x9332769f94c51f9be3dc185e54b9abe10119efcb1fe7dcbfb2177739ff9bc29c.png)
+![](./results/tokenflow/sFrxETH/type_3.png)
 
 #### wstETH LLAMMA Pool
 
 The three most frequently used arbitrage methods:
 
-- Type A, example tx: `0xf8de27d0d1a8a66a561b2a71b5ff094d39c2a7f666fb8808ba6be940991a96b0`
+![](./results/tokenflow/wstETH/type_1.png)
 
-  ![](./results/tokenflow/wstETH/0_117_0xf8de27d0d1a8a66a561b2a71b5ff094d39c2a7f666fb8808ba6be940991a96b0.png)
+![](./results/tokenflow/wstETH/type_2.png)
 
-- Type B, example tx: `0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f`
+![](./results/tokenflow/wstETH/type_3.png)
 
-  ![](./results/tokenflow/wstETH/1_97_0x0ac5408296a21b40f0510f9383494b9eae806d0fb7aff781d4a6243f8694dc3f.png)
+#### WBTC LLAMMA Pool
 
-- Type C, example tx: `0xb1e21a3b291f806542853521279a53d5a7b3680cbeb324c332526a12810b226b`
+The three most frequently used arbitrage methods:
 
-  ![](./results/tokenflow/wstETH/2_85_0xb1e21a3b291f806542853521279a53d5a7b3680cbeb324c332526a12810b226b.png)
+![](./results/tokenflow/WBTC/type_1.png)
 
-More data and picture results can be seen in [results folder](./results/).
+![](./results/tokenflow/WBTC/type_2.png)
+
+![](./results/tokenflow/WBTC/type_3.png)
+
+#### WETH LLAMMA Pool
+
+The three most frequently used arbitrage methods:
+
+![](./results/tokenflow/WETH/type_1.png)
+
+![](./results/tokenflow/WETH/type_2.png)
+
+![](./results/tokenflow/WETH/type_3.png)
+
+
+More data and picture results can be seen in [results folder](./results).

@@ -45,16 +45,16 @@ def main():
 
                     G_string = generate_flowchart(
                         row,
-                        title="LLAMMA(%s) Soft-Liquidation Tokenflow No.%d Proportion %.2f%% \n\n" % (
-                            symbol, index + 1, count / trades_data_len * 100
-                        ),
+                        title="LLAMMA(%s) Soft-Liquidation Tokenflow No.%d Proportion %.2f%% \n\n"
+                        % (symbol, index + 1, count / trades_data_len * 100),
                     )
                     draw_graph_from_string(
                         G_string,
                         save_dot_dir="data/img/%s/dot/%s_%s_%s.dot"
                         % (symbol, index, count, tx_0),
-                        save_png_dir="data/img/%s/%s_%s_%s.png"
-                        % (symbol, index, count, tx_0),
+                        # save_png_dir="data/img/%s/%s_%s_%s.png"
+                        # % (symbol, index, count, tx_0),
+                        save_png_dir="data/img/%s/type_%s.png" % (symbol, index + 1),
                     )
 
 

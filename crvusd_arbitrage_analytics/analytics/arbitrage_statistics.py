@@ -129,13 +129,13 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
 
         prices_date = []
         prices = []
+        end_i = len(raws)
         for i in range(len(raws)):
             if int(raws[i][0]) / 1000 >= end_ts:
-                prices_date = [
-                    timestamp_to_date(int(item[0]) / 1000) for item in raws[: i + 1]
-                ]
-                prices = [item[1] for item in raws[: i + 1]]
+                end_i = i + 1
                 break
+        prices_date = [timestamp_to_date(int(item[0]) / 1000) for item in raws[:end_i]]
+        prices = [item[1] for item in raws[:end_i]]
 
         # counts
         _draw_daily_stat(
@@ -201,7 +201,8 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             y1_axis_label="collateral price($)",
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost and revenue daily" % (symbol),
-            save_dir="%s/%s/stat_daily_revenue_gascost_%s.png" % (IMG_DIR, symbol, symbol),
+            save_dir="%s/%s/stat_daily_revenue_gascost_%s.png"
+            % (IMG_DIR, symbol, symbol),
         )
 
 
@@ -454,7 +455,9 @@ def detialed_trades_stat_dominance(token_symbol):
 
     fig.set_size_inches(18, 22)
     fig.tight_layout(pad=2)
-    fig.savefig("%s/%s/dominance_%s.png" % (IMG_DIR, token_symbol, token_symbol), dpi=100)
+    fig.savefig(
+        "%s/%s/dominance_%s.png" % (IMG_DIR, token_symbol, token_symbol), dpi=100
+    )
 
 
 def detailed_trades_distribution(token_symbol):
@@ -501,7 +504,8 @@ def detailed_trades_distribution(token_symbol):
         x_labels=volume_x_labels,
         y_axis_label="volume distribution",
         title="%s volume distribution" % (token_symbol),
-        save_dir="%s/%s/stat_hist_volume_%s.png" % (IMG_DIR, token_symbol, token_symbol),
+        save_dir="%s/%s/stat_hist_volume_%s.png"
+        % (IMG_DIR, token_symbol, token_symbol),
     )
 
     _draw_distribution(
@@ -511,7 +515,8 @@ def detailed_trades_distribution(token_symbol):
         x_labels=revenue_x_labels,
         y_axis_label="revenue distribution",
         title="%s revenue distribution" % (token_symbol),
-        save_dir="%s/%s/stat_hist_revenue_%s.png" % (IMG_DIR, token_symbol, token_symbol),
+        save_dir="%s/%s/stat_hist_revenue_%s.png"
+        % (IMG_DIR, token_symbol, token_symbol),
     )
 
     _draw_distribution(
@@ -521,7 +526,8 @@ def detailed_trades_distribution(token_symbol):
         x_labels=gascost_x_labels,
         y_axis_label="gascost distribution",
         title="%s gascost distribution" % (token_symbol),
-        save_dir="%s/%s/stat_hist_gascost_%s.png" % (IMG_DIR, token_symbol, token_symbol),
+        save_dir="%s/%s/stat_hist_gascost_%s.png"
+        % (IMG_DIR, token_symbol, token_symbol),
     )
 
 
@@ -564,11 +570,23 @@ def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_d
 def detailed_trades_stat_scatter(token_symbol):
     df = load_detailed_trades_df(token_symbol)
     title = "%s revenue-volume scatter" % (token_symbol)
-    save_dir = "%s/%s/stat_scatter_revenue_volume_%s.png" % (IMG_DIR, token_symbol, token_symbol)
+    save_dir = "%s/%s/stat_scatter_revenue_volume_%s.png" % (
+        IMG_DIR,
+        token_symbol,
+        token_symbol,
+    )
 
     x_list = df["liquidate_volume"].to_list()
-    y_list = df["revenue"].to_list()
+    y_list = [max(y, 1) for y in df["revenue"].to_list()]
+    sandwitch_victims = df["is_sandwitch_victim"].to_list()
     x_max = max(x_list)
+
+    # skip sandwitch victim
+    for i in range(len(sandwitch_victims)):
+        if sandwitch_victims[i]:
+            x_list[i] = 0
+            y_list[i] = 0
+
 
     fig, ax1 = plt.subplots()
     ax1.set_title(title, font={"size": 32}, pad=24)
@@ -661,7 +679,9 @@ def sort_arbi_type_stack(collateral):
     plt.subplots_adjust(left=0.1, right=1)
     plt.margins(0.1)
     fig.set_size_inches(18, 12)
-    fig.savefig("data/img/stat/%s/arbi_types_stack_%s.png" % (collateral, collateral), dpi=100)
+    fig.savefig(
+        "data/img/stat/%s/arbi_types_stack_%s.png" % (collateral, collateral), dpi=100
+    )
 
 
 def get_date_from_timestamp(ts):
