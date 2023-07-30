@@ -36,7 +36,7 @@ def query_gql(q, variables={}):
 
 
 def data_iteration(
-    key_name, query_func, llamma_collateral="sFrxETH", size=SUBGRAPH_QUERY_SIZE
+    key_name, query_func, llamma_collateral="sfrxETH", size=SUBGRAPH_QUERY_SIZE
 ):
     count = 0
     data = []
@@ -70,7 +70,7 @@ def query_detailed_trades(skip=0, size=SUBGRAPH_QUERY_SIZE):
 
 
 def query_token_exchanges(llamma_collateral, skip=0, size=SUBGRAPH_QUERY_SIZE):
-    # llamma_name: LLAMMA-sFrxETH-crvUSD / LLAMMA-wstETH-crvUSD
+    # llamma_name: LLAMMA-sfrxETH-crvUSD / LLAMMA-wstETH-crvUSD
     llamma_address = ALIAS_TO_ADDRESS["LLAMMA-%s-crvUSD" % (llamma_collateral)]
     print(llamma_collateral, "llamma_address", llamma_address)
     return query_gql(
@@ -79,7 +79,7 @@ def query_token_exchanges(llamma_collateral, skip=0, size=SUBGRAPH_QUERY_SIZE):
     )
 
 
-def query_detailed_trades_all(llamma_collateral="sFrxETH"):
+def query_detailed_trades_all(llamma_collateral="sfrxETH"):
     res = data_iteration(
         "tokenExchanges",
         query_token_exchanges,

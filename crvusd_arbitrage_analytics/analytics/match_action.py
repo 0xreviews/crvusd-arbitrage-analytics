@@ -119,12 +119,12 @@ def match_frxeth_action(row_step, transfers):
         if f_alias == "frxeth" and token_symbol == "frxeth":
             action_type_index = 1
 
-    # sFrxETH_contract token in
+    # sfrxETH_contract token in
     elif t_alias == "sfrxeth":
         # frxETH_stake:frxETH_in
-        #   frxETH in sFrxETH_contract
+        #   frxETH in sfrxETH_contract
         if token_symbol == "frxeth":
-            # next transfer is frxETH_stake:sFrxETH_out
+            # next transfer is frxETH_stake:sfrxETH_out
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
                 if (
@@ -133,8 +133,8 @@ def match_frxeth_action(row_step, transfers):
                 ):
                     action_type_index = 2
 
-        # frxETH_unstake:sFrxETH_in
-        #   transfer sFrxETH_in to sFrxETH_contract
+        # frxETH_unstake:sfrxETH_in
+        #   transfer sfrxETH_in to sfrxETH_contract
         elif token_symbol == "sfrxeth":
             # prev transfer is frxETH_unstake:frxETH_out
             if row_step > 0:
@@ -145,10 +145,10 @@ def match_frxeth_action(row_step, transfers):
                 ):
                     action_type_index = 4
 
-    # sFrxETH_contract token out
+    # sfrxETH_contract token out
     elif f_alias == "sfrxeth":
-        # frxETH_stake:sFrxETH_out
-        #   transfer sFrxETH from sFrxETH_contract
+        # frxETH_stake:sfrxETH_out
+        #   transfer sfrxETH from sfrxETH_contract
         if token_symbol == "sfrxeth":
             # prev transfer is frxETH_stake:frxETH_in
             if row_step > 0:
@@ -160,9 +160,9 @@ def match_frxeth_action(row_step, transfers):
                     action_type_index = 3
 
         # frxETH_unstake:frxETH_out
-        #   transfer srxETH from sFrxETH_contract
+        #   transfer srxETH from sfrxETH_contract
         elif token_symbol == "frxeth":
-            # next transfer is frxETH_unstake:sFrxETH_in
+            # next transfer is frxETH_unstake:sfrxETH_in
             if len(transfers) > row_step + 2:
                 next_row = transfers[row_step + 1]
                 if (

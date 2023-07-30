@@ -5,7 +5,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -13,8 +13,8 @@ WETH_deposit:weth_out
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -60,7 +60,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -84,7 +84,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -96,8 +96,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500","weth
@@ -139,7 +139,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -163,7 +163,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -171,8 +171,8 @@ WETH_deposit:weth_out
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -218,7 +218,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -242,7 +242,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -256,8 +256,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500
@@ -307,7 +307,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -335,7 +335,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -346,8 +346,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500","weth
@@ -386,7 +386,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -408,13 +408,13 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 UniswapV3Pool-WETH-frxETH:fee_500
@@ -449,7 +449,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_in
 UniswapSwap:token_in
 usdc
@@ -463,7 +463,7 @@ weth
 frxeth"
 82,30,0xe4407dd7227f9cb91b5db9f5243641bb30e49c71fad61da973914165b69ff4a9,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -472,8 +472,8 @@ UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -504,7 +504,7 @@ UniswapSwap:3","0
 0
 ","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -526,7 +526,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -538,8 +538,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500","weth
@@ -581,7 +581,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -600,8 +600,8 @@ crvusd
 usdt
 usdt"
 35,11,0x365de4997cc6f0451ac487dfa05cf903f6ff356f10e5293b58e7e1469b3130c0,"LLAMMA:token_in
-LLAMMA:token_out","LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","sfrxeth
+LLAMMA:token_out","LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","sfrxeth
 crvusd","LLAMMA:1
 LLAMMA:1","
 ","LLAMMA:token_in
@@ -614,7 +614,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -622,8 +622,8 @@ WETH_deposit:weth_out
 PancakeSwap:token_in","PancakeV3Pool-WETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -669,7 +669,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -693,14 +693,14 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 UniswapV3Pool-WETH-frxETH:fee_500
@@ -738,7 +738,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in
@@ -758,7 +758,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -772,8 +772,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT
@@ -823,7 +823,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -851,7 +851,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -865,8 +865,8 @@ UniswapSwap:token_in","BalancerVault
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500
@@ -916,7 +916,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -944,7 +944,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -958,8 +958,8 @@ UniswapSwap:token_in","BalancerVault
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -1009,7 +1009,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1032,8 +1032,8 @@ weth
 weth
 usdc"
 34,5,0xb945b28b80bf913bac71eab3fa18b575c1bcef049e52513d35adfd520505e326,"LLAMMA:token_in
-LLAMMA:token_out","LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","crvusd
+LLAMMA:token_out","LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","crvusd
 sfrxeth","LLAMMA:1
 LLAMMA:1","
 ","LLAMMA:token_in
@@ -1046,7 +1046,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -1056,8 +1056,8 @@ WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -1111,7 +1111,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -1139,14 +1139,14 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 UniswapV3Pool-WETH-frxETH:fee_500
@@ -1184,7 +1184,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in
@@ -1200,7 +1200,7 @@ weth
 frxeth"
 84,5,0x4eff73cd9e2d35e148b0cc9a2f094d5e9850da1ff5a6af5a54f46a1a2a8249c8,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1210,8 +1210,8 @@ UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -1245,7 +1245,7 @@ flash_repay:UniswapV3Pool-WETH-USDC:fee_500:1","0
 0
 1","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1268,9 +1268,9 @@ LLAMMA:token_in
 LLAMMA:token_out
 CurveRouter:token_out","CurveSwapRouter
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter","crvusd
 crvusd
 sfrxeth
@@ -1292,7 +1292,7 @@ sfrxeth
 sfrxeth"
 46,4,0x4ec2bb954b720e7dfe388ac6641a722bf51c37b31a7bc4f717d38dfb623ff77b,"PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1302,8 +1302,8 @@ PancakeSwap:token_in
 UniswapSwap:token_in","PancakeV3Pool-WETH-frxETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500
@@ -1337,7 +1337,7 @@ flash_repay:UniswapV3Pool-WETH-USDT:fee_500:1","0
 0
 1","PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1361,7 +1361,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1375,8 +1375,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 
@@ -1426,7 +1426,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1454,7 +1454,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1466,8 +1466,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500","weth
@@ -1509,7 +1509,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1532,7 +1532,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1543,8 +1543,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500","weth
@@ -1582,7 +1582,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1601,7 +1601,7 @@ usdc
 usdc"
 85,4,0x64fff44607d6b3cba60dd982e9b04ac3722b8ff547989af9fdbe2dfb644d32a2,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1611,8 +1611,8 @@ UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500
@@ -1646,7 +1646,7 @@ flash_repay:UniswapV3Pool-WETH-USDT:fee_500:1","0
 0
 1","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1670,12 +1670,12 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 BalancerVault:token_in","BalancerVault
 CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 BalancerVault","frax
@@ -1705,7 +1705,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 BalancerVault:token_in
 frax
 frax
@@ -1721,7 +1721,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1735,8 +1735,8 @@ PancakeSwap:token_in","BalancerVault
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT
@@ -1786,7 +1786,7 @@ WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_mint:frxETH_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -1829,9 +1829,9 @@ CurveStableSwap-crvUSD-USDT
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDT
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter","eth
 eth
 eth
@@ -1897,7 +1897,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
@@ -1905,8 +1905,8 @@ CurveTriCrypto-WBTC-ETH-USDT
 CurveTriCrypto-WBTC-ETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 
@@ -1952,7 +1952,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 UniswapSwap:token_in
@@ -1984,8 +1984,8 @@ WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 BalancerVault
 CurveCryptoSwap-ETH-rETH
@@ -2077,8 +2077,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-wstETH:fee_500
 UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 UniswapV3Pool-WETH-wstETH:fee_500
 BalancerVault
@@ -2150,8 +2150,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-rETH:fee_500
 UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 UniswapV3Pool-WETH-rETH:fee_500
 BalancerVault
@@ -2217,13 +2217,13 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 UniswapSwap:token_in
-frxETH_unstake:sFrxETH_in","UniswapV3Pool-WETH-frxETH:fee_500
+frxETH_unstake:sfrxETH_in","UniswapV3Pool-WETH-frxETH:fee_500
 UniswapV3Pool-WETH-USDT:fee_500
 UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 UniswapV3Pool-WETH-frxETH:fee_500
 ","weth
 usdt
@@ -2257,7 +2257,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 UniswapSwap:token_in
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 weth
 usdt
 weth
@@ -2272,7 +2272,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2286,8 +2286,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 CurveTriCryptoNG-WBTC-USDC
@@ -2337,7 +2337,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2368,7 +2368,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -2378,8 +2378,8 @@ CurveTriCrypto-WBTC-ETH-USDT
 CurveTriCrypto-WBTC-ETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -2433,7 +2433,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -2463,7 +2463,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -2475,8 +2475,8 @@ CurveTriCryptoNG-WBTC-ETH-USDT
 CurveTriCryptoNG-WBTC-ETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -2540,7 +2540,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -2568,7 +2568,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2584,8 +2584,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 CurveTriCryptoNG-WBTC-USDC
@@ -2645,7 +2645,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2677,7 +2677,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2691,8 +2691,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -2742,7 +2742,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2786,9 +2786,9 @@ CurveStableSwap-crvUSD-USDC
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDC
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter","lusd
 lusd
 crvfrax
@@ -2847,8 +2847,8 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out","CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","usdt
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","usdt
 crvusd
 crvusd
 sfrxeth","CurveSwap:1
@@ -2876,8 +2876,8 @@ LLAMMA:token_out
 CurveSwap:token_in
 CurveSwap:token_out","CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 BalancerVault
 LLAMMA-wstETH-crvUSD
@@ -2935,10 +2935,10 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in","CurveStableSwap-crvUSD-FRAX
+frxETH_unstake:sfrxETH_in","CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 ","frax
 crvusd
@@ -2960,7 +2960,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 frax
 crvusd
 crvusd
@@ -2970,7 +2970,7 @@ sfrxeth"
 32,2,0x8f06990646388683592d1d508e84f59e9c04f8011a20188a9c519028a158d266,"CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -2979,8 +2979,8 @@ WETH_deposit:weth_out","CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 ","eth
@@ -3010,7 +3010,7 @@ WETH_deposit:1","
 ","CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3030,7 +3030,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3041,8 +3041,8 @@ PancakeSwap:token_in","PancakeV3Pool-WETH-USDT
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT","weth
@@ -3080,7 +3080,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3099,7 +3099,7 @@ usdt
 usdt"
 45,2,0x5a1158ea00e8141352a7fb31b9428938668d7407d06a64ce5201ef5cf3478903,"PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3109,8 +3109,8 @@ PancakeSwap:token_in
 UniswapSwap:token_in","PancakeV3Pool-WETH-frxETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -3144,7 +3144,7 @@ flash_repay:UniswapV3Pool-WETH-USDC:fee_500:1","0
 0
 1","PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3177,8 +3177,8 @@ CurveTriCrypto-WBTC-ETH-USDT
 CurveTriCrypto-WBTC-ETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 UniswapV3Pool-WETH-wstETH:fee_500
 BalancerVault
@@ -3241,7 +3241,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -3251,8 +3251,8 @@ WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -3306,7 +3306,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -3334,15 +3334,15 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 SolidlySwap-WETH-frxETH
@@ -3385,7 +3385,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
@@ -3403,7 +3403,7 @@ frxeth
 weth"
 78,2,0xdaffae1070eadefe0a1a502abd872a9b5def69ff46b442fba0dcd43da57ee5fe,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3413,8 +3413,8 @@ CurveSwap:token_out
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 CurveTriCrypto-WBTC-ETH-USDT
@@ -3448,7 +3448,7 @@ flash_repay:UniswapV3Pool-WETH-frxETH:fee_500:0","0
 
 0","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3471,7 +3471,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3483,8 +3483,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500
@@ -3526,7 +3526,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3552,8 +3552,8 @@ LLAMMA:token_out
 CurveSwap:token_in
 CurveSwap:token_out","BalancerVault
 BalancerVault
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC","ohm
 sfrxeth
@@ -3593,8 +3593,8 @@ MaverickSwap:token_in
 UniswapSwap:token_out
 UniswapSwap:token_in","BalancerVault
 BalancerVault
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 MaverickPool-WETH-USDC:fee_400
@@ -3662,8 +3662,8 @@ WETH_withdraw:weth_in","BalancerVault
 BalancerVault
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 MaverickPool-WETH-USDC:fee_400
@@ -3731,7 +3731,7 @@ SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3745,8 +3745,8 @@ SolidlySwap-WETH-frxETH
 SolidlySwap-WETH-frxETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -3792,7 +3792,7 @@ SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3819,7 +3819,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3835,8 +3835,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 CurveTriCryptoNG-WBTC-ETH-USDT
@@ -3896,7 +3896,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -3929,9 +3929,9 @@ CurveSwap:token_in
 CurveSwap:token_out
 CurveRouter:token_out","CurveSwapRouter
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDT
 CurveSwapRouter
@@ -3976,9 +3976,9 @@ CurveSwap:token_in
 CurveSwap:token_out
 CurveRouter:token_out","CurveSwapRouter
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDC
 CurveSwapRouter
@@ -4039,9 +4039,9 @@ CurveSwap:token_in
 CurveSwap:token_out
 CurveRouter:token_out","CurveSwapRouter
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDT
 CurveSwapRouter
@@ -4104,9 +4104,9 @@ CurveSwapWETH_Withdraw:weth_out
 CurveSwap:token_out
 CurveRouter:token_out","CurveSwapRouter
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDT
 CurveSwapRouter
@@ -4187,8 +4187,8 @@ CurveStableSwap-BADGER-crvFRAX
 CurveStableSwap-BADGER-crvFRAX
 BalancerVault
 BalancerVault
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX","frax
 crvfrax
@@ -4238,7 +4238,7 @@ CurveSwap:token_out
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4249,8 +4249,8 @@ CurveCryptoSwap-frxETH-CVX
 CurveCryptoSwap-frxETH-CVX
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC","usdc
 crvfrax
@@ -4288,7 +4288,7 @@ CurveSwap:token_out
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4309,8 +4309,8 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out","CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","usdc
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","usdc
 crvusd
 crvusd
 sfrxeth","CurveSwap:1
@@ -4334,8 +4334,8 @@ LLAMMA:token_out
 BalancerVault:token_in
 BalancerVault:token_out","CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 BalancerVault","usdc
 crvusd
@@ -4369,15 +4369,15 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_out","CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveCryptoSwap-frxETH-CVX
@@ -4419,7 +4419,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_in
@@ -4441,15 +4441,15 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_out","CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveCryptoSwap-frxETH-CVX
@@ -4491,7 +4491,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 CurveSwap:token_in
@@ -4513,13 +4513,13 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:weth_out","CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -4553,7 +4553,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:weth_out
@@ -4569,7 +4569,7 @@ weth"
 33,1,0xa1ff0ca0577a92197ea18099dbd56fdedfc50ce6f2134d64affee83ea548d1bb,"CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4578,8 +4578,8 @@ WETH_deposit:weth_out","CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 ","eth
@@ -4609,7 +4609,7 @@ WETH_deposit:1","
 ","CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4627,8 +4627,8 @@ weth"
 36,1,0x60c5aa70314f6a23630cd719075188f8371351411c1baf8f7ced2059b9296858,"LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
-CurveSwap:token_out","LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+CurveSwap:token_out","LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC","sfrxeth
 crvusd
@@ -4650,8 +4650,8 @@ usdc"
 37,1,0x4807813e8c07e9d3e3883d74e2e4a2a96eeb57982f78702ffed3a025fd5ba897,"LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
-CurveSwap:token_out","LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+CurveSwap:token_out","LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT","sfrxeth
 crvusd
@@ -4676,7 +4676,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -4686,8 +4686,8 @@ WETH_withdraw:weth_in
 PancakeSwap:token_in","PancakeV3Pool-WETH-USDT
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 CurveStableSwap-ETH-FRXETH
@@ -4741,7 +4741,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveSwap:token_in
 CurveSwap:token_out
 WETH_deposit:eth_in
@@ -4767,7 +4767,7 @@ weth"
 UniswapSwap:token_out
 UniswapSwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4776,8 +4776,8 @@ UniswapV3Pool-WETH-frxETH:fee_500
 UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT","weth
@@ -4808,7 +4808,7 @@ flash_repay:PancakeV3Pool-WETH-USDT:0","0
 UniswapSwap:token_out
 UniswapSwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4828,7 +4828,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4842,8 +4842,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 
@@ -4893,7 +4893,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4920,7 +4920,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4931,8 +4931,8 @@ PancakeSwap:token_in","PancakeV3Pool-WETH-USDC
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 PancakeV3Pool-WETH-USDC","weth
@@ -4970,7 +4970,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4989,7 +4989,7 @@ usdc
 usdc"
 44,1,0x6c13cd500fe6980847b860d8af678e528f9734f0a968a978ecaaabdb1e2bb93a,"PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -4999,8 +4999,8 @@ CurveSwap:token_out
 PancakeSwap:token_in","PancakeV3Pool-WETH-frxETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 CurveTriCrypto-WBTC-ETH-USDT
@@ -5034,7 +5034,7 @@ flash_repay:PancakeV3Pool-WETH-frxETH:0","0
 
 0","PancakeSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5056,7 +5056,7 @@ weth"
 SolidlySwap:token_out
 SolidlySwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5070,8 +5070,8 @@ SolidlySwap-WETH-frxETH
 SolidlySwap-WETH-frxETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 CurveTriCryptoNG-WBTC-ETH-USDT
@@ -5117,7 +5117,7 @@ CurveSwap:3","0
 SolidlySwap:token_out
 SolidlySwap:token_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5149,8 +5149,8 @@ CurveSwap:token_out
 UniswapSwap:token_in","UniswapV3Pool-USDC-gOHM:fee_3000
 BalancerVault
 BalancerVault
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-USDC-gOHM:fee_3000","gohm
@@ -5200,8 +5200,8 @@ CurveSwap:token_out
 UniswapSwap:token_in","UniswapV3Pool-USDC-RUSDC:fee_500
 BalancerVault
 BalancerVault
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-USDC-RUSDC:fee_500","r
@@ -5257,8 +5257,8 @@ WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 BalancerVault
 
@@ -5340,14 +5340,14 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 PancakeSwap:token_out
 UniswapSwap:token_in
 PancakeSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 PancakeV3Pool-WETH-frxETH
@@ -5385,7 +5385,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 PancakeSwap:token_out
 UniswapSwap:token_in
 PancakeSwap:token_in
@@ -5405,14 +5405,14 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 PancakeSwap:token_out
 UniswapSwap:token_in
 PancakeSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 PancakeV3Pool-WETH-frxETH
@@ -5450,7 +5450,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 PancakeSwap:token_out
 UniswapSwap:token_in
 PancakeSwap:token_in
@@ -5470,15 +5470,15 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 SolidlySwap-WETH-frxETH
@@ -5521,7 +5521,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 SolidlySwap:token_in
 SolidlySwap:token_out
 SolidlySwap:token_in
@@ -5543,14 +5543,14 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-wstETH:fee_100
 CurveTriCryptoNG-crvUSD-WETH-tBTC
 CurveTriCryptoNG-crvUSD-WETH-tBTC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 
 
 UniswapV3Pool-WETH-frxETH:fee_500
@@ -5588,7 +5588,7 @@ CurveSwap:token_out
 LLAMMA:token_in
 LLAMMA:token_out
 frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 UniswapSwap:token_out
 UniswapSwap:token_in
 UniswapSwap:token_in
@@ -5605,7 +5605,7 @@ weth"
 69,1,0x724f620701a2dfa934a607df9e96e276db12b58d32e0369573a5bcdac287122b,"UniswapSwap:token_out
 UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5617,8 +5617,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 
@@ -5660,7 +5660,7 @@ flash_repay:UniswapV3Pool-WETH-USDT:fee_500:0","0
 0","UniswapSwap:token_out
 UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5687,7 +5687,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5703,8 +5703,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_3000
@@ -5762,7 +5762,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5793,7 +5793,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5804,8 +5804,8 @@ UniswapSwap:token_in","UniswapV3Pool-WETH-USDT:fee_500
 
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 UniswapV3Pool-WETH-USDT:fee_500","weth
@@ -5843,7 +5843,7 @@ WETH_withdraw:eth_out
 WETH_withdraw:weth_in
 frxETH_mint:eth_in
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5862,7 +5862,7 @@ usdt
 usdt"
 79,1,0x34babf75dcb0bfc4c5f88934e410534d7186ba161a7d3956aac4a4a5f1996d62,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5874,8 +5874,8 @@ WETH_withdraw:weth_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 CurveTriCrypto-WBTC-ETH-USDT
@@ -5917,7 +5917,7 @@ flash_repay:UniswapV3Pool-WETH-frxETH:fee_500:0","0
 
 0","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5941,7 +5941,7 @@ weth
 weth"
 80,1,0x818d0473fd93d9d1990b9b837bf45abb24f1642daa35d529df7824ea3ce89e05,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -5953,8 +5953,8 @@ CurveSwap:token_out
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 CurveTriCryptoNG-WBTC-USDC
@@ -5998,7 +5998,7 @@ flash_repay:UniswapV3Pool-WETH-frxETH:fee_500:0","0
 
 0","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6022,7 +6022,7 @@ weth
 weth"
 81,1,0x7b61ffa896377bbc020cb0a0de139bd8636cc07bae6b9bf8daa171a0962c58ad,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6032,8 +6032,8 @@ UniswapSwap:token_in
 PancakeSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT
@@ -6067,7 +6067,7 @@ flash_repay:PancakeV3Pool-WETH-USDT:1","0
 0
 1","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6087,7 +6087,7 @@ weth
 usdt"
 83,1,0x2068b717238e35f5f6d5ea723ca879567823d1a79df66bdeda57511a3e39da52,"UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6097,8 +6097,8 @@ UniswapSwap:token_in
 UniswapSwap:token_in","UniswapV3Pool-WETH-frxETH:fee_500
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
 UniswapV3Pool-WETH-USDC:fee_500
@@ -6132,7 +6132,7 @@ flash_repay:UniswapV3Pool-WETH-frxETH:fee_500:0","0
 
 0","UniswapSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6159,8 +6159,8 @@ LLAMMA:token_out","
 
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","eth
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","eth
 weth
 usdc
 crvusd
@@ -6200,8 +6200,8 @@ UniswapV3Pool-WETH-USDC:fee_500
 UniswapV3Pool-WETH-USDC:fee_500
 CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","eth
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","eth
 weth
 usdc
 weth
@@ -6243,7 +6243,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6255,8 +6255,8 @@ CurveStableSwap-ETH-FRXETH
 CurveStableSwap-ETH-FRXETH
 
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDT
 CurveStableSwap-crvUSD-USDT
 PancakeV3Pool-WETH-USDT
@@ -6298,7 +6298,7 @@ WETH_withdraw:weth_in
 CurveSwap:token_in
 CurveSwap:token_out
 frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6318,14 +6318,14 @@ usdt
 weth
 usdt"
 91,1,0xd3a5cbf516ce5610310e50de52f1d41b275b4a990f2fcdabdb9681c2760f85b4,"frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
 CurveSwap:token_out","
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-FRAX
 CurveStableSwap-crvUSD-FRAX","frxeth
 sfrxeth
@@ -6343,7 +6343,7 @@ CurveSwap:1","
 
 
 ","frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6355,14 +6355,14 @@ crvusd
 crvusd
 frax"
 92,1,0x8038d011499bbe89c764e91836468beda1d4b1f3be73a9ad08c8fa3abe24e452,"frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
 CurveSwap:token_out","
 
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 CurveStableSwap-crvUSD-USDP
 CurveStableSwap-crvUSD-USDP","frxeth
 sfrxeth
@@ -6380,7 +6380,7 @@ CurveSwap:1","
 
 
 ","frxETH_stake:frxETH_in
-frxETH_stake:sFrxETH_out
+frxETH_stake:sfrxETH_out
 LLAMMA:token_in
 LLAMMA:token_out
 CurveSwap:token_in
@@ -6392,7 +6392,7 @@ crvusd
 crvusd
 usdp"
 93,1,0x59d139760c6486236b6ec0d13f74ed7302754c9256d55774b44cae5e1ad9e5c0,"frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveRouter:token_in
 CurveSwap:token_in
 CurveSwap:token_out
@@ -6428,8 +6428,8 @@ CurveStableSwap-crvUSD-USDC
 CurveSwapRouter
 CurveStableSwap-crvUSD-USDC
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","frxeth
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","frxeth
 sfrxeth
 frxeth
 frxeth
@@ -6487,7 +6487,7 @@ LLAMMA:1","
 
 
 ","frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveRouter:token_in
 CurveSwap:token_in
 CurveSwap:token_out
@@ -6519,7 +6519,7 @@ crvusd
 crvusd
 sfrxeth"
 94,1,0x64dfbe01f2fe7d288fbf7b5ce8c0f2aa3ae219b7bce9d2154cd40b5c2eb48db9,"frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveRouter:token_in
 CurveSwap:token_in
 CurveSwap:token_out
@@ -6560,8 +6560,8 @@ CurveStableSwap-crvUSD-TUSD
 CurveSwapRouter
 CurveStableSwap-crvUSD-TUSD
 CurveSwapRouter
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD","frxeth
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD","frxeth
 sfrxeth
 frxeth
 frxeth
@@ -6629,7 +6629,7 @@ LLAMMA:1","
 
 
 ","frxETH_unstake:frxETH_out
-frxETH_unstake:sFrxETH_in
+frxETH_unstake:sfrxETH_in
 CurveRouter:token_in
 CurveSwap:token_in
 CurveSwap:token_out

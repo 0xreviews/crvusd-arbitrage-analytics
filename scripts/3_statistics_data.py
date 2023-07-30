@@ -11,7 +11,7 @@ from utils.utils import make_dir, make_or_clean_dir
 if __name__ == "__main__":
     make_dir("data/img/stat/")
 
-    for collateral in ["sFrxETH", "wstETH", "WETH", "WBTC"]:
+    for collateral in ["sfrxETH", "wstETH", "WETH", "WBTC"]:
         folder_dir = "data/img/stat/%s" % (collateral)
         make_or_clean_dir(folder_dir)
 

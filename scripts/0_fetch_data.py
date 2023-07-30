@@ -16,7 +16,7 @@ async def get_prices_data():
 
 
 async def main():
-    for collateral in ["sFrxETH", "wstETH", "WBTC", "WETH"]:
+    for collateral in ["sfrxETH", "wstETH", "WBTC", "WETH"]:
         raw_save_dir = DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
             ".json", "_%s.json" % (collateral)
         )

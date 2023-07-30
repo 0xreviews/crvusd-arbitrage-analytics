@@ -3217,8 +3217,8 @@ LLAMMA:token_out
 CurveSwap:token_in
 CurveSwap:token_out","CurveStableSwap-crvUSD-USDC
 CurveStableSwap-crvUSD-USDC
-LLAMMA-sFrxETH-crvUSD
-LLAMMA-sFrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
+LLAMMA-sfrxETH-crvUSD
 BalancerVault
 BalancerVault
 LLAMMA-wstETH-crvUSD

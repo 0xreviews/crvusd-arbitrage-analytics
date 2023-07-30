@@ -111,7 +111,7 @@ def tenderly_txlog(tx_logs):
     #       token symbol: net value
     token_balance_diff = TokenBalanceDiff()
 
-    # Tenderly result.asset_changes won't track sFrxETH.deposit/withdraw
+    # Tenderly result.asset_changes won't track sfrxETH.deposit/withdraw
     # We process logs to generate token flow
     for i in range(len(tx_logs)):
         n = tx_logs[i]["name"]
@@ -137,7 +137,7 @@ def tenderly_txlog(tx_logs):
 
         # @remind use equivalent amount of ETH to accounting,
         # store staked amount in `staked_eth_shares`
-        # sFrxETH/stETH shares
+        # sfrxETH/stETH shares
         staked_eth_shares = 0
 
         if n == "Transfer":
@@ -173,8 +173,8 @@ def tenderly_txlog(tx_logs):
 
         elif n == "Deposit":
             if s.lower() == "sfrxeth":
-                # sFrxETH transfer out to owner
-                f = ALIAS_TO_ADDRESS["sFrxETH"]
+                # sfrxETH transfer out to owner
+                f = ALIAS_TO_ADDRESS["sfrxETH"]
                 for _input in inputs:
                     if _input["soltype"]["name"] == "owner":
                         t = _input["value"]

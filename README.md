@@ -26,7 +26,7 @@ Fetch all arbitrage data and automatically classify, statistics, and generate to
 1. Wash raw data, save csv file and json file in `data/csv/tokenflow_data_[collateral]`, `data/json/tokenflow_data_[collateral]`
    - Automatically identify the behavior type of each token transfer
    - Log all swap pools
-   - Group all tx steps, e.g. flashswap, sFrxETH stake/unstake, WETH deposit/withdraw, token swap in/out
+   - Group all tx steps, e.g. flashswap, sfrxETH stake/unstake, WETH deposit/withdraw, token swap in/out
 2. Classify all arbitrage tokenflow
 3. Generate statistical graphs
 4. Generate tokenflow chart for each arbitrage category
@@ -47,7 +47,7 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 #### Daily revenue and gascost
 
-![](./results/stat/sFrxETH/stat_daily_revenue_gascost_sfrxeth.png)
+![](./results/stat/sfrxETH/stat_daily_revenue_gascost_sfrxeth.png)
 
 ![](./results/stat/wstETH/stat_daily_revenue_gascost_wsteth.png)
 
@@ -57,7 +57,7 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 #### revenue volume scatter
 
-![](./results/stat/sFrxETH/stat_scatter_revenue_volume_sfrxeth.png)
+![](./results/stat/sfrxETH/stat_scatter_revenue_volume_sfrxeth.png)
 
 ![](./results/stat/wstETH/stat_scatter_revenue_volume_wsteth.png)
 
@@ -66,9 +66,9 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 ![](./results/stat/WETH/stat_scatter_revenue_volume_weth.png)
 
 
-#### sFrxETH Dominance
+#### sfrxETH Dominance
 
-![](./results/stat/sFrxETH/dominance_sfrxeth.png)
+![](./results/stat/sfrxETH/dominance_sfrxeth.png)
 
 #### wstETH Dominance
 
@@ -85,17 +85,17 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 ### Tokenflow
 
-#### sFrxETH LLAMMA Pool
+#### sfrxETH LLAMMA Pool
 
-![](./results/tokenflow/How-to-Arbitrage-on-LLAMMA_sFrxETH.png)
+![](./results/tokenflow/How-to-Arbitrage-on-LLAMMA_sfrxETH.png)
 
 The three most frequently used arbitrage methods:
 
-![](./results/tokenflow/sFrxETH/type_1.png)
+![](./results/tokenflow/sfrxETH/type_1.png)
 
-![](./results/tokenflow/sFrxETH/type_2.png)
+![](./results/tokenflow/sfrxETH/type_2.png)
 
-![](./results/tokenflow/sFrxETH/type_3.png)
+![](./results/tokenflow/sfrxETH/type_3.png)
 
 #### wstETH LLAMMA Pool
 

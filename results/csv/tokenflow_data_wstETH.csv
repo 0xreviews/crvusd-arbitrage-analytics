@@ -2239,8 +2239,8 @@ transfer_step,from,to,token_symbol,amount,action_type,swap_pool,action_group,fla
 0,dYdXSoloMargin,arbitrage_contract,usdc,26055.6,,,
 1,arbitrage_contract,CurveStableSwap-crvUSD-USDC,usdc,26055.6,CurveSwap:token_in,CurveStableSwap-crvUSD-USDC,CurveSwap:1
 2,CurveStableSwap-crvUSD-USDC,arbitrage_contract,crvusd,26081.454366912873,CurveSwap:token_out,CurveStableSwap-crvUSD-USDC,CurveSwap:1
-3,arbitrage_contract,LLAMMA-sFrxETH-crvUSD,crvusd,26078.84622147618,LLAMMA:token_in,LLAMMA-sFrxETH-crvUSD,LLAMMA:1
-4,LLAMMA-sFrxETH-crvUSD,arbitrage_contract,sfrxeth,14.343886645309766,LLAMMA:token_out,LLAMMA-sFrxETH-crvUSD,LLAMMA:1
+3,arbitrage_contract,LLAMMA-sfrxETH-crvUSD,crvusd,26078.84622147618,LLAMMA:token_in,LLAMMA-sfrxETH-crvUSD,LLAMMA:1
+4,LLAMMA-sfrxETH-crvUSD,arbitrage_contract,sfrxeth,14.343886645309766,LLAMMA:token_out,LLAMMA-sfrxETH-crvUSD,LLAMMA:1
 5,arbitrage_contract,BalancerVault,sfrxeth,14.34245225665948,BalancerVault:token_in,BalancerVault,BalancerVault:1
 6,BalancerVault,arbitrage_contract,wsteth,13.265307602612046,BalancerVault:token_out,BalancerVault,BalancerVault:1
 7,arbitrage_contract,LLAMMA-wstETH-crvUSD,wsteth,13.265307602612046,LLAMMA:token_in,LLAMMA-wstETH-crvUSD,LLAMMA:2
@@ -2261,8 +2261,8 @@ transfer_step,from,to,token_symbol,amount,action_type,swap_pool,action_group,fla
 0,dYdXSoloMargin,arbitrage_contract,usdc,22581.52,,,
 1,arbitrage_contract,CurveStableSwap-crvUSD-USDC,usdc,22581.52,CurveSwap:token_in,CurveStableSwap-crvUSD-USDC,CurveSwap:1
 2,CurveStableSwap-crvUSD-USDC,arbitrage_contract,crvusd,22603.949078033038,CurveSwap:token_out,CurveStableSwap-crvUSD-USDC,CurveSwap:1
-3,arbitrage_contract,LLAMMA-sFrxETH-crvUSD,crvusd,22601.688683125234,LLAMMA:token_in,LLAMMA-sFrxETH-crvUSD,LLAMMA:1
-4,LLAMMA-sFrxETH-crvUSD,arbitrage_contract,sfrxeth,12.437723094994475,LLAMMA:token_out,LLAMMA-sFrxETH-crvUSD,LLAMMA:1
+3,arbitrage_contract,LLAMMA-sfrxETH-crvUSD,crvusd,22601.688683125234,LLAMMA:token_in,LLAMMA-sfrxETH-crvUSD,LLAMMA:1
+4,LLAMMA-sfrxETH-crvUSD,arbitrage_contract,sfrxeth,12.437723094994475,LLAMMA:token_out,LLAMMA-sfrxETH-crvUSD,LLAMMA:1
 5,arbitrage_contract,BalancerVault,sfrxeth,12.436479322693822,BalancerVault:token_in,BalancerVault,BalancerVault:1
 6,BalancerVault,arbitrage_contract,wsteth,11.502315481454307,BalancerVault:token_out,BalancerVault,BalancerVault:1
 7,arbitrage_contract,LLAMMA-wstETH-crvUSD,wsteth,11.502315481454307,LLAMMA:token_in,LLAMMA-wstETH-crvUSD,LLAMMA:2

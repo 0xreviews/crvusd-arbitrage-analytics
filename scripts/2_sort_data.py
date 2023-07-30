@@ -9,7 +9,7 @@ from analytics.sort_trades import (
 
 
 def sort_data():
-    for collateral in ["sFrxETH", "wstETH", "WETH", "WBTC"]:
+    for collateral in ["sfrxETH", "wstETH", "WETH", "WBTC"]:
         with open("data/json/tokenflow_data_%s.json" % (collateral), "r") as f:
             trades_data = json.load(f)
             arbi_type_data, sort_type_count = sort_arbitrage_data(trades_data)

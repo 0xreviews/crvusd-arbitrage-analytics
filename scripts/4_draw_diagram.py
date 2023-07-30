@@ -5,7 +5,7 @@ from utils.utils import make_or_clean_dir
 
 
 def main():
-    for symbol in ["sFrxETH", "wstETH", "WETH", "WBTC"]:
+    for symbol in ["sfrxETH", "wstETH", "WETH", "WBTC"]:
         dot_dir = "data/img/%s/dot/" % (symbol)
         png_dir = "data/img/%s/" % (symbol)
 
