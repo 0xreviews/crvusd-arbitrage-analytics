@@ -163,6 +163,16 @@ def generate_tx_summary(resp):
 
     return summary, token_prices, tx_meta
 
+async def fetch_summary_data_batch(txs):
+    tasks = []
+    for i in range(len(txs)):
+        target_tx = txs[i]
+        tasks.append(query_eigenphi_summary_tx(target_tx))
+
+    results = await asyncio.gather(*tasks)
+    print("fetch_summary_data_batch results:", len(results))
+
+    return results
 
 async def fetch_analytics_data_batch(txs):
     tasks = []
