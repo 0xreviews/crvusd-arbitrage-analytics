@@ -41,7 +41,7 @@ python scripts/4_statistics_data.py
 
 ## Results
 
-Some statistical graphs and token flow charts (statistics date: 2023-07-15):
+Some statistical graphs and token flow charts (statistics date: 2023-07-30):
 
 ### Statistics
 
