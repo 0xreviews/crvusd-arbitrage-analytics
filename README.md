@@ -80,7 +80,7 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-15):
 
 #### WETH Dominance
 
-![](./results/stat/wstETH/dominance_weth.png)
+![](./results/stat/WETH/dominance_weth.png)
 
 
 ### Tokenflow
