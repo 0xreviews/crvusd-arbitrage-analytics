@@ -12,11 +12,7 @@ if __name__ == "__main__":
     make_or_clean_dir(CSV_DIR)
 
     for collateral in ["sfrxETH", "wstETH", "WBTC", "WETH"]:
-        json_data, csv_lines = wash_analytics_data_from_file(
-            original_raw_data_dir=DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
-                ".json", "_%s.json" % (collateral)
-            )
-        )
+        json_data, csv_lines = wash_analytics_data_from_file(collateral)
 
         with open("%s/tokenflow_data_%s.csv" % (CSV_DIR, collateral), "w") as f:
             writer = csv.writer(f)

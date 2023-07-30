@@ -1,7 +1,6 @@
 import asyncio
 import csv
 import json
-import re
 from analytics.match_action import (
     match_call_arbitrage_contract,
     match_frxeth_action,
@@ -20,7 +19,11 @@ from collector.eigenphi.utils import get_eigenphi_tokenflow
 from utils.match import format_decimals, get_address_alias, is_llamma_swap
 from collector.graphql.query import query_detailed_trades_all
 from config.constance import EIGEN_TX_URL
-from config.filename_config import DEFAUT_TRADES_GQL_DIR
+from config.filename_config import (
+    DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR,
+    DEFAULT_EIGENPHI_TX_RAW_DIR,
+    DEFAUT_TRADES_GQL_DIR,
+)
 
 
 def get_trades_data(llamma_collateral, save_dir=DEFAUT_TRADES_GQL_DIR, save_csv=False):
@@ -163,16 +166,23 @@ def generate_tx_summary(resp):
 
     return summary, token_prices, tx_meta
 
+
+def generate_tx_summary_etherscan(resp):
+    gas_price = int(resp["effectiveGasPrice"], base=16)
+    gas_used = int(resp["gasUsed"], base=16)
+    eth_cost = gas_price * gas_used / 1e18
+
+    return eth_cost
+
+
 async def fetch_summary_data_batch(txs):
     tasks = []
     for i in range(len(txs)):
         target_tx = txs[i]
         tasks.append(query_eigenphi_summary_tx(target_tx))
-
     results = await asyncio.gather(*tasks)
-    print("fetch_summary_data_batch results:", len(results))
-
     return results
+
 
 async def fetch_analytics_data_batch(txs):
     tasks = []
@@ -204,22 +214,54 @@ async def fetch_analytics_data_batch(txs):
     return raws
 
 
-def wash_analytics_data_from_file(original_raw_data_dir):
+def wash_analytics_data_from_file(symbol):
+    original_raw_data_dir = DEFAULT_EIGENPHI_TX_RAW_DIR.replace(
+        ".json", "_%s.json" % (symbol)
+    )
+
+    with open(
+        DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR.replace(".json", "_weth.json")
+    ) as f:
+        eth_prices = json.load(f)
+
     with open(original_raw_data_dir, encoding="utf-8") as f:
         original_data = json.load(f)
-        return wash_analytics_data(original_data)
+        return wash_analytics_data(original_data, eth_prices)
 
 
-def wash_analytics_data(original_data):
+def wash_analytics_data(original_data, eth_prices):
     csv_lines = []
     json_data = []
+
     for i in range(len(original_data)):
         # # @follow-up
         # if original_data[i]["tx"] != "0xebf1ac9c93f7af806120d15eaee1994fce511ef8ddb71b2c586ede38e6a3dc11":
         #     continue
 
         row = original_data[i]
-        summary, token_prices, tx_meta = generate_tx_summary(row["summary_original"])
+        summary, token_prices, tx_meta = generate_tx_summary(row["summary_original"])            
+
+        # if summary is None:
+        #     tx_raw = row["analytics_tx_original"]["transaction"]
+        #     gas_price = tx_raw["gasPrice"]
+        #     gas_used = tx_raw["receipt"]["gasUsed"]
+        #     eth_cost = gas_price * gas_used / 1e18
+        #     eth_price = 0
+        #     ts = tx_raw["blockTimestamp"]
+
+        #     for j in range(len(eth_prices)):
+        #         if ts * 1000 >= eth_prices[j][0]:
+        #             eth_price = eth_prices[j][1]
+        #             break
+
+        #     cost = eth_price * eth_cost
+
+        #     summary = {
+        #         "cost": cost,
+        #         "profit": "0",
+        #         "revenue": "0",
+        #         "types": [],
+        #     }
 
         token_balance_diff, address_tags, transfers = get_eigenphi_tokenflow(
             row["analytics_tx_original"]
@@ -238,6 +280,12 @@ def wash_analytics_data(original_data):
             if flow["token_symbol"] == "crvusd" and is_llamma_swap(flow["swap_pool"]):
                 liquidate_volume = flow["amount"]
                 break
+        
+        # @remind Filter out profit too high
+        if summary is not None and liquidate_volume > 10000:
+            if float(summary["revenue"]) / liquidate_volume > 0.05:
+                print("profit too high", summary["revenue"], liquidate_volume)
+                summary = None
 
         _, sort_type_value = generate_sort_type_value(token_flow_list)
 

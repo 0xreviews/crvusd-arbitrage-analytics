@@ -10,6 +10,10 @@ SUBGRAPH_ENDPOINT_VOLUME = (
 )
 SUBGRAPH_QUERY_SIZE = 1000
 
+# etherscan
+
+ETHERSCAN_MAINNET_ENDPOINT = "https://api.etherscan.io/api"
+
 # eigenPhi
 EIGEN_TX_URL = "https://eigenphi.io/mev/eigentx/"
 EIGEN_ANALYTICS_TX = (

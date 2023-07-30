@@ -38,25 +38,27 @@ def load_detailed_trades_df(token_symbol):
                 revenue = float(summary["revenue"])
                 cost = float(summary["cost"])
                 is_sandwitch_victim = "PartialSandwich" in summary["types"]
+            else:
+                continue
 
-                if begin_date == "":
-                    begin_date = get_date_from_timestamp(timestamp)
+            if begin_date == "":
+                begin_date = get_date_from_timestamp(timestamp)
 
-                data.append(
-                    {
-                        "timestamp": timestamp,
-                        "date": get_date_from_timestamp(timestamp),
-                        "profit": profit,
-                        "revenue": revenue,
-                        "cost": cost,
-                        "liquidate_volume": liquidate_volume,
-                        "is_sandwitch_victim": is_sandwitch_victim,
-                        "tx_from": address_tags["tx_from"],
-                        # "arbitrage_contract": address_tags["arbitrage_contract"],
-                        "sort_type_value": sort_type_value,
-                        "tx": row["tx"],
-                    }
-                )
+            data.append(
+                {
+                    "timestamp": timestamp,
+                    "date": get_date_from_timestamp(timestamp),
+                    "profit": profit,
+                    "revenue": revenue,
+                    "cost": cost,
+                    "liquidate_volume": liquidate_volume,
+                    "is_sandwitch_victim": is_sandwitch_victim,
+                    "tx_from": address_tags["tx_from"],
+                    # "arbitrage_contract": address_tags["arbitrage_contract"],
+                    "sort_type_value": sort_type_value,
+                    "tx": row["tx"],
+                }
+            )
 
         df = pd.DataFrame(data)
 
