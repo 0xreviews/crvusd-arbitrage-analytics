@@ -2,8 +2,9 @@ import json
 import os
 import time
 import asyncio
+from analytics.get_liquidations import get_liquidations_data
 from analytics.get_trades import fetch_analytics_data_batch, fetch_summary_data_batch, get_trades_data
-from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR, DEFAUT_TRADES_GQL_DIR
+from config.filename_config import DEFAULT_EIGENPHI_TX_RAW_DIR
 from collector.coingecko.query import query_prices_historical
 
 
@@ -24,10 +25,13 @@ async def refetch_summary_data(exists_data):
             fetch_tx_list.append(exists_data[i]["tx"])
     
     results = await fetch_summary_data_batch(fetch_tx_list)
+    non_empty_len = 0
     for i in range(len(results)):
         exists_data[fetch_index_list[i]]["summary_original"] = results[i]
+        if results[i] is not None:
+            non_empty_len += 1
     
-    print("refetch_summary_data res len ", len(results))
+    print("refetch_summary_data res len ", len(results), "non-empty result len", non_empty_len)
     return exists_data
 
 
@@ -38,6 +42,7 @@ async def main():
         )
 
         all_trades = get_trades_data(llamma_collateral=collateral)
+        all_liquidations = get_liquidations_data(llamma_collateral=collateral)
 
         batch_size = 30
         raws_data = []
@@ -48,7 +53,7 @@ async def main():
             with open(raw_save_dir, "r") as exists_data_file:
                 exists_data = json.load(exists_data_file)
                 # refetch summary data
-                exists_data = await refetch_summary_data(exists_data)
+                # exists_data = await refetch_summary_data(exists_data)
                 raws_data = [] + exists_data
                 exists_txs = [item["tx"] for item in exists_data]
                 for _trade in all_trades:

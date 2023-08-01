@@ -47,3 +47,30 @@ token_exchanges_query = gql(
     }
 """
 )
+
+liquidations_query = gql(
+    """
+    query Liquidations ($llamma: String!, $skip: Int!, $size: Int!) {
+        liquidations(skip: $skip, first: $size, orderBy: blockTimestamp, orderDirection: asc, where: { 
+            market: $llamma,
+        }) {
+            id
+            blockNumber
+            blockTimestamp
+            transactionHash
+            debt
+            collateralReceived
+            stablecoinReceived
+            user {
+                id
+            }
+            liquidator {
+                id
+            }
+            # market {
+            #     id
+            # }
+        }
+    }
+"""
+)

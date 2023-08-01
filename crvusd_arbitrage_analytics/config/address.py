@@ -6,6 +6,9 @@ ADDRESS_ALIAS = {
     "0x0000000000000000000000000000000000000000": "ADDRESS_ZERO",
     # LLAMMA and Controller
     "0x8472a9a7632b173c8cf3a86d3afec50c35548e76": "Controller-sfrxETH",
+    "0x100daa78fc509db39ef7d04de0c1abd299f4c6ce": "Controller-wstETH",
+    "0xa920de414ea4ab66b97da1bfe9e6eca7d4219635": "Controller-WETH",
+    "0x4e59541306910ad6dc1dac0ac9dfb29bd9f15c67": "Controller-WBTC",
     "0x136e783846ef68c8bd00a3369f787df8d683a696": "LLAMMA-sfrxETH-crvUSD",
     "0x37417b2238aa52d0dd2d6252d989e728e8f706e4": "LLAMMA-wstETH-crvUSD",
     "0x1681195c176239ac5e72d9aebacf5b2492e0c4ee": "LLAMMA-WETH-crvUSD",

@@ -35,7 +35,7 @@ async def query_prices_historical(
             save_dir = save_dir.replace(".json", "_%s.json" % (token_symbol))
             with open(save_dir, "w") as json_file:
                 json_file.write(json.dumps(resp["prices"], indent=4))
-                print("trades data write to %s successfully." % (save_dir))
+                print("prices data write to %s successfully." % (save_dir))
 
         return resp["prices"]
     else:

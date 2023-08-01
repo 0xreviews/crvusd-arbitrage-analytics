@@ -6,7 +6,11 @@ from config.constance import (
     SUBGRAPH_ENDPOINT_VOLUME,
     SUBGRAPH_QUERY_SIZE,
 )
-from .gql_queries import detialed_trades_query, token_exchanges_query
+from .gql_queries import (
+    detialed_trades_query,
+    token_exchanges_query,
+    liquidations_query,
+)
 
 tp = RequestsHTTPTransport(url=SUBGRAPH_ENDPOINT_VOLUME)
 
@@ -46,12 +50,12 @@ def data_iteration(
             _data = res[key_name]
             if len(_data) == 0:
                 print(
-                    "query %s all data done, total res len %d" % (key_name, len(data))
+                    "query %s done, total res len %d" % (key_name, len(data))
                 )
                 break
             data = data + _data
             print(
-                "query %s all data, from %d to %d res len: %d"
+                "query %s, from %d to %d res len: %d"
                 % (key_name, count * size, (count + 1) * size, len(_data))
             )
         else:
@@ -70,9 +74,8 @@ def query_detailed_trades(skip=0, size=SUBGRAPH_QUERY_SIZE):
 
 
 def query_token_exchanges(llamma_collateral, skip=0, size=SUBGRAPH_QUERY_SIZE):
-    # llamma_name: LLAMMA-sfrxETH-crvUSD / LLAMMA-wstETH-crvUSD
+    # llamma_name: LLAMMA-sfrxETH-crvUSD / LLAMMA-wstETH-crvUSD / LLAMMA-WETH-crvUSD / LLAMMA-WBTC-crvUSD
     llamma_address = ALIAS_TO_ADDRESS["LLAMMA-%s-crvUSD" % (llamma_collateral)]
-    print(llamma_collateral, "llamma_address", llamma_address)
     return query_gql(
         token_exchanges_query,
         variables={"llamma": llamma_address, "skip": int(skip), "size": int(size)},
@@ -83,6 +86,25 @@ def query_detailed_trades_all(llamma_collateral="sfrxETH"):
     res = data_iteration(
         "tokenExchanges",
         query_token_exchanges,
+        size=SUBGRAPH_QUERY_SIZE,
+        llamma_collateral=llamma_collateral,
+    )
+    return res
+
+
+def query_liquidations(llamma_collateral, skip=0, size=SUBGRAPH_QUERY_SIZE):
+    # llamma_name: Controller-sfrxETH / Controller-wstETH / Controller-WETH / Controller-WBTC
+    llamma_address = ALIAS_TO_ADDRESS["Controller-%s" % (llamma_collateral)]
+    return query_gql(
+        liquidations_query,
+        variables={"llamma": llamma_address, "skip": int(skip), "size": int(size)},
+    )
+
+
+def query_liquidations_all(llamma_collateral="sfrxETH"):
+    res = data_iteration(
+        "liquidations",
+        query_liquidations,
         size=SUBGRAPH_QUERY_SIZE,
         llamma_collateral=llamma_collateral,
     )
