@@ -47,23 +47,23 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-30):
 
 #### Daily revenue and gascost
 
-![](./results/stat/sfrxETH/stat_daily_revenue_gascost_sfrxeth.png)
+![](./results/stat/sfrxETH/stat_daily_revenue_gascost_sfrxETH.png)
 
-![](./results/stat/wstETH/stat_daily_revenue_gascost_wsteth.png)
+![](./results/stat/wstETH/stat_daily_revenue_gascost_wstETH.png)
 
-![](./results/stat/WBTC/stat_daily_revenue_gascost_wbtc.png)
+![](./results/stat/WBTC/stat_daily_revenue_gascost_WBTC.png)
 
-![](./results/stat/WETH/stat_daily_revenue_gascost_weth.png)
+![](./results/stat/WETH/stat_daily_revenue_gascost_WETH.png)
 
 #### revenue volume scatter
 
-![](./results/stat/sfrxETH/stat_scatter_revenue_volume_sfrxeth.png)
+![](./results/stat/sfrxETH/stat_scatter_revenue_volume_sfrxETH.png)
 
-![](./results/stat/wstETH/stat_scatter_revenue_volume_wsteth.png)
+![](./results/stat/wstETH/stat_scatter_revenue_volume_wstETH.png)
 
-![](./results/stat/WBTC/stat_scatter_revenue_volume_wbtc.png)
+![](./results/stat/WBTC/stat_scatter_revenue_volume_WBTC.png)
 
-![](./results/stat/WETH/stat_scatter_revenue_volume_weth.png)
+![](./results/stat/WETH/stat_scatter_revenue_volume_WETH.png)
 
 
 #### sfrxETH Dominance
