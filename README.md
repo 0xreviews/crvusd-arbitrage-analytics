@@ -130,4 +130,24 @@ The three most frequently used arbitrage methods:
 ![](./results/tokenflow/WETH/type_3.png)
 
 
+#### Daily classical-liquidations
+
+![](./results/stat/sfrxETH/liquidations_count_sfrxETH.png)
+
+![](./results/stat/wstETH/liquidations_count_wstETH.png)
+
+![](./results/stat/WBTC/liquidations_count_WBTC.png)
+
+![](./results/stat/WETH/liquidations_count_WETH.png)
+
+![](./results/stat/sfrxETH/liquidations_daily_debt_received_sfrxETH.png)
+
+![](./results/stat/wstETH/liquidations_daily_debt_received_wstETH.png)
+
+![](./results/stat/WBTC/liquidations_daily_debt_received_WBTC.png)
+
+![](./results/stat/WETH/liquidations_daily_debt_received_WETH.png)
+
+
+
 More data and picture results can be seen in [results folder](./results).

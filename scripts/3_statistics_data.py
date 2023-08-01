@@ -21,4 +21,4 @@ if __name__ == "__main__":
         detialed_trades_stat_dominance(collateral)
         detailed_trades_distribution(collateral)
         detailed_trades_stat_scatter(collateral)
-        draw_daily_stat(collateral)
+        liquidations_stat_daily(collateral)
