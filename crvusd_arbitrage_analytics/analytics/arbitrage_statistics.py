@@ -123,15 +123,6 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             gas_costs,
         ) = detailed_trades_stat_daily(token_symbol=symbol)
 
-        x_ticks = []
-        begin_xtick = counts_dates[0]
-        end_xtick = counts_dates[-1]
-        cur_xtick = begin_xtick
-        while cur_xtick <= end_xtick:
-            x_ticks.append(cur_xtick)
-            cur_xtick += timedelta(days=1)
-        x_ticks = [d.date() for d in x_ticks]
-
         prices_date = []
         prices = []
         end_i = len(raws)
@@ -141,6 +132,14 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
                 break
         prices_date = [timestamp_to_date(int(item[0]) / 1000) for item in raws[:end_i]]
         prices = [item[1] for item in raws[:end_i]]
+
+        x_ticks = []
+        begin_xtick = prices_date[0].date()
+        end_xtick = prices_date[-1].date()
+        cur_xtick = begin_xtick
+        while cur_xtick <= end_xtick:
+            x_ticks.append(cur_xtick)
+            cur_xtick += timedelta(days=1)
 
         # counts
         _draw_daily_stat(
@@ -318,6 +317,9 @@ def _draw_daily_stat(
 
     plt.xticks(x_ticks, font={"size": 12}, rotation=90)
     ax1.set_xticklabels(x_ticks, font={"size": 13}, rotation=90)
+
+    # rotate the date labels
+    fig.autofmt_xdate(ha='center', rotation=90)
     plt.subplots_adjust(left=0.05, right=0.95)
     chart_elements = line1 + [bar1]
     ax1.legend(
@@ -766,7 +768,7 @@ def liquidations_stat_daily(token_symbol):
     )
 
 
-def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR):
+def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR):
     with open(data_dir.replace(".json", "_%s.json" % (symbol.lower())), "r") as f:
         raws = json.load(f)
         (
@@ -778,15 +780,6 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             stablecoin_receiveds,
         ) = liquidations_stat_daily(token_symbol=symbol)
 
-        x_ticks = []
-        begin_xtick = counts_dates[0]
-        end_xtick = counts_dates[-1]
-        cur_xtick = begin_xtick
-        while cur_xtick <= end_xtick:
-            x_ticks.append(cur_xtick)
-            cur_xtick += timedelta(days=1)
-        x_ticks = [d.date() for d in x_ticks]
-
         prices_date = []
         prices = []
         end_i = len(raws)
@@ -796,6 +789,14 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
                 break
         prices_date = [timestamp_to_date(int(item[0]) / 1000) for item in raws[:end_i]]
         prices = [item[1] for item in raws[:end_i]]
+
+        x_ticks = []
+        begin_xtick = prices_date[0].date()
+        end_xtick = prices_date[-1].date()
+        cur_xtick = begin_xtick
+        while cur_xtick <= end_xtick:
+            x_ticks.append(cur_xtick)
+            cur_xtick += timedelta(days=1)
 
         # counts
         _draw_daily_stat(
