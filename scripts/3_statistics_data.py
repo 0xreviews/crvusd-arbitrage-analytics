@@ -3,6 +3,7 @@ from analytics.arbitrage_statistics import (
     detailed_trades_stat_scatter,
     draw_daily_stat,
     detialed_trades_stat_dominance,
+    liquidations_stat_daily,
     sort_arbi_type_stack,
 )
 from utils.utils import make_dir, make_or_clean_dir
@@ -15,8 +16,9 @@ if __name__ == "__main__":
         folder_dir = "data/img/stat/%s" % (collateral)
         make_or_clean_dir(folder_dir)
 
-        sort_arbi_type_stack(collateral)
+        # sort_arbi_type_stack(collateral)
+        # draw_daily_stat(collateral)
+        # detialed_trades_stat_dominance(collateral)
+        # detailed_trades_distribution(collateral)
+        # detailed_trades_stat_scatter(collateral)
         draw_daily_stat(collateral)
-        detialed_trades_stat_dominance(collateral)
-        detailed_trades_distribution(collateral)
-        detailed_trades_stat_scatter(collateral)

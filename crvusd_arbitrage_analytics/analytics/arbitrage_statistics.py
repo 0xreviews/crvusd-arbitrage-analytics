@@ -6,7 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from analytics.sort_trades import sort_arbitrage_data
-from config.filename_config import DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
+from config.filename_config import (
+    DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR,
+    DEFAUT_LIQUIDATIONS_GQL_DIR,
+)
 from utils.date import str_to_timestamp, timestamp_to_date
 
 plt.style.use(
@@ -589,7 +592,6 @@ def detailed_trades_stat_scatter(token_symbol):
             x_list[i] = 0
             y_list[i] = 0
 
-
     fig, ax1 = plt.subplots()
     ax1.set_title(title, font={"size": 32}, pad=24)
     ax1.set_xlabel("soft-liquidation volume", font={"size": 24})
@@ -684,6 +686,173 @@ def sort_arbi_type_stack(collateral):
     fig.savefig(
         "data/img/stat/%s/arbi_types_stack_%s.png" % (collateral, collateral), dpi=100
     )
+
+
+def load_liquidations_df(token_symbol):
+    with open(
+        DEFAUT_LIQUIDATIONS_GQL_DIR.replace(".json", "_%s.json" % (token_symbol))
+    ) as f:
+        raws = json.load(f)
+        begin_date = ""
+        data = []
+
+        for i in range(len(raws)):
+            row = raws[i]
+
+            timestamp = row["blockTimestamp"]
+            debt = float(row["debt"]) / 1e18
+            collateral_received = float(row["collateralReceived"]) / 1e18
+            stablecoin_received = float(row["stablecoinReceived"]) / 1e18
+
+            user = row["user"]["id"]
+            liquidator = row["liquidator"]["id"]
+
+            if begin_date == "":
+                begin_date = get_date_from_timestamp(timestamp)
+
+            data.append(
+                {
+                    "timestamp": timestamp,
+                    "date": get_date_from_timestamp(timestamp),
+                    "debt": debt,
+                    "collateral_received": collateral_received,
+                    "stablecoin_received": stablecoin_received,
+                    "block_number": row["blockNumber"],
+                    "tx": row["transactionHash"],
+                }
+            )
+
+        df = pd.DataFrame(data)
+
+        return df
+
+
+def liquidations_stat_daily(token_symbol):
+    df = load_liquidations_df(token_symbol)
+    end_ts = int(df["timestamp"].sort_index().to_list()[-1])
+
+    # counts
+    counts = df["date"].value_counts().sort_index()
+    counts_dates = [
+        timestamp_to_date(str_to_timestamp(item, fmt="%Y-%m-%d"))
+        for item in list(counts.index)
+    ]
+    counts_values = counts.to_list()
+
+    debts = []
+    collateral_receiveds = []
+    stablecoin_receiveds = []
+    for d in counts_dates:
+        _debts = []
+        _collateral_receiveds = []
+        _stablecoin_receiveds = []
+        for index in df[df["date"] == str(d.date())].index:
+            row = df.loc[index]
+            _debts.append(row["debt"])
+            _collateral_receiveds.append(row["collateral_received"])
+            _stablecoin_receiveds.append(row["stablecoin_received"])
+
+        debts.append(np.sum(_debts))
+        collateral_receiveds.append(np.sum(_collateral_receiveds))
+        stablecoin_receiveds.append(np.sum(_stablecoin_receiveds))
+
+    return (
+        end_ts,
+        counts_dates,
+        counts_values,
+        debts,
+        collateral_receiveds,
+        stablecoin_receiveds,
+    )
+
+
+def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR):
+    with open(data_dir.replace(".json", "_%s.json" % (symbol.lower())), "r") as f:
+        raws = json.load(f)
+        (
+            end_ts,
+            counts_dates,
+            counts_values,
+            debts,
+            collateral_receiveds,
+            stablecoin_receiveds,
+        ) = liquidations_stat_daily(token_symbol=symbol)
+
+        x_ticks = []
+        begin_xtick = counts_dates[0]
+        end_xtick = counts_dates[-1]
+        cur_xtick = begin_xtick
+        while cur_xtick <= end_xtick:
+            x_ticks.append(cur_xtick)
+            cur_xtick += timedelta(days=1)
+        x_ticks = [d.date() for d in x_ticks]
+
+        prices_date = []
+        prices = []
+        end_i = len(raws)
+        for i in range(len(raws)):
+            if int(raws[i][0]) / 1000 >= end_ts:
+                end_i = i + 1
+                break
+        prices_date = [timestamp_to_date(int(item[0]) / 1000) for item in raws[:end_i]]
+        prices = [item[1] for item in raws[:end_i]]
+
+        # counts
+        _draw_daily_stat(
+            x0_list=prices_date,
+            y0_list=prices,
+            x1_list=counts_dates,
+            y1_list=counts_values,
+            x_ticks=x_ticks,
+            title="%s Controller classical-liquidation count daily" % (symbol),
+            y_axis_label="tx count",
+            save_dir="%s/%s/liquidations_count_%s.png" % (IMG_DIR, symbol, symbol),
+        )
+
+        # calculate debt and collateral received
+        received_usds = []
+        profit_rates = []
+        for i in range(len(counts_dates)):
+            for j in range(len(prices_date)):
+                if counts_dates[i].date() == prices_date[j].date():
+                    _price = prices[j]
+                    _received_usd = (
+                        stablecoin_receiveds[i] + _price * collateral_receiveds[i]
+                    )
+                    received_usds.append(_received_usd)
+                    profit_rates.append(_received_usd / debts[i] - 1)
+                    break
+
+        # # profit_rates
+        # _draw_daily_stat(
+        #     x0_list=prices_date,
+        #     y0_list=prices,
+        #     x1_list=counts_dates,
+        #     y1_list=profit_rates,
+        #     x_ticks=x_ticks,
+        #     title="%s Controller classical-liquidation profit rate daily" % (symbol),
+        #     y_axis_label="profit rate",
+        #     save_dir="%s/%s/liquidations_profitrate_%s.png" % (IMG_DIR, symbol, symbol),
+        # )
+
+        bar_datas = {
+            "debt": debts,
+            "collateral received": received_usds,
+        }
+
+        _draw_daily_bars_multi(
+            bar_x=counts_dates,
+            bar_datas=bar_datas,
+            x1_list=prices_date,
+            y1_list=prices,
+            y0_axis_label="debt($)",
+            y1_axis_label="collateral received($)",
+            x_ticks=x_ticks,
+            title="%s Controller classical-liquidation debt and collateral received daily"
+            % (symbol),
+            save_dir="%s/%s/liquidations_daily_debt_received_%s.png"
+            % (IMG_DIR, symbol, symbol),
+        )
 
 
 def get_date_from_timestamp(ts):
