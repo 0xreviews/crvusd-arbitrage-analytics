@@ -68,19 +68,19 @@ Some statistical graphs and token flow charts (statistics date: 2023-07-30):
 
 #### sfrxETH Dominance
 
-![](./results/stat/sfrxETH/dominance_sfrxeth.png)
+![](./results/stat/sfrxETH/dominance_sfrxETH.png)
 
 #### wstETH Dominance
 
-![](./results/stat/wstETH/dominance_wsteth.png)
+![](./results/stat/wstETH/dominance_wstETH.png)
 
 #### WBTC Dominance
 
-![](./results/stat/WBTC/dominance_wbtc.png)
+![](./results/stat/WBTC/dominance_WBTC.png)
 
 #### WETH Dominance
 
-![](./results/stat/WETH/dominance_weth.png)
+![](./results/stat/WETH/dominance_WETH.png)
 
 
 ### Tokenflow
