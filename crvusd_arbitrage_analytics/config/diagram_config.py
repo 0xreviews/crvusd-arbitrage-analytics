@@ -9,7 +9,7 @@ DIAGRAM_NODE_CONFIG = {
     "arbitrage_contract": {
         "shape": "diamond",
     },
-    "arbitragur": {
+    "arbitrageur": {
         "shape": "diamond",
     },
     "coin": {

@@ -253,8 +253,8 @@ def _cells_multi_flash(token_flow_list, i, cells, tmp_action_group):
                     cells[:-2]
                     + [
                         {
-                            "n": "%s_%s" % (i, "arbitragur"),
-                            "n_label": "arbitragur",
+                            "n": "%s_%s" % (i, "arbitrageur"),
+                            "n_label": "arbitrageur",
                             "prev_edge_label": prev_row["token_symbol"],
                             "next_edge_label": "",
                         }
@@ -280,13 +280,13 @@ def _cells_subgraph_side_empty(cells, sub_graphs):
     ):
         cells = [
             {
-                "n": "0_arbitragur",
-                "n_label": "arbitragur",
+                "n": "0_arbitrageur",
+                "n_label": "arbitrageur",
                 "next_edge_label": "",
                 "prev_edge_label": "",
             }
         ] + cells
-        sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"].append("0_arbitragur")
+        sub_graphs[DIAGRAM_LAYOUT_NAME[0]]["children"].append("0_arbitrageur")
 
     if (
         right_len == 0
@@ -294,11 +294,11 @@ def _cells_subgraph_side_empty(cells, sub_graphs):
         or "_deposit" in cells[-1]["n_label"]
         or "_withdraw" in cells[-1]["n_label"]
     ):
-        n = "%d_arbitragur" % (len(cells))
+        n = "%d_arbitrageur" % (len(cells))
         cells = cells + [
             {
                 "n": n,
-                "n_label": "arbitragur",
+                "n_label": "arbitrageur",
                 "next_edge_label": "",
                 "prev_edge_label": "",
             }

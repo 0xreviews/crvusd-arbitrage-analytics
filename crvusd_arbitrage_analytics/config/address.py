@@ -31,7 +31,7 @@ ADDRESS_ALIAS = {
     # rETH
     "0xae78736cd615f374d3085123a210448e74fc6393": "rETH",
     # CurveSwapPool
-    "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577": "CurveStableSwap-ETH-FRXETH",
+    "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577": "CurveStableSwap-ETH-frxETH",
     "0x21e27a5e5513d6e65c4f830167390997aa84843a": "CurveStableSwap-ETH-stETH",
     "0x4dece678ceceb27446b35c672dc7d61f30bad69e": "CurveStableSwap-crvUSD-USDC",
     "0x390f3595bca2df7d23783dfd126427cceb997bf4": "CurveStableSwap-crvUSD-USDT",
