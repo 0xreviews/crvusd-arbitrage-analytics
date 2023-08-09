@@ -192,8 +192,6 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
         bar_datas = {
             "gas costs": [g for g in gas_costs],
             "revenue": revenues,
-            # "tx counts": counts_values,
-            # "volumes": volumes,
         }
 
         _draw_daily_bars_multi(
@@ -585,24 +583,26 @@ def detailed_trades_stat_scatter(token_symbol):
 
     x_list = df["liquidate_volume"].to_list()
     y_list = [max(y, 1) for y in df["revenue"].to_list()]
-    sandwitch_victims = df["is_sandwitch_victim"].to_list()
     x_max = max(x_list)
 
     # skip sandwitch victim
+    x_list_skip_sandwitch = []
+    y_list_skip_sandwitch = []
+    sandwitch_victims = df["is_sandwitch_victim"].to_list()
     for i in range(len(sandwitch_victims)):
-        if sandwitch_victims[i]:
-            x_list[i] = 0
-            y_list[i] = 0
-
+        if not sandwitch_victims[i]:
+            x_list_skip_sandwitch.append(x_list[i])
+            y_list_skip_sandwitch.append(y_list[i])
+    
     fig, ax1 = plt.subplots()
     ax1.set_title(title, font={"size": 32}, pad=24)
     ax1.set_xlabel("soft-liquidation volume", font={"size": 24})
     ax1.set_ylabel("soft-liquidation revenue", font={"size": 24})
 
     ax1.scatter(
-        x=x_list,
-        y=y_list,
-        s=[max(10, s / x_max * 3000) for s in x_list],
+        x=x_list_skip_sandwitch,
+        y=y_list_skip_sandwitch,
+        s=[max(10, s / x_max * 3000) for s in x_list_skip_sandwitch],
         alpha=0.65,
         color=default_chart_colors[1],
         edgecolors=default_chart_colors[5],
