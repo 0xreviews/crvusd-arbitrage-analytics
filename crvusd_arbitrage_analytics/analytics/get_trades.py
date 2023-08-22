@@ -285,9 +285,11 @@ def wash_analytics_data(original_data, eth_prices):
         if summary is not None and liquidate_volume > 10000:
             if float(summary["revenue"]) / liquidate_volume > 0.05:
                 print("revenue too high", summary["revenue"], liquidate_volume)
+                print(row["tx"])
                 summary = None
             elif float(summary["revenue"]) / liquidate_volume < -0.50:
                 print("revenue too low", summary["revenue"], liquidate_volume)
+                print(row["tx"])
                 summary = None
 
         _, sort_type_value = generate_sort_type_value(token_flow_list)

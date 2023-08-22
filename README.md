@@ -130,7 +130,7 @@ The three most frequently used arbitrage methods:
 ![](./results/tokenflow/WETH/type_3.png)
 
 
-### Daily classical-liquidations
+### Daily hard-liquidations
 
 ![](./results/stat/sfrxETH/liquidations_count_sfrxETH.png)
 

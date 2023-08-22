@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 import os
 import pandas as pd
@@ -805,7 +805,7 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
             x1_list=counts_dates,
             y1_list=counts_values,
             x_ticks=x_ticks,
-            title="%s Controller classical-liquidation count daily" % (symbol),
+            title="%s Controller hard-liquidation count daily" % (symbol),
             y_axis_label="tx count",
             save_dir="%s/%s/liquidations_count_%s.png" % (IMG_DIR, symbol, symbol),
         )
@@ -831,7 +831,7 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
         #     x1_list=counts_dates,
         #     y1_list=profit_rates,
         #     x_ticks=x_ticks,
-        #     title="%s Controller classical-liquidation profit rate daily" % (symbol),
+        #     title="%s Controller hard-liquidation profit rate daily" % (symbol),
         #     y_axis_label="profit rate",
         #     save_dir="%s/%s/liquidations_profitrate_%s.png" % (IMG_DIR, symbol, symbol),
         # )
@@ -849,7 +849,7 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
             y0_axis_label="debt($)",
             y1_axis_label="collateral received($)",
             x_ticks=x_ticks,
-            title="%s Controller classical-liquidation debt and collateral received daily"
+            title="%s Controller hard-liquidation debt and collateral received daily"
             % (symbol),
             save_dir="%s/%s/liquidations_daily_debt_received_%s.png"
             % (IMG_DIR, symbol, symbol),
@@ -857,4 +857,4 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
 
 
 def get_date_from_timestamp(ts):
-    return datetime.fromtimestamp(int(ts)).strftime("%Y-%m-%d")
+    return datetime.fromtimestamp(int(ts), tz=timezone.utc).strftime("%Y-%m-%d")
