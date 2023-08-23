@@ -33,7 +33,7 @@ COINGECKO_PRICE_HISTORICAL = "https://api.coingecko.com/api/v3/coins/{id}/market
 TOKEN_DECIMALS = {
     "eth": 18,
     "weth": 18,
-    "wbtc": 18,
+    "wbtc": 8,
     "frxeth": 18,
     "sfrxeth": 18,
     "steth": 18,

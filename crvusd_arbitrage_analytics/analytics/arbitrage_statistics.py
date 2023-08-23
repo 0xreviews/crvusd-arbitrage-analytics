@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from analytics.sort_trades import sort_arbitrage_data
+from config.constance import TOKEN_DECIMALS
 from config.filename_config import (
     DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR,
     DEFAUT_LIQUIDATIONS_GQL_DIR,
@@ -702,9 +703,9 @@ def load_liquidations_df(token_symbol):
             row = raws[i]
 
             timestamp = row["blockTimestamp"]
-            debt = float(row["debt"]) / 1e18
-            collateral_received = float(row["collateralReceived"]) / 1e18
-            stablecoin_received = float(row["stablecoinReceived"]) / 1e18
+            debt = float(row["debt"]) / 10**TOKEN_DECIMALS["crvusd"]
+            collateral_received = float(row["collateralReceived"]) / 10**TOKEN_DECIMALS[token_symbol.lower()]
+            stablecoin_received = float(row["stablecoinReceived"]) / 10**TOKEN_DECIMALS["crvusd"]
 
             user = row["user"]["id"]
             liquidator = row["liquidator"]["id"]
