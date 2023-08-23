@@ -838,7 +838,7 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
 
         bar_datas = {
             "debt": debts,
-            "collateral received": received_usds,
+            "collateral received($)": received_usds,
         }
 
         _draw_daily_bars_multi(
@@ -847,7 +847,7 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
             x1_list=prices_date,
             y1_list=prices,
             y0_axis_label="debt($)",
-            y1_axis_label="collateral received($)",
+            y1_axis_label="%s price" % (symbol),
             x_ticks=x_ticks,
             title="%s Controller hard-liquidation debt and collateral received daily"
             % (symbol),
