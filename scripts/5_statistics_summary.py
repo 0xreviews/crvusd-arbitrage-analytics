@@ -64,7 +64,7 @@ def stat_summary_soft():
     ax2.grid(False)
 
     ax1.set_title(
-        "Averange Daily Volume and Count (Soft-Liquidation)", font={"size": 16}, pad=16
+        "Average Daily Volume and Count (Soft-Liquidation)", font={"size": 16}, pad=16
     )
     ax1.set_xticks(x + bar_width, species)
     chart_elements = [rects1, rects2]
@@ -124,7 +124,7 @@ def stat_summary_hard():
     ax2.grid(False)
 
     ax1.set_title(
-        "Averange Daily Volume and Count (Hard-Liquidation)", font={"size": 16}, pad=16
+        "Average Daily Volume and Count (Hard-Liquidation)", font={"size": 16}, pad=16
     )
     ax1.set_xticks(x + bar_width, species)
     chart_elements = [rects1, rects2]
