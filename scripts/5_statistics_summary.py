@@ -74,7 +74,10 @@ def stat_summary_soft():
         loc="upper right",
         prop={"size": 12},
     )
+    ax1.set_ylabel("volume ($)", font={"size": 16})
+    ax2.set_ylabel("tx count", font={"size": 16})
 
+    fig.set_size_inches(10, 8)
     # plt.show()
     fig.savefig("data/img/stat/stat_summary_soft.png", dpi=100)
 
@@ -134,7 +137,10 @@ def stat_summary_hard():
         loc="upper right",
         prop={"size": 12},
     )
+    ax1.set_ylabel("volume ($)", font={"size": 16})
+    ax2.set_ylabel("tx count", font={"size": 16})
 
+    fig.set_size_inches(10, 8)
     # plt.show()
     fig.savefig("data/img/stat/stat_summary_hard.png", dpi=100)
 
