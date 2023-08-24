@@ -507,6 +507,8 @@ def detailed_trades_distribution(token_symbol):
         df=df,
         df_key="liquidate_volume",
         ranges=[r * 1000 for r in volume_ranges],
+        x_title="volume range ($)",
+        y_title="count",
         x_labels=volume_x_labels,
         y_axis_label="volume distribution",
         title="%s volume distribution" % (token_symbol),
@@ -518,6 +520,8 @@ def detailed_trades_distribution(token_symbol):
         df=df,
         df_key="revenue",
         ranges=revenue_ranges,
+        x_title="revenue range ($)",
+        y_title="count",
         x_labels=revenue_x_labels,
         y_axis_label="revenue distribution",
         title="%s revenue distribution" % (token_symbol),
@@ -528,6 +532,8 @@ def detailed_trades_distribution(token_symbol):
     _draw_distribution(
         df=df,
         df_key="cost",
+        x_title="gascost range ($)",
+        y_title="count",
         ranges=gascost_ranges,
         x_labels=gascost_x_labels,
         y_axis_label="gascost distribution",
@@ -537,7 +543,7 @@ def detailed_trades_distribution(token_symbol):
     )
 
 
-def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_dir):
+def _draw_distribution(df, df_key, ranges, x_title, y_title, x_labels, y_axis_label, title, save_dir):
     # liquidate_volume
     tmp_count = 0
     distributions = []
@@ -552,7 +558,8 @@ def _draw_distribution(df, df_key, ranges, x_labels, y_axis_label, title, save_d
     fig, ax1 = plt.subplots()
 
     ax1.set_title(title, font={"size": 32}, pad=24)
-    ax1.set_xlabel("range", font={"size": 24})
+    ax1.set_xlabel(x_title, font={"size": 20})
+    ax1.set_ylabel(y_title, font={"size": 20})
     ax1.set_xticklabels(x_labels, font={"size": 16})
 
     _bar = ax1.bar(
@@ -597,8 +604,8 @@ def detailed_trades_stat_scatter(token_symbol):
     
     fig, ax1 = plt.subplots()
     ax1.set_title(title, font={"size": 32}, pad=24)
-    ax1.set_xlabel("soft-liquidation volume", font={"size": 24})
-    ax1.set_ylabel("soft-liquidation revenue", font={"size": 24})
+    ax1.set_xlabel("soft-liquidation volume ($)", font={"size": 24})
+    ax1.set_ylabel("soft-liquidation revenue ($)", font={"size": 24})
 
     ax1.scatter(
         x=x_list_skip_sandwitch,
