@@ -200,8 +200,9 @@ def draw_daily_stat(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL_RAW_DIR
             bar_datas=bar_datas,
             x1_list=prices_date,
             y1_list=prices,
+            line_label="%s price" % (symbol),
             y0_axis_label="gas cost and revenue($)",
-            y1_axis_label="collateral price($)",
+            y1_axis_label="%s price($)" % (symbol),
             x_ticks=x_ticks,
             title="%s LLAMMA soft-liquidation gas cost and revenue daily" % (symbol),
             save_dir="%s/%s/stat_daily_revenue_gascost_%s.png"
@@ -214,6 +215,7 @@ def _draw_daily_bars_multi(
     bar_datas,
     x1_list,
     y1_list,
+    line_label,
     x_ticks,
     y0_axis_label,
     y1_axis_label,
@@ -232,7 +234,7 @@ def _draw_daily_bars_multi(
         x1_list,
         y1_list,
         alpha=0.8,
-        label=y1_axis_label,
+        label=line_label,
         color=default_chart_colors[2],
     )
     ax2.set_ylabel(y1_axis_label, font={"size": 18})
@@ -263,7 +265,7 @@ def _draw_daily_bars_multi(
     plt.xticks(x_ticks, font={"size": 13}, rotation=90)
     ax1.set_xticklabels(x_ticks, rotation=90)
     chart_elements = line1 + bars
-    ax1.legend(
+    ax2.legend(
         chart_elements,
         [l.get_label() for l in chart_elements],
         loc="upper left",
@@ -293,7 +295,7 @@ def _draw_daily_stat(
 
     ax1.set_title(title, font={"size": 32}, pad=24)
     ax1.set_xlabel("date", font={"size": 24})
-    ax1.set_ylabel("collateral price", font={"size": 24})
+    ax1.set_ylabel("collateral price($)", font={"size": 24})
     ax1.grid(False)
     ax2 = ax1.twinx()
 
@@ -313,6 +315,7 @@ def _draw_daily_stat(
         label=y_axis_label,
     )
     ax1.set_ylabel(y_axis_label, font={"size": 24})
+    ax2.set_ylabel("collateral price($)", font={"size": 24})
 
     plt.xticks(x_ticks, font={"size": 12}, rotation=90)
     ax1.set_xticklabels(x_ticks, font={"size": 13}, rotation=90)
@@ -321,7 +324,7 @@ def _draw_daily_stat(
     fig.autofmt_xdate(ha='center', rotation=90)
     plt.subplots_adjust(left=0.05, right=0.95)
     chart_elements = line1 + [bar1]
-    ax1.legend(
+    ax2.legend(
         chart_elements,
         [l.get_label() for l in chart_elements],
         loc="upper left",
@@ -845,8 +848,8 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
         # )
 
         bar_datas = {
-            "debt": debts,
-            "collateral received($)": received_usds,
+            "repaid debt": debts,
+            "collateral received": received_usds,
         }
 
         _draw_daily_bars_multi(
@@ -854,10 +857,11 @@ def draw_daily_liquidations(symbol, data_dir=DEFAULT_COINGECKO_PRICES_HISTORICAL
             bar_datas=bar_datas,
             x1_list=prices_date,
             y1_list=prices,
-            y0_axis_label="debt($)",
-            y1_axis_label="%s price" % (symbol),
+            line_label="%s price" % (symbol),
+            y0_axis_label="repaid debt($)",
+            y1_axis_label="%s price($)" % (symbol),
             x_ticks=x_ticks,
-            title="%s Controller hard-liquidation debt and collateral received daily"
+            title="%s Controller hard-liquidation repaid debt and collateral received daily"
             % (symbol),
             save_dir="%s/%s/liquidations_daily_debt_received_%s.png"
             % (IMG_DIR, symbol, symbol),
